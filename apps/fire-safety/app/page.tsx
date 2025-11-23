@@ -1,5 +1,10 @@
 "use client";
 
+import IncidentChart from "./components/IncidentChart";
+import TrendsChart from "./components/TrendsChart";
+import SeasonalChart from "./components/SeasonalChart";
+import LeadGenModal from "./components/LeadGenModal";
+
 export default function FireSafetyDashboard() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
@@ -40,9 +45,7 @@ export default function FireSafetyDashboard() {
             <h2 className="text-2xl font-bold mb-4 text-blue-400">
               Incident Distribution
             </h2>
-            <div className="h-64 flex items-center justify-center bg-gray-700/50 rounded">
-              <p className="text-gray-400">Chart: Incident types breakdown</p>
-            </div>
+            <IncidentChart />
           </div>
 
           {/* Temporal Trends */}
@@ -50,29 +53,15 @@ export default function FireSafetyDashboard() {
             <h2 className="text-2xl font-bold mb-4 text-blue-400">
               Annual Trends
             </h2>
-            <div className="h-64 flex items-center justify-center bg-gray-700/50 rounded">
-              <p className="text-gray-400">Chart: 10-year trends</p>
-            </div>
+            <TrendsChart />
           </div>
 
           {/* Seasonal Patterns */}
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div className="bg-gray-800 rounded-lg p-6 md:col-span-2">
             <h2 className="text-2xl font-bold mb-4 text-blue-400">
               Seasonal Patterns
             </h2>
-            <div className="h-64 flex items-center justify-center bg-gray-700/50 rounded">
-              <p className="text-gray-400">Chart: Winter/summer variations</p>
-            </div>
-          </div>
-
-          {/* Geographic Analysis */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-blue-400">
-              Geographic Hotspots
-            </h2>
-            <div className="h-64 flex items-center justify-center bg-gray-700/50 rounded">
-              <p className="text-gray-400">Chart: Municipality comparison</p>
-            </div>
+            <SeasonalChart />
           </div>
         </div>
 
@@ -109,9 +98,7 @@ export default function FireSafetyDashboard() {
           <p className="text-gray-300 mb-6 text-lg">
             Get AI-approved fire alarm systems for your commercial building
           </p>
-          <button className="bg-red-500 hover:bg-red-600 px-8 py-4 rounded-lg font-bold text-lg transition">
-            Request Assessment →
-          </button>
+          <LeadGenModal />
         </div>
 
         <footer className="text-center mt-12 text-gray-500 text-sm">
