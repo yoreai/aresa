@@ -29,7 +29,7 @@ ARESA operates as a synthesis pipeline:
 Input               Engine                    Output
 ─────               ──────                    ──────
 Raw Notebooks  →    Agentic Synthesis    →   Publications (PDF)
-Experiments    →    Pattern Recognition  →   Web Applications  
+Experiments    →    Pattern Recognition  →   Web Applications
 Data Analysis  →    Narrative Generation →   Reusable Libraries
                           ↓
                     Feedback Loop
@@ -72,7 +72,7 @@ Data Analysis  →    Narrative Generation →   Reusable Libraries
 # Build all publications
 make pdf
 
-# Build specific publication  
+# Build specific publication
 make pdf spotify_popularity
 
 # Prerequisites
@@ -120,5 +120,5 @@ MIT License - Open research and tools for the community.
 
 **ARESA**: *Engineering the future of autonomous discovery.*
 
-**Version**: 2.0.0  
+**Version**: 2.0.0
 **Status**: Active Development
