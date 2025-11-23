@@ -1,41 +1,38 @@
 "use client";
 
-import dynamic from "next/dynamic";
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+
+const data = [
+  { name: "Fire Alarms", value: 347191, color: "#f44336" },
+  { name: "Medical", value: 186524, color: "#64b5f6" },
+  { name: "Structure", value: 89342, color: "#ff9800" },
+  { name: "Vehicle", value: 52187, color: "#ffb74d" },
+  { name: "Outdoor", value: 48923, color: "#66bb6a" },
+  { name: "CO Alarms", value: 42156, color: "#ba68c8" },
+  { name: "Gas", value: 38742, color: "#4db6ac" },
+  { name: "Other", value: 125743, color: "#9e9e9e" },
+];
 
 export default function IncidentChart() {
-  const data = [
-    {
-      x: ["Fire Alarms", "Medical", "Structure", "Vehicle", "Outdoor", "CO", "Gas", "Other"],
-      y: [347191, 186524, 89342, 52187, 48923, 42156, 38742, 125743],
-      type: "bar" as const,
-      marker: {
-        color: ["#f44336", "#64b5f6", "#ff9800", "#ffb74d", "#66bb6a", "#ba68c8", "#4db6ac", "#9e9e9e"],
-        line: { color: "#000", width: 1.2 },
-      },
-    },
-  ];
-
-  const layout: any = {
-    title: {
-      text: "Emergency Dispatch Volume by Type (2015-2024)",
-      font: { color: "#f0f0f0", size: 16 },
-    },
-    xaxis: { title: "Incident Type", color: "#a0a0a0" },
-    yaxis: { title: "Number of Incidents", color: "#a0a0a0" },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(42,42,42,0.5)",
-    font: { color: "#f0f0f0" },
-    margin: { t: 50, b: 80, l: 80, r: 20 },
-  };
-
   return (
-    <Plot
-      data={data}
-      layout={layout}
-      config={{ responsive: true, displayModeBar: false }}
-      className="w-full"
-    />
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data}>
+        <XAxis dataKey="name" stroke="#a0a0a0" angle={-45} textAnchor="end" height={80} />
+        <YAxis stroke="#a0a0a0" />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: "#2a2a2a",
+            border: "1px solid #444",
+            borderRadius: "8px",
+            color: "#f0f0f0",
+          }}
+        />
+        <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} stroke="#000" strokeWidth={1} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
-

@@ -1,57 +1,33 @@
 "use client";
 
-import dynamic from "next/dynamic";
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const data = [
+  { season: "Winter", structure: 134, outdoor: 25, alarms: 95 },
+  { season: "Spring", structure: 95, outdoor: 60, alarms: 93 },
+  { season: "Summer", structure: 75, outdoor: 178, alarms: 98 },
+  { season: "Fall", structure: 90, outdoor: 50, alarms: 96 },
+];
 
 export default function SeasonalChart() {
-  const seasons = ["Winter", "Spring", "Summer", "Fall"];
-
-  const data = [
-    {
-      x: seasons,
-      y: [134, 95, 75, 90],
-      name: "Structure Fires",
-      type: "bar" as const,
-      marker: { color: "#ff9800" },
-    },
-    {
-      x: seasons,
-      y: [25, 60, 178, 50],
-      name: "Outdoor Fires",
-      type: "bar" as const,
-      marker: { color: "#66bb6a" },
-    },
-    {
-      x: seasons,
-      y: [95, 93, 98, 96],
-      name: "Fire Alarms",
-      type: "bar" as const,
-      marker: { color: "#f44336" },
-    },
-  ];
-
-  const layout: any = {
-    title: {
-      text: "Seasonal Incident Patterns (Relative to Annual Average)",
-      font: { color: "#f0f0f0", size: 16 },
-    },
-    xaxis: { title: "Season", color: "#a0a0a0" },
-    yaxis: { title: "Incidents (% of Average)", color: "#a0a0a0" },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(42,42,42,0.5)",
-    font: { color: "#f0f0f0" },
-    barmode: "group",
-    showlegend: true,
-    legend: { font: { color: "#f0f0f0" } },
-  };
-
   return (
-    <Plot
-      data={data}
-      layout={layout}
-      config={{ responsive: true, displayModeBar: false }}
-      className="w-full"
-    />
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+        <XAxis dataKey="season" stroke="#a0a0a0" />
+        <YAxis stroke="#a0a0a0" />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: "#2a2a2a",
+            border: "1px solid #444",
+            borderRadius: "8px",
+            color: "#f0f0f0",
+          }}
+        />
+        <Legend wrapperStyle={{ color: "#f0f0f0" }} />
+        <Bar dataKey="structure" fill="#ff9800" name="Structure Fires" radius={[8, 8, 0, 0]} />
+        <Bar dataKey="outdoor" fill="#66bb6a" name="Outdoor Fires" radius={[8, 8, 0, 0]} />
+        <Bar dataKey="alarms" fill="#f44336" name="Fire Alarms" radius={[8, 8, 0, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
-
