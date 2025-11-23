@@ -1,103 +1,128 @@
-# University of Pittsburgh - AI Master's Research Portfolio
+# TESSERA
 
-**Professional academic publications from data science coursework**
+**Transformative Engineering for Scholarly Synthesis & Research Architecture**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Quarto](https://img.shields.io/badge/Made%20with-Quarto-blue)](https://quarto.org)
-[![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
-
-## 🎯 Overview
-
-This repository showcases professional academic publications from Master's coursework in Artificial Intelligence at the University of Pittsburgh. Instead of sharing raw Jupyter notebooks, these works are presented as polished research papers using Quarto for publication-quality PDF output.
-
-## 📚 Publications
-
-### 1. Predicting Song Popularity on Spotify
-**Machine Learning & Statistical Modeling**
-
-A comprehensive study using logistic regression and interaction modeling to predict song popularity from audio features across six genres.
-
-- **Dataset**: Spotify songs with 14 audio features
-- **Methods**: EDA, clustering, progressive logistic regression, cross-validation
-- **Key Finding**: Genre + audio feature interactions achieve ROC AUC 0.675
-- **Skills**: Python, pandas, scikit-learn, statistical modeling
-
-📄 [View Publication](publications/spotify_popularity/)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue)](https://python.org)
+[![uv](https://img.shields.io/badge/Managed%20by-uv-purple)](https://github.com/astral-sh/uv)
 
 ---
 
-### 2. Data-Driven Fire Safety Analytics
-**Applied Analytics & Public Safety Intelligence**
+## 🎯 Vision
 
-Analysis of 930,808 emergency dispatch records from Allegheny County to inform fire safety policy and resource allocation.
+TESSERA is an **autonomous research synthesis machine** that transforms raw analytical work into publication-quality research across domains. Like mosaic tiles forming a greater picture, TESSERA assembles scattered experiments, notebooks, and analyses into cohesive, professional publications.
 
-- **Dataset**: 10 years of 911 fire dispatch data (2015-2024)
-- **Methods**: Geospatial analysis, temporal decomposition, interactive dashboard
-- **Key Finding**: 37.3% of dispatches are fire alarms; $225M false alarm cost over 10 years
-- **Skills**: Python, geopandas, Gradio, public policy analysis
+**Current State:** Foundational demonstrations from academic research (AI, data analytics, manufacturing, public policy)  
+**Future Vision:** Self-improving synthesis system applicable across engineering domains—AI, biomedical research, pharmaceutical development, materials science, and beyond.
 
-📄 [View Publication](publications/fire_safety_dashboard/)
+The system doesn't just organize research—it actively synthesizes, visualizes, and presents findings with publication-grade quality, transforming months of exploratory work into comprehensive papers in hours.
 
 ---
 
-### 3. Manufacturing Process Analytics
-**Data Engineering & Industrial IoT**
+## 🧬 Core Philosophy
 
-Multi-source data integration demonstrating PCA and clustering for manufacturing operational intelligence.
+**From Fragments to Knowledge:**
 
-- **Dataset**: Sensor data from 3 machines + supplier information (45,000 observations)
-- **Methods**: Multi-source merging, PCA, K-means clustering
-- **Key Finding**: 5 operational regimes; supplier quality correlates with machine stability
-- **Skills**: Python, pandas, scikit-learn, data integration
+Traditional research workflows scatter insights across notebooks, scripts, and visualizations. Researchers spend months organizing, refining, and documenting findings. TESSERA inverts this: feed it raw analytical work, and it produces publication-ready research with professional visualizations, statistical rigor, and narrative coherence.
 
-📄 [View Publication](publications/manufacturing_analytics/)
+**Self-Improving Architecture:**
 
----
+Each publication cycle improves the system. Visualization patterns discovered in manufacturing analytics inform biological research papers. Statistical frameworks from ML classification generalize to pharmaceutical trials. Network analysis methods apply equally to protein interactions and supply chains.
 
-### 4. Network Centrality in College Football
-**Network Science & Graph Theory**
+**Domain Agnostic:**
 
-Application of network centrality metrics to analyze competitive positioning in college football.
-
-- **Dataset**: 115 Division I teams, 892 games (2022-2023 season)
-- **Methods**: Graph construction, degree/betweenness centrality, NetworkX
-- **Key Finding**: Penn State (breadth) vs. Ohio State (bridge position) - complementary centrality profiles
-- **Skills**: Python, NetworkX, graph theory, sports analytics
-
-📄 [View Publication](publications/network_analysis/)
+TESSERA doesn't care if you're analyzing:
+- 🧬 **Biomedical**: Protein folding patterns, clinical trial data, genomic sequences
+- 🏭 **Manufacturing**: Process optimization, quality control, supply chain analytics
+- 💊 **Pharmaceutical**: Drug efficacy studies, adverse event patterns, molecular synthesis
+- 🤖 **AI/ML**: Model architectures, training dynamics, deployment analytics
+- 📊 **Any quantitative field**: If you generate data and insights, TESSERA synthesizes them into publications
 
 ---
 
-## 🛠️ Technical Stack
+## 📚 Foundational Demonstrations
 
-**Analysis & Modeling:**
-- Python 3.8+
-- pandas, numpy
-- scikit-learn (ML)
-- NetworkX (graphs)
-- geopandas, folium (geospatial)
+### Current Publications (Proof of Concept)
 
-**Visualization:**
-- matplotlib, seaborn
-- plotly (interactive)
-- Gradio (dashboards)
+These four publications demonstrate TESSERA's synthesis capabilities across diverse domains:
 
-**Publication:**
-- Quarto (PDF generation)
-- LaTeX (professional formatting)
-- BibTeX (citations)
+#### 1. **Predicting Song Popularity on Spotify** (659 KB, 7 visualizations)
+**Domain**: Machine Learning & Statistical Modeling
+
+- Binary classification with genre×audio interaction modeling
+- ROC AUC 0.675 with 5-fold cross-validation
+- **Demonstrates**: Conditional distributions, progressive model development, interaction effects
+
+#### 2. **Manufacturing Process Analytics** (682 KB, 8 visualizations)
+**Domain**: Industrial Engineering & Data Integration
+
+- Multi-source integration (45K observations from 5 data sources)
+- Discovered cyclical quality failure pattern (every 8 batches)
+- **Demonstrates**: PCA, clustering methodology, supplier analysis, quality heatmaps
+
+#### 3. **Data-Driven Fire Safety Analytics** (183 KB, 5 visualizations)
+**Domain**: Public Policy & Applied Analytics
+
+- 930,808 emergency dispatch records analyzed
+- $225M false alarm cost quantified with policy recommendations
+- **Demonstrates**: Geospatial analysis, temporal decomposition, impact quantification
+
+#### 4. **Network Centrality in College Football** (124 KB, 3 visualizations)
+**Domain**: Network Science & Graph Theory
+
+- 115-team competition network analysis
+- Degree vs. betweenness centrality comparison
+- **Demonstrates**: Graph algorithms generalizable to biological networks, supply chains, collaborations
+
+**Total**: 1.6 MB, 23 professional visualizations, 4 complete research narratives
+
+---
+
+## 🛠️ Technical Architecture
+
+### Synthesis Pipeline
+
+```
+Raw Work → TESSERA → Publication
+(notebooks)         (research paper)
+```
+
+**What TESSERA Does:**
+
+1. **Extracts**: Pulls findings from Jupyter notebooks, Python scripts, data analyses
+2. **Synthesizes**: Generates narrative structure (Abstract → Introduction → Methods → Results → Discussion → Conclusion)
+3. **Visualizes**: Creates publication-quality charts following professional standards
+4. **Formats**: LaTeX tables, citations, academic typography
+5. **Outputs**: PDF publications ready for arxiv, journals, portfolios, GitHub Pages
+
+### Technology Stack
+
+**Publication Generation:**
+- **Quarto** - Markdown → LaTeX → PDF pipeline
+- **Python** - matplotlib, seaborn, NetworkX, plotly for visualizations
+- **uv** - Reproducible dependency management
+- **LaTeX** - Professional typography and tables
+
+**Web Deployment:**
+- **GitHub Pages** - Portfolio showcase ([view live](https://yevheniyc.github.io/tessera/))
+- **Gradio** - Interactive dashboards for Hugging Face Spaces
+- **HTML/CSS** - Custom landing pages with detail views
+
+### Shared Infrastructure
+
+TESSERA uses workspace-level infrastructure (`../quarto/`) reusable across all research projects:
+
+- `_diagram_style.py` - Professional Plotly visualization helpers
+- `RESEARCH_GUIDELINES.md` - Publication standards and formatting rules
+- `scripts/generate_pdfs.sh` - Automated PDF generation
+- `template_quarto.yml` - Reusable publication configuration
+
+This architecture enables: **Write analysis once → Generate publications anywhere**
+
+---
 
 ## 📖 Building Publications
-
-### Prerequisites
-
-```bash
-# Install Quarto
-brew install --cask quarto
-
-# Install Python dependencies
-pip install -r requirements.txt
-```
 
 ### Generate PDFs
 
@@ -107,8 +132,8 @@ make pdf
 
 # Generate specific publication
 make pdf spotify_popularity
-make pdf fire_safety_dashboard
 make pdf manufacturing_analytics
+make pdf fire_safety_dashboard
 make pdf network_analysis
 
 # View available commands
@@ -117,100 +142,150 @@ make help
 
 Output PDFs appear in `publications/pdf/`
 
+### Prerequisites
+
+```bash
+# Install Quarto
+brew install --cask quarto
+
+# Install Python dependencies
+uv sync
+```
+
+---
+
 ## 📂 Repository Structure
 
 ```
-pitt/
-├── publications/              # 📄 Academic publications (Quarto .qmd)
+tessera/
+├── publications/              # 📄 Research papers (Quarto .qmd → PDF)
 │   ├── spotify_popularity/
-│   ├── fire_safety_dashboard/
 │   ├── manufacturing_analytics/
+│   ├── fire_safety_dashboard/
 │   ├── network_analysis/
 │   └── pdf/                  # Generated PDFs
-├── notebooks/                 # 📓 Source Jupyter notebooks (not public)
+│
+├── notebooks/                 # 📓 Source analytical work
+│   ├── project_1_eda/
+│   ├── project_2_machines/
+│   ├── project_3_spotify/
+│   └── ...
+│
+├── docs/                      # 🌐 GitHub Pages site
+│   ├── index.html            # Portfolio landing
+│   ├── [publication].html    # Detail pages
+│   └── publications/         # PDFs for web viewing
+│
+├── huggingface_spaces/        # 🤗 Deployable apps
+│   └── fire-safety-dashboard/
+│
 ├── Makefile                   # Build commands
-├── .gitignore                 # Excludes courses/ directory
-├── requirements.txt           # Python dependencies
-└── README.md                  # This file
+├── pyproject.toml            # uv dependencies
+└── README.md                 # This file
 ```
+
+---
+
+## 🚀 Future Directions
+
+### Expansion Domains
+
+**Biomedical Research:**
+- Clinical trial analysis pipelines
+- Protein structure pattern recognition
+- Genomic sequence clustering
+- Drug interaction network analysis
+
+**Manufacturing & Industrial:**
+- Real-time quality control synthesis
+- Supply chain optimization publications
+- Process parameter relationship discovery
+- Predictive maintenance analysis
+
+**Pharmaceutical Development:**
+- Adverse event pattern detection
+- Molecular synthesis pathway analysis
+- Drug efficacy meta-analyses
+- Regulatory submission documentation
+
+**AI/ML Research:**
+- Model architecture comparisons
+- Training dynamics visualization
+- Deployment performance analysis
+- Benchmark result synthesis
+
+### System Evolution
+
+**Self-Improvement Mechanisms:**
+
+1. **Pattern Library**: Successful visualization patterns (e.g., conditional distributions for classification) automatically become templates
+2. **Narrative Templates**: Effective discussion structures get extracted and reused
+3. **Statistical Frameworks**: Analysis workflows (e.g., elbow method → clustering → validation) become reusable pipelines
+4. **Domain Transfer**: Methods proven in one field (network centrality in sports) auto-suggest for new domains (protein interactions)
+
+**Autonomous Features (Roadmap):**
+
+- Automatic finding extraction from notebook outputs
+- Intelligent chart selection based on data types and research questions
+- Citation recommendation from related work
+- Multi-publication meta-analysis (synthesizing across your own papers)
+- Collaborative synthesis (combining work from multiple researchers)
+
+---
 
 ## 🎓 Academic Context
 
-**Institution**: University of Pittsburgh
-**Program**: Master of Science in Data Science (MSDS)
-**Emphasis**: Applied Artificial Intelligence
-**Focus Areas**: Machine Learning, Data Analytics, Network Science, Geospatial Analysis
+**Current Foundation:**  
+University of Pittsburgh | Master of Data Science (MDS)  
+Specialization: Applied Data Science & Machine Learning
 
-**Courses:**
+**Courses Informing System:**
 - Introduction to Data Science & Computing
 - Data Visualization
 - Predictive Modeling
+- Network Analysis
+- Geospatial Analytics
 
-## 🏆 Skills Demonstrated
+These foundational publications demonstrate TESSERA's capabilities across:
+- Supervised learning (classification, regression)
+- Unsupervised learning (clustering, dimensionality reduction)
+- Network science (graph theory, centrality metrics)
+- Geospatial analysis (temporal/spatial patterns)
+- Applied analytics (policy impact quantification)
 
-**Data Science:**
-- Multi-source data integration
-- Exploratory data analysis
-- Feature engineering
-- Statistical modeling
+---
 
-**Machine Learning:**
-- Logistic regression
-- K-means clustering
-- Principal Component Analysis
-- Cross-validation
+## 🌐 Live Deployments
 
-**Specialized:**
-- Geospatial analysis
-- Network science
-- Time series analysis
-- Interactive dashboards
+**GitHub Pages**: [yevheniyc.github.io/tessera](https://yevheniyc.github.io/tessera/)  
+Portfolio showcase with publication previews and PDFs
 
-**Engineering:**
-- Data pipeline development
-- Reproducible research
-- Version control
-- Professional documentation
+**Hugging Face Spaces**: [Coming Soon]  
+Interactive Fire Safety Analytics Dashboard
 
-## 📊 Research Philosophy
-
-These publications follow three principles:
-
-1. **Show, Don't Tell**: Concrete examples over abstract descriptions
-2. **Data-Driven Narrative**: Full stories backed by real metrics and code
-3. **Professional Quality**: Publication-grade visualizations and LaTeX formatting
-
-## 📝 Citation
-
-If referencing this work:
-
-```bibtex
-@misc{chuba2025pitt,
-  author = {Chuba, Yevheniy},
-  title = {University of Pittsburgh AI Master's Research Portfolio},
-  year = {2025},
-  publisher = {GitHub},
-  url = {https://github.com/yevheniyc/pitt}
-}
-```
+---
 
 ## 📧 Contact
 
-**Author**: Yevheniy Chuba
-**Institution**: University of Pittsburgh
-**Program**: Master of Science in Data Science (MSDS)
-**LinkedIn**: [yev-chuba](https://www.linkedin.com/in/yev-chuba-57518434/)
-**GitHub**: [yevheniyc](https://github.com/yevheniyc)
+**Yevheniy Chuba**  
+Founder & CEO, YoreAI  
+AI Research & ML Data Scientist, Abridge AI
+
+**LinkedIn**: [yev-chuba](https://www.linkedin.com/in/yev-chuba-57518434/)  
+**GitHub**: [yevheniyc](https://github.com/yevheniyc)  
+**Institution**: University of Pittsburgh | Master of Data Science
+
+---
 
 ## 📜 License
 
-This work is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
----
+**TESSERA**: Assembling the mosaic of research, one tile at a time. 🧩
 
-**Last Updated**: November 2025  
-**Version**: 1.0.0
+**Version**: 1.0.0  
+**Last Updated**: November 2025
 
-_Academic research portfolio showcasing data science and machine learning expertise through professional publications._
+_Transforming raw analytical work into publication-quality research across all engineering domains._

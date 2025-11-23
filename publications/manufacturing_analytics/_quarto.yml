@@ -62,7 +62,7 @@ format:
             {\LARGE\bfseries Manufacturing Process Analytics}\\[0.4em]
             {\large Multi-Source Data Integration for Operational Intelligence}\\[1.5em]
             {\Authfont Yevheniy Chuba}\\[0.5em]
-            {\Affilfont University of Pittsburgh -- MSDS (Applied AI Emphasis)}\\[1.5em]
+            {\Affilfont University of Pittsburgh -- MDS}\\[1.5em]
             {\normalsize \textit{Version 1.0 -- November 2025}}\\[0.5em]
             {\footnotesize \textit{Author note: This research demonstrates data engineering techniques for integrating multi-source manufacturing data to identify operational patterns and supplier relationships.}}\\[0.5em]
             {\footnotesize \textit{Status: Data Engineering Research Publication}}\\[0.2em]
