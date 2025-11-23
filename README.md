@@ -1,6 +1,6 @@
-# TESSERA
+# ARESA
 
-**Autonomous Research & Engineering Synthesis Engine**
+**Autonomous Research & Engineering Synthesis Architecture**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Quarto](https://img.shields.io/badge/Made%20with-Quarto-blue)](https://quarto.org)
@@ -11,7 +11,7 @@
 
 ## 🎯 The 10-Year Vision
 
-TESSERA is architected to become a **self-improving, autonomous research engine**. It is not merely a repository of past work, but a "Thinking Machine" designed to bridge the gap between raw experimentation and finalized knowledge.
+ARESA is architected to become a **self-improving, autonomous research engine**. It is not merely a repository of past work, but a "Thinking Machine" designed to bridge the gap between raw experimentation and finalized knowledge.
 
 **The Goal:** A fully agentic system that ingests raw ideas, data, and initial experiments, and autonomously:
 1.  **Synthesizes Research:** Drafting professional, publication-ready papers.
@@ -27,10 +27,10 @@ This system serves a dual mandate:
 ## 🧬 Core Philosophy
 
 **1. Continuous Discovery Loop**
-Research is often static; TESSERA makes it dynamic. The engine treats every notebook, script, and dataset as a "seed." It continuously revisits these seeds, applying new analytical methods, updated data, and improved visualization standards to generate fresh insights without human intervention.
+Research is often static; ARESA makes it dynamic. The engine treats every notebook, script, and dataset as a "seed." It continuously revisits these seeds, applying new analytical methods, updated data, and improved visualization standards to generate fresh insights without human intervention.
 
 **2. Research-to-Deployment Pipeline**
-The chasm between "academic paper" and "product" is where innovation often dies. TESSERA integrates this transition:
+The chasm between "academic paper" and "product" is where innovation often dies. ARESA integrates this transition:
 *   **Input:** Raw Jupyter Notebooks, Data, Rough Notes.
 *   **Process:** Agentic synthesis, rigorous validation, automated formatting.
 *   **Output A (Knowledge):** LaTeX-quality PDF publications (via Quarto).
@@ -47,11 +47,11 @@ While currently seeded with foundational work in AI, Data Science, and Public Po
 ## 🏗️ Architecture
 
 ### The Engine
-TESSERA operates as a modular synthesis pipeline:
+ARESA operates as a modular synthesis pipeline:
 
 ```mermaid
 graph LR
-    A[Input: Raw Ideas/Data] --> B(TESSERA Engine);
+    A[Input: Raw Ideas/Data] --> B(ARESA Engine);
     B --> C{Agentic Synthesis};
     C -->|Write| D[Publication Generation];
     C -->|Code| E[App Deployment];
@@ -106,7 +106,7 @@ This project and its research outputs are licensed under the MIT License.
 
 ---
 
-**TESSERA**: *Weaving raw intelligence into the fabric of human knowledge.*
+**ARESA**: *Architecting the future of automated discovery.*
 
-**Version**: 1.1.0 (Vision Update)
+**Version**: 1.2.0 (Rebrand)
 **Status**: Active Development
