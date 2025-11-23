@@ -47,20 +47,44 @@ While currently seeded with foundational work in AI, Data Science, and Public Po
 ## 🏗️ Architecture
 
 ### The Engine
+
 ARESA operates as a modular synthesis pipeline:
 
-```mermaid
-graph LR
-    A[Input: Raw Ideas/Data] --> B(ARESA Engine);
-    B --> C{Agentic Synthesis};
-    C -->|Write| D[Publication Generation];
-    C -->|Code| E[App Deployment];
-    D --> F[Open Research (PDF/Docs)];
-    E --> G[Commercial/Open Apps];
-    G -->|Data/Feedback| B;
 ```
-
-*(Note: Visualization of the autonomous loop logic)*
+┌─────────────────┐
+│ Raw Ideas/Data  │
+│ (Notebooks)     │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│   ARESA Synthesis Engine    │
+│                             │
+│  • Extract findings         │
+│  • Generate narratives      │
+│  • Create visualizations    │
+│  • Format publications      │
+└────────┬───────────┬────────┘
+         │           │
+    ┌────▼───┐  ┌───▼────┐
+    │ Write  │  │  Code  │
+    └────┬───┘  └───┬────┘
+         │          │
+    ┌────▼──────────▼─────┐
+    │  Dual Output Path   │
+    ├─────────────────────┤
+    │ Open Research       │──► Publications (PDF)
+    │ (Human Benefit)     │──► Documentation
+    ├─────────────────────┤
+    │ Commercial Apps     │──► Deployed Systems
+    │ (Innovation)        │──► Reusable Tools
+    └─────────┬───────────┘
+              │
+         ┌────▼─────────┐
+         │  Feedback    │
+         │  Loop (Future)│
+         └──────────────┘
+```
 
 ### Current Capabilities (Seed Stage)
 The repository currently houses the **Foundational Demonstrations**—the initial "seeds" that prove the synthesis capability. These were generated using the v1 pipeline (guided agentic synthesis):
