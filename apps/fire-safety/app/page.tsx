@@ -4,6 +4,8 @@ import IncidentChart from "./components/IncidentChart";
 import TrendsChart from "./components/TrendsChart";
 import SeasonalChart from "./components/SeasonalChart";
 import LeadGenModal from "./components/LeadGenModal";
+import Filters from "./components/Filters";
+import FireMap from "./components/FireMap";
 
 export default function FireSafetyDashboard() {
   return (
@@ -36,6 +38,17 @@ export default function FireSafetyDashboard() {
             <div className="text-4xl font-bold text-purple-400">10 Years</div>
             <div className="text-sm text-gray-400 mt-2">2015-2024</div>
           </div>
+        </div>
+
+        {/* Filters */}
+        <Filters />
+
+        {/* Geographic Map */}
+        <div className="bg-gray-800 rounded-lg p-6 mb-6">
+          <h2 className="text-2xl font-bold mb-4 text-blue-400">
+            Geographic Incident Hotspots
+          </h2>
+          <FireMap />
         </div>
 
         {/* Dashboard Sections */}
