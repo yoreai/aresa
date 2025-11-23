@@ -41,7 +41,10 @@ export default function FireMap() {
   if (!isClient) {
     return (
       <div className="h-96 bg-gray-700/50 rounded flex items-center justify-center">
-        <p className="text-gray-400">Loading map...</p>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading map...</p>
+        </div>
       </div>
     );
   }
