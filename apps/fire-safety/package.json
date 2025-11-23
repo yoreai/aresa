@@ -6,17 +6,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "test": "playwright test",
-        "test:headed": "playwright test --headed",
-        "test:ui": "playwright test --ui",
-        "test:auth": "playwright test tests/auth.spec.ts",
-        "test:auth-full": "playwright test tests/auth*.spec.ts",
-        "test:pwa": "playwright test tests/pwa.spec.ts",
-        "test:nav": "playwright test tests/navigation.spec.ts",
-        "export-data": "node scripts/export-static-data.js",
-        "prebuild": "npm run export-data",
-        "prestart": "npm run export-data"
+        "lint": "next lint"
     },
     "dependencies": {
         "@clerk/nextjs": "^5.0.0",
