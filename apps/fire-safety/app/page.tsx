@@ -1,117 +1,222 @@
 "use client";
 
+import { useState } from "react";
 import IncidentChart from "./components/IncidentChart";
 import TrendsChart from "./components/TrendsChart";
 import SeasonalChart from "./components/SeasonalChart";
+import HourlyChart from "./components/HourlyChart";
+import PriorityChart from "./components/PriorityChart";
+import MunicipalityChart from "./components/MunicipalityChart";
 import LeadGenModal from "./components/LeadGenModal";
-import Filters from "./components/Filters";
+import Sidebar from "./components/Sidebar";
 import FireMap from "./components/FireMap";
 
 export default function FireSafetyDashboard() {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const tabs = [
+    { id: "overview", label: "Overview", icon: "📊" },
+    { id: "geographic", label: "Geographic", icon: "🗺️" },
+    { id: "temporal", label: "Temporal", icon: "📅" },
+    { id: "analysis", label: "Analysis", icon: "🔍" },
+  ];
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto px-4 py-8">
-        <header className="mb-12">
+        {/* Header */}
+        <header className="mb-8">
           <h1 className="text-5xl font-bold mb-4">
             🔥 US Fire Safety Analytics
           </h1>
           <p className="text-xl text-gray-400">
-            Data-driven insights from 930,000+ emergency dispatch records
+            Data-driven insights from 930,000+ emergency dispatch records (2015-2024)
           </p>
         </header>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-gray-800 rounded-lg p-6 text-center border-t-4 border-red-500">
-            <div className="text-4xl font-bold text-red-400">37.3%</div>
-            <div className="text-sm text-gray-400 mt-2">Fire Alarms</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6 text-center border-t-4 border-orange-500">
-            <div className="text-4xl font-bold text-orange-400">$225M</div>
-            <div className="text-sm text-gray-400 mt-2">False Alarm Cost</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6 text-center border-t-4 border-blue-500">
-            <div className="text-4xl font-bold text-blue-400">930K+</div>
-            <div className="text-sm text-gray-400 mt-2">Records</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6 text-center border-t-4 border-purple-500">
-            <div className="text-4xl font-bold text-purple-400">10 Years</div>
-            <div className="text-sm text-gray-400 mt-2">2015-2024</div>
-          </div>
+        {/* Tabs */}
+        <div className="flex gap-2 mb-6 overflow-x-auto">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-3 rounded-lg font-semibold transition whitespace-nowrap ${
+                activeTab === tab.id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+              }`}
+            >
+              {tab.icon} {tab.label}
+            </button>
+          ))}
         </div>
 
-        {/* Filters */}
-        <Filters />
-
-        {/* Geographic Map */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4 text-blue-400">
-            Geographic Incident Hotspots
-          </h2>
-          <FireMap />
-        </div>
-
-        {/* Dashboard Sections */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Incident Distribution */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-blue-400">
-              Incident Distribution
-            </h2>
-            <IncidentChart />
+        {/* Main Layout: Sidebar + Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <Sidebar />
           </div>
 
-          {/* Temporal Trends */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-blue-400">
-              Annual Trends
-            </h2>
-            <TrendsChart />
-          </div>
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Overview Tab */}
+            {activeTab === "overview" && (
+              <>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Incident Distribution
+                  </h2>
+                  <IncidentChart />
+                </div>
 
-          {/* Seasonal Patterns */}
-          <div className="bg-gray-800 rounded-lg p-6 md:col-span-2">
-            <h2 className="text-2xl font-bold mb-4 text-blue-400">
-              Seasonal Patterns
-            </h2>
-            <SeasonalChart />
-          </div>
-        </div>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Annual Trends
+                  </h2>
+                  <TrendsChart />
+                </div>
 
-        {/* Policy Recommendations */}
-        <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-lg p-8 mt-8 border border-blue-500/30">
-          <h2 className="text-2xl font-bold mb-6 text-blue-400">
-            Policy Recommendations
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-bold text-lg mb-2">🔔 Smart Alarm Technology</h3>
-              <p className="text-gray-400 text-sm">
-                30-50% false alarm reduction through multi-criteria detection systems
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Priority Distribution by Incident Type
+                  </h2>
+                  <PriorityChart />
+                </div>
+              </>
+            )}
+
+            {/* Geographic Tab */}
+            {activeTab === "geographic" && (
+              <>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Geographic Incident Hotspots
+                  </h2>
+                  <FireMap />
+                </div>
+
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    High Per-Capita Municipalities
+                  </h2>
+                  <MunicipalityChart />
+                  <p className="text-sm text-gray-400 mt-4">
+                    * Incidents per 1,000 residents. County average: 15.7
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* Temporal Tab */}
+            {activeTab === "temporal" && (
+              <>
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Seasonal Patterns
+                  </h2>
+                  <SeasonalChart />
+                </div>
+
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Hourly Distribution (24-Hour Pattern)
+                  </h2>
+                  <HourlyChart />
+                  <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+                    <div className="bg-blue-900/30 p-3 rounded">
+                      <div className="font-bold text-blue-400">Morning Peak</div>
+                      <div className="text-gray-400">8-11 AM (28% of fire alarms)</div>
+                    </div>
+                    <div className="bg-orange-900/30 p-3 rounded">
+                      <div className="font-bold text-orange-400">Evening Peak</div>
+                      <div className="text-gray-400">5-8 PM (22% of structure fires)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Year-Over-Year Trends
+                  </h2>
+                  <TrendsChart />
+                </div>
+              </>
+            )}
+
+            {/* Analysis Tab */}
+            {activeTab === "analysis" && (
+              <>
+                <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-lg p-8 border border-blue-500/30">
+                  <h2 className="text-2xl font-bold mb-6 text-blue-400">
+                    Policy Recommendations
+                  </h2>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">🔔 Smart Alarm Technology</h3>
+                      <p className="text-gray-400 text-sm mb-2">
+                        Deploy multi-criteria detection systems in high-frequency locations
+                      </p>
+                      <div className="text-green-400 font-bold">Target: 30-50% reduction</div>
+                      <div className="text-sm text-gray-500">Est. savings: $67-112M / 10yr</div>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">🏘️ Community Prevention</h3>
+                      <p className="text-gray-400 text-sm mb-2">
+                        Target top 5 per-capita municipalities with prevention programs
+                      </p>
+                      <div className="text-green-400 font-bold">Target: 20% reduction</div>
+                      <div className="text-sm text-gray-500">Impact: 3,000+ fewer fires / 10yr</div>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">📅 Seasonal Staffing</h3>
+                      <p className="text-gray-400 text-sm mb-2">
+                        Align resources with winter structure fire and summer outdoor peaks
+                      </p>
+                      <div className="text-green-400 font-bold">Target: 15% capacity increase</div>
+                      <div className="text-sm text-gray-500">Benefit: Reduced response times</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-800 rounded-lg p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                    Cost Impact Analysis
+                  </h2>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-4 bg-gray-700/50 rounded">
+                      <span>Total False Alarms (estimated)</span>
+                      <span className="font-bold text-red-400">225,674</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 bg-gray-700/50 rounded">
+                      <span>Cost Per False Alarm</span>
+                      <span className="font-bold text-orange-400">$1,000</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 bg-gray-700/50 rounded">
+                      <span>Total 10-Year Cost</span>
+                      <span className="font-bold text-red-400">$225.7 Million</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 bg-gray-700/50 rounded">
+                      <span>Annual Average Cost</span>
+                      <span className="font-bold text-orange-400">$22.6 Million</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* CTA - Shows on all tabs */}
+            <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-lg p-8 border border-red-500/30 text-center">
+              <h2 className="text-3xl font-bold mb-4">Reduce False Alarms by 30-50%</h2>
+              <p className="text-gray-300 mb-6 text-lg">
+                Get AI-approved fire alarm systems for your commercial building
+              </p>
+              <LeadGenModal />
+              <p className="text-sm text-gray-500 mt-4">
+                Based on data analysis of 930,808 emergency dispatch records
               </p>
             </div>
-            <div>
-              <h3 className="font-bold text-lg mb-2">🏘️ Community Prevention</h3>
-              <p className="text-gray-400 text-sm">
-                Target high-risk municipalities with door-to-door programs
-              </p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-2">📅 Seasonal Staffing</h3>
-              <p className="text-gray-400 text-sm">
-                Align resources with winter structure fire and summer outdoor fire peaks
-              </p>
-            </div>
           </div>
-        </div>
-
-        {/* CTA for Commercial */}
-        <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-lg p-8 mt-8 border border-red-500/30 text-center">
-          <h2 className="text-3xl font-bold mb-4">Reduce False Alarms by 30-50%</h2>
-          <p className="text-gray-300 mb-6 text-lg">
-            Get AI-approved fire alarm systems for your commercial building
-          </p>
-          <LeadGenModal />
         </div>
 
         <footer className="text-center mt-12 text-gray-500 text-sm">
@@ -124,4 +229,3 @@ export default function FireSafetyDashboard() {
     </main>
   );
 }
-
