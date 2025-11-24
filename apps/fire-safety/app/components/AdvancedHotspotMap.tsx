@@ -8,6 +8,7 @@ import type { FireIncident } from "../../lib/fireData";
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
 const CircleMarker = dynamic(() => import("react-leaflet").then((mod) => mod.CircleMarker), { ssr: false });
+const Circle = dynamic(() => import("react-leaflet").then((mod) => mod.Circle), { ssr: false });
 const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { ssr: false });
 
 interface AdvancedHotspotMapProps {
@@ -16,62 +17,62 @@ interface AdvancedHotspotMapProps {
 
 export default function AdvancedHotspotMap({ incidents }: AdvancedHotspotMapProps) {
   const [isClient, setIsClient] = useState(false);
-  const [HeatmapLayer, setHeatmapLayer] = useState<any>(null);
 
   useEffect(() => {
     setIsClient(true);
-    // Dynamically import heatmap after client loads
-    import("react-leaflet-heatmap-layer-v3").then((mod) => {
-      setHeatmapLayer(() => mod.default);
-    });
   }, []);
 
-  if (!isClient || !HeatmapLayer) {
+  if (!isClient) {
     return (
       <div className="h-[600px] bg-gray-700/50 rounded flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading heatmap...</p>
+          <p className="text-gray-400">Loading advanced hotspot map...</p>
         </div>
       </div>
     );
   }
 
-  // Aggregate by city for circle markers
-  const cityData: { [key: string]: { lat: number; lng: number; count: number } } = {};
+  // Aggregate by city
+  const cityData: { [key: string]: { lats: number[]; lngs: number[]; count: number } } = {};
   
   incidents.forEach(i => {
     if (i.city_name && i.census_block_group_center__x && i.census_block_group_center__y) {
-      if (!cityData[i.city_name]) {
-        cityData[i.city_name] = {
-          lat: parseFloat(i.census_block_group_center__y),
-          lng: parseFloat(i.census_block_group_center__x),
-          count: 0,
-        };
+      const lat = parseFloat(i.census_block_group_center__y);
+      const lng = parseFloat(i.census_block_group_center__x);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        if (!cityData[i.city_name]) {
+          cityData[i.city_name] = { lats: [], lngs: [], count: 0 };
+        }
+        cityData[i.city_name].lats.push(lat);
+        cityData[i.city_name].lngs.push(lng);
+        cityData[i.city_name].count++;
       }
-      cityData[i.city_name].count++;
     }
   });
 
   const cities = Object.entries(cityData)
-    .map(([name, data]) => ({ name, ...data }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 20);
+    .map(([name, data]) => ({
+      name,
+      lat: data.lats.reduce((a, b) => a + b, 0) / data.lats.length,
+      lng: data.lngs.reduce((a, b) => a + b, 0) / data.lngs.length,
+      count: data.count,
+    }))
+    .sort((a, b) => b.count - a.count);
 
-  // Prepare heatmap points
-  const heatmapPoints = incidents
+  const maxCount = Math.max(...cities.map(c => c.count), 1);
+
+  // Sample points for density visualization (like heatmap)
+  const densityPoints = incidents
     .filter(i => i.census_block_group_center__x && i.census_block_group_center__y)
-    .slice(0, 5000) // Limit for performance
+    .slice(0, 3000)
     .map(i => ({
       lat: parseFloat(i.census_block_group_center__y),
       lng: parseFloat(i.census_block_group_center__x),
-      intensity: 1,
     }))
     .filter(p => !isNaN(p.lat) && !isNaN(p.lng));
 
-  const center: LatLngExpression = [40.4406, -79.9959];
-
-  const maxCount = Math.max(...cities.map(c => c.count));
+  const center: LatLngExpression = cities.length > 0 ? [cities[0].lat, cities[0].lng] : [40.4406, -79.9959];
 
   return (
     <div className="relative">
@@ -82,20 +83,24 @@ export default function AdvancedHotspotMap({ incidents }: AdvancedHotspotMapProp
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           
-          {/* Heatmap Layer */}
-          <HeatmapLayer
-            points={heatmapPoints}
-            longitudeExtractor={(p: any) => p.lng}
-            latitudeExtractor={(p: any) => p.lat}
-            intensityExtractor={(p: any) => p.intensity}
-            radius={15}
-            blur={10}
-            max={1}
-          />
+          {/* Density points (simulating heatmap) */}
+          {densityPoints.map((point, idx) => (
+            <CircleMarker
+              key={`density-${idx}`}
+              center={[point.lat, point.lng]}
+              radius={3}
+              pathOptions={{
+                fillColor: "#ff4444",
+                fillOpacity: 0.3,
+                color: "transparent",
+                weight: 0,
+              }}
+            />
+          ))}
 
-          {/* City Circle Markers */}
-          {cities.map((city, idx) => {
-            const radius = Math.log(city.count + 1) * 8;
+          {/* City markers with size by count */}
+          {cities.slice(0, 15).map((city, idx) => {
+            const radius = Math.log(city.count + 1) * 2.5;
             const colorIntensity = city.count / maxCount;
             const color = colorIntensity > 0.8 ? "#8B0000" :
                          colorIntensity > 0.6 ? "#DC143C" :
@@ -104,7 +109,7 @@ export default function AdvancedHotspotMap({ incidents }: AdvancedHotspotMapProp
 
             return (
               <CircleMarker
-                key={idx}
+                key={`city-${idx}`}
                 center={[city.lat, city.lng]}
                 radius={radius}
                 pathOptions={{
@@ -116,10 +121,12 @@ export default function AdvancedHotspotMap({ incidents }: AdvancedHotspotMapProp
                 }}
               >
                 <Popup>
-                  <div className="text-gray-900">
-                    <strong>{city.name}</strong>
+                  <div className="text-gray-900 font-bold">
+                    {city.name}
                     <br />
-                    Incidents: {city.count.toLocaleString()}
+                    <span className="font-normal">Fire Incidents: {city.count.toLocaleString()}</span>
+                    <br />
+                    <span className="text-red-600">🔥</span> Emergency Priority
                   </div>
                 </Popup>
               </CircleMarker>
@@ -130,19 +137,23 @@ export default function AdvancedHotspotMap({ incidents }: AdvancedHotspotMapProp
 
       {/* Legend */}
       <div className="absolute top-4 left-4 bg-gray-900/95 border-2 border-gray-600 rounded-lg p-4 shadow-xl z-[1000]">
-        <p className="font-bold text-white mb-3">Emergency Risk Level</p>
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="w-32 h-6 bg-gradient-to-r from-red-700 via-orange-500 to-yellow-300 rounded"></div>
+        <p className="font-bold text-white mb-3 text-center">Emergency Risk Level</p>
+        <div className="mb-2">
+          <div className="w-40 h-6 bg-gradient-to-r from-red-700 via-orange-500 to-yellow-300 rounded border border-white/20"></div>
         </div>
-        <div className="flex justify-between text-xs text-white">
+        <div className="flex justify-between text-xs text-white mb-3">
           <span>High</span>
           <span>Low</span>
         </div>
-        <div className="mt-3 pt-3 border-t border-gray-700">
+        <div className="pt-3 border-t border-gray-700 space-y-1">
           <p className="text-xs text-gray-300">🔥 Bubble size = incident count</p>
+          <p className="text-xs text-gray-400">Showing {cities.length} municipalities</p>
         </div>
       </div>
+
+      <p className="text-center text-sm text-gray-400 mt-2">
+        Municipal density with heat analysis - {incidents.length.toLocaleString()} incidents analyzed
+      </p>
     </div>
   );
 }
-
