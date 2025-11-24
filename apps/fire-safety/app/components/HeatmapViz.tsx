@@ -68,16 +68,17 @@ export default function HeatmapViz() {
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             contentStyle={{
-              backgroundColor: "#1a1a1a",
-              border: "2px solid #64b5f6",
+              backgroundColor: "#ffffff",
+              border: "2px solid #1976d2",
               borderRadius: "8px",
-              color: "#ffffff",
+              color: "#000000",
               padding: "12px",
-              fontSize: "14px",
-              fontWeight: "600",
+              fontSize: "15px",
+              fontWeight: "bold",
             }}
-            labelStyle={{ color: "#64b5f6", fontWeight: "bold" }}
-            formatter={(value: number) => [Math.round(value as number), "Incident Density"]}
+            itemStyle={{ color: "#000000", fontWeight: "bold" }}
+            labelStyle={{ color: "#1976d2", fontWeight: "bold", fontSize: "15px" }}
+            formatter={(value: number) => [Math.round(value as number), "Density"]}
           />
           <Scatter data={data} fill="#f44336">
             {data.map((entry, index) => (
