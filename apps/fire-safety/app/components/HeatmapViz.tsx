@@ -25,11 +25,11 @@ const generateHeatmapData = () => {
       const offsetY = (Math.random() - 0.5) * 15;
       const intensity = spot.intensity * (0.6 + Math.random() * 0.4);
 
-      // Brighter colors for visibility on dark background
-      const color = intensity > 80 ? "#ff1744" :  // Bright red
-                   intensity > 60 ? "#ff5252" :  // Lighter red
-                   intensity > 40 ? "#ff6e40" :  // Coral
-                   "#ff9e80";                     // Light coral
+      // VERY bright colors for dark theme visibility
+      const color = intensity > 80 ? "#ff4444" :  // Vivid red
+                   intensity > 60 ? "#ff6b6b" :  // Bright coral-red
+                   intensity > 40 ? "#ff8a65" :  // Orange-coral
+                   "#ffab91";                     // Light peach
 
       data.push({
         x: spot.x + offsetX,
@@ -47,22 +47,24 @@ export default function HeatmapViz() {
   const data = generateHeatmapData();
 
   return (
-    <div className="bg-gray-900/50 rounded p-4">
+    <div className="bg-gray-800 rounded p-4">
       <ResponsiveContainer width="100%" height={350}>
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <XAxis
             type="number"
             dataKey="x"
             domain={[0, 100]}
-            hide
+            stroke="#666"
+            tick={{ fill: "#999" }}
           />
           <YAxis
             type="number"
             dataKey="y"
             domain={[0, 100]}
-            hide
+            stroke="#666"
+            tick={{ fill: "#999" }}
           />
-          <ZAxis type="number" dataKey="z" range={[50, 800]} />
+          <ZAxis type="number" dataKey="z" range={[100, 1000]} />
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             contentStyle={{
@@ -75,7 +77,7 @@ export default function HeatmapViz() {
           />
           <Scatter data={data} fill="#f44336">
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} fillOpacity={0.9} stroke="#fff" strokeWidth={0.5} />
+              <Cell key={`cell-${index}`} fill={entry.color} fillOpacity={0.95} stroke="#fff" strokeWidth={1.5} />
             ))}
           </Scatter>
         </ScatterChart>
