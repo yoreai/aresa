@@ -1,33 +1,45 @@
 "use client";
 
-import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
-// Simulated geographic density data (lat/lng style)
+// Generate realistic heatmap data for Pittsburgh area
 const generateHeatmapData = () => {
-  const data: Array<{ x: number; y: number; z: number }> = [];
+  const data: Array<{ x: number; y: number; z: number; color: string }> = [];
+  
+  // Pittsburgh hotspots with realistic density
   const hotspots = [
-    { lat: 40.44, lng: -80.0, baseIntensity: 200 },  // Downtown
-    { lat: 40.44, lng: -79.95, baseIntensity: 180 }, // Oakland
-    { lat: 40.45, lng: -79.93, baseIntensity: 150 }, // Shadyside
-    { lat: 40.43, lng: -79.92, baseIntensity: 140 }, // Squirrel Hill
-    { lat: 40.47, lng: -79.95, baseIntensity: 130 }, // Bloomfield
+    { name: "Downtown", x: 50, y: 50, intensity: 100 },
+    { name: "Oakland", x: 65, y: 45, intensity: 85 },
+    { name: "Shadyside", x: 75, y: 55, intensity: 70 },
+    { name: "Squirrel Hill", x: 80, y: 40, intensity: 65 },
+    { name: "Bloomfield", x: 60, y: 60, intensity: 60 },
+    { name: "Lawrenceville", x: 55, y: 70, intensity: 55 },
+    { name: "South Side", x: 45, y: 35, intensity: 50 },
+    { name: "North Side", x: 40, y: 60, intensity: 45 },
   ];
 
   hotspots.forEach(spot => {
-    // Create density clusters around each hotspot
-    for (let i = 0; i < 30; i++) {
-      const offsetLat = (Math.random() - 0.5) * 0.02;
-      const offsetLng = (Math.random() - 0.5) * 0.02;
-      const intensity = spot.baseIntensity * (0.5 + Math.random() * 0.5);
-
+    // Create density cloud around each hotspot
+    for (let i = 0; i < 20; i++) {
+      const offsetX = (Math.random() - 0.5) * 15;
+      const offsetY = (Math.random() - 0.5) * 15;
+      const intensity = spot.intensity * (0.6 + Math.random() * 0.4);
+      
+      // Color based on intensity
+      const color = intensity > 80 ? "#d32f2f" :
+                   intensity > 60 ? "#f44336" :
+                   intensity > 40 ? "#ff5722" :
+                   "#ff7043";
+      
       data.push({
-        x: (spot.lng + offsetLng + 80) * 1000, // Normalize for chart
-        y: (spot.lat - 40) * 1000,
+        x: spot.x + offsetX,
+        y: spot.y + offsetY,
         z: intensity,
+        color,
       });
     }
   });
-
+  
   return data;
 };
 
@@ -38,9 +50,19 @@ export default function HeatmapViz() {
     <div className="bg-gray-900 rounded p-4">
       <ResponsiveContainer width="100%" height={350}>
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-          <XAxis type="number" dataKey="x" name="Longitude" hide />
-          <YAxis type="number" dataKey="y" name="Latitude" hide />
-          <ZAxis type="number" dataKey="z" range={[20, 400]} name="Incidents" />
+          <XAxis
+            type="number"
+            dataKey="x"
+            domain={[0, 100]}
+            hide
+          />
+          <YAxis
+            type="number"
+            dataKey="y"
+            domain={[0, 100]}
+            hide
+          />
+          <ZAxis type="number" dataKey="z" range={[50, 800]} />
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             contentStyle={{
@@ -51,19 +73,16 @@ export default function HeatmapViz() {
             }}
             formatter={(value: number) => [Math.round(value as number), "Incident Density"]}
           />
-          <Scatter
-            data={data}
-            fill="#f44336"
-            fillOpacity={0.6}
-            stroke="#c62828"
-            strokeWidth={1}
-          />
+          <Scatter data={data} fill="#f44336">
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} fillOpacity={0.7} />
+            ))}
+          </Scatter>
         </ScatterChart>
       </ResponsiveContainer>
       <p className="text-center text-xs text-gray-500 mt-2">
-        Geographic density visualization - Allegheny County hotspots
+        Incident density across Allegheny County - darker/larger circles = higher incident rates
       </p>
     </div>
   );
 }
-
