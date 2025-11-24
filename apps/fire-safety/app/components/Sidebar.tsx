@@ -29,7 +29,10 @@ export default function Sidebar() {
       </div>
 
       {/* Filters */}
-      <Filters />
+      <div className="bg-gray-800 rounded-lg p-6">
+        <h3 className="text-lg font-bold mb-4 text-blue-400">Filters</h3>
+        <Filters />
+      </div>
 
       {/* Quick Insights */}
       <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-lg p-6 border border-blue-500/30">

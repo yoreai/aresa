@@ -44,9 +44,7 @@ export default function Filters({ onFilterChange }: FiltersProps) {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6 mb-6">
-      <h3 className="text-lg font-bold mb-4 text-blue-400">Filters</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="space-y-4">
         <div>
           <label className="block text-sm font-semibold mb-2 text-gray-300">Year</label>
           <select
@@ -93,24 +91,16 @@ export default function Filters({ onFilterChange }: FiltersProps) {
         </div>
       </div>
 
-      <div className="mt-4 flex gap-2">
-        <button
-          onClick={() => {
-            const resetFilters = { year: "all", incidentType: "all", municipality: "all" };
-            setFilters(resetFilters);
-            onFilterChange?.(resetFilters);
-          }}
-          className="text-sm text-blue-400 hover:text-blue-300 transition"
-        >
-          Reset Filters
-        </button>
-        <span className="text-gray-600">|</span>
-        <span className="text-sm text-gray-400">
-          Showing: {filters.year !== "all" && filters.year}{" "}
-          {filters.incidentType !== "all" && filters.incidentType}{" "}
-          {filters.municipality !== "all" && `in ${filters.municipality}`}
-        </span>
-      </div>
+      <button
+        onClick={() => {
+          const resetFilters = { year: "all", incidentType: "all", municipality: "all" };
+          setFilters(resetFilters);
+          onFilterChange?.(resetFilters);
+        }}
+        className="text-sm text-blue-400 hover:text-blue-300 transition mt-2"
+      >
+        Reset All Filters
+      </button>
     </div>
   );
 }

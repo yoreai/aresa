@@ -13,9 +13,9 @@ const data = [
 
 export default function MunicipalityChart() {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} layout="horizontal">
-        <XAxis type="number" stroke="#a0a0a0" label={{ value: "Per 1,000 Population", position: "insideBottom", offset: -5 }} />
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data} layout="vertical" margin={{ left: 20, right: 30, top: 10, bottom: 10 }}>
+        <XAxis type="number" stroke="#a0a0a0" domain={[0, 50]} />
         <YAxis type="category" dataKey="name" stroke="#a0a0a0" width={100} />
         <Tooltip
           contentStyle={{
