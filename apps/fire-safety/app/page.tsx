@@ -7,6 +7,7 @@ import SeasonalChart from "./components/SeasonalChart";
 import HourlyChart from "./components/HourlyChart";
 import PriorityChart from "./components/PriorityChart";
 import TreemapPriority from "./components/TreemapPriority";
+import HeatmapViz from "./components/HeatmapViz";
 import MunicipalityChart from "./components/MunicipalityChart";
 import FalseAlarmChart from "./components/FalseAlarmChart";
 import LeadGenModal from "./components/LeadGenModal";
@@ -126,14 +127,22 @@ export default function FireSafetyDashboard() {
                   <FireMap />
                 </div>
 
-                <div className="bg-gray-800 rounded-lg p-6">
-                  <h2 className="text-2xl font-bold mb-4 text-blue-400">
-                    High Per-Capita Municipalities
-                  </h2>
-                  <MunicipalityChart />
-                  <p className="text-sm text-gray-400 mt-4">
-                    * Incidents per 1,000 residents. County average: 15.7
-                  </p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gray-800 rounded-lg p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                      High Per-Capita Municipalities
+                    </h2>
+                    <MunicipalityChart />
+                    <p className="text-sm text-gray-400 mt-4">
+                      * Incidents per 1,000 residents. County average: 15.7
+                    </p>
+                  </div>
+                  <div className="bg-gray-800 rounded-lg p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-blue-400">
+                      Geographic Density Heatmap
+                    </h2>
+                    <HeatmapViz />
+                  </div>
                 </div>
               </>
             )}
