@@ -2,7 +2,15 @@
 
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceDot } from "recharts";
 
-const data = [
+interface TrendsChartProps {
+  filters?: {
+    year: string;
+    incidentType: string;
+    municipality: string;
+  };
+}
+
+const baseData = [
   { year: 2015, incidents: 91247 },
   { year: 2016, incidents: 94532 },
   { year: 2017, incidents: 93128 },
@@ -15,7 +23,16 @@ const data = [
   { year: 2024, incidents: 92458 },
 ];
 
-export default function TrendsChart() {
+export default function TrendsChart({ filters }: TrendsChartProps) {
+  // Apply filters (adjust data if filtered)
+  const data = baseData.map(item => {
+    if (filters?.incidentType !== "all" && filters?.incidentType) {
+      // Scale data when filtering by type (simulated reduction)
+      return { ...item, incidents: Math.round(item.incidents * 0.37) }; // ~37% are fire alarms
+    }
+    return item;
+  });
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data}>

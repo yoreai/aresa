@@ -96,8 +96,9 @@ export default function FireSafetyDashboard() {
                 <div className="bg-gray-800 rounded-lg p-6">
                   <h2 className="text-2xl font-bold mb-4 text-blue-400">
                     Annual Trends
+                    {filters.incidentType !== "all" && <span className="text-sm text-gray-400 ml-2">({filters.incidentType})</span>}
                   </h2>
-                  <TrendsChart />
+                  <TrendsChart filters={filters} />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">

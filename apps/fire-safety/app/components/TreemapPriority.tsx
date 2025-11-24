@@ -75,7 +75,7 @@ const CustomContent = (props: any) => {
           >
             {name}
           </text>
-          
+
           {/* Number with shadow */}
           <text
             x={x + width / 2 + 2}
