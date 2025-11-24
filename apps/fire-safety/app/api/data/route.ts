@@ -21,7 +21,7 @@ export async function GET(request: Request) {
       const csvText = await response.text();
       const lines = csvText.split("\n");
       const headers = lines[0].split(",").map(h => h.trim());
-      
+
       cachedData = lines.slice(1)
         .filter(line => line.trim())
         .map(line => {
@@ -31,13 +31,13 @@ export async function GET(request: Request) {
             return obj;
           }, {});
         });
-      
+
       cacheTime = now;
     }
 
     // Filter data
     let filtered = cachedData;
-    
+
     if (year && year !== "all") {
       filtered = filtered.filter((r: any) => r.call_year === year);
     }
@@ -51,11 +51,11 @@ export async function GET(request: Request) {
     // Aggregate for charts
     const byType: { [key: string]: number } = {};
     const byYear: { [key: string]: number } = {};
-    
+
     filtered.forEach((r: any) => {
       const type = r.fire_category || "Other";
       byType[type] = (byType[type] || 0) + 1;
-      
+
       const year = r.call_year;
       if (year) byType[year] = (byYear[year] || 0) + 1;
     });
