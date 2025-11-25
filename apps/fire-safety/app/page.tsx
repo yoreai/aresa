@@ -40,7 +40,7 @@ export default function FireSafetyDashboard() {
   const [loading, setLoading] = useState(true);
   const [topCities, setTopCities] = useState<string[]>([]);
 
-  const [selectedYears, setSelectedYears] = useState<(string | number)[]>([2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]);
+  const [selectedYears, setSelectedYears] = useState<(string | number)[]>([2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
   const [selectedTypes, setSelectedTypes] = useState<(string | number)[]>([...ALL_CATEGORIES]);
   const [selectedCities, setSelectedCities] = useState<(string | number)[]>([]);
 
@@ -107,7 +107,7 @@ export default function FireSafetyDashboard() {
               <MultiSelectFilter
                 label="Select Years"
                 emoji="📅"
-                options={[2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]}
+                options={[2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]}
                 defaultSelected={selectedYears}
                 onChange={setSelectedYears}
               />

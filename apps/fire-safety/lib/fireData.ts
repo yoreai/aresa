@@ -137,6 +137,29 @@ function getSeasonFromQuarter(quarter: string): string {
 }
 
 /**
+ * Parse CSV line handling quoted fields with commas
+ */
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+/**
  * Fetch and process all fire incidents from Vercel Blob
  */
 export async function getFireIncidents(): Promise<FireIncident[]> {
@@ -148,14 +171,14 @@ export async function getFireIncidents(): Promise<FireIncident[]> {
     const csvText = await response.text();
 
     const lines = csvText.split("\n");
-    const headers = lines[0].split(",").map(h => h.trim());
+    const headers = parseCSVLine(lines[0]);
 
     const rawIncidents: RawIncident[] = lines.slice(1)
       .filter(line => line.trim())
       .map(line => {
-        const values = line.split(",");
+        const values = parseCSVLine(line);
         return headers.reduce((obj: any, header, i) => {
-          obj[header] = values[i]?.trim() || "";
+          obj[header] = values[i] || "";
           return obj;
         }, {});
       });
