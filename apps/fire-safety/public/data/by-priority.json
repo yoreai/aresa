@@ -1,0 +1,627 @@
+[
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Fire Alarms",
+    "count": 141417
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Other",
+    "count": 48974
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Other",
+    "count": 37058
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Other",
+    "count": 31746
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Electrical Issues",
+    "count": 30208
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Structure Fires",
+    "count": 24837
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Other",
+    "count": 22223
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Uncategorized Fire",
+    "count": 21249
+  },
+  {
+    "priority": "EMS BLS Assistance response",
+    "category": "Fire Alarms",
+    "count": 17658
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Hazmat/CO Issues",
+    "count": 17278
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Fire Alarms",
+    "count": 14135
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Fire Alarms",
+    "count": 13367
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Gas Issues",
+    "count": 12458
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Gas Issues",
+    "count": 12334
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Other",
+    "count": 11346
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Outdoor/Brush Fires",
+    "count": 10820
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Other",
+    "count": 9332
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Other",
+    "count": 8914
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Fire Alarms",
+    "count": 8544
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Vehicle Fires",
+    "count": 8504
+  },
+  {
+    "priority": "All administrative mark outs.",
+    "category": "Other",
+    "count": 5659
+  },
+  {
+    "priority": "EMS BLS Assistance response",
+    "category": "Other",
+    "count": 5316
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Structure Fires",
+    "count": 5185
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Fire Alarms",
+    "count": 5034
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Uncategorized Fire",
+    "count": 3673
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Outdoor/Brush Fires",
+    "count": 3567
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Hazmat/CO Issues",
+    "count": 2767
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Fire Alarms",
+    "count": 1939
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Vehicle Fires",
+    "count": 1674
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Uncategorized Fire",
+    "count": 1515
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Other",
+    "count": 1510
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Fire Alarms",
+    "count": 1436
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Vehicle Fires",
+    "count": 1287
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Hazmat/CO Issues",
+    "count": 1055
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Fire Alarms",
+    "count": 989
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Structure Fires",
+    "count": 915
+  },
+  {
+    "priority": "All administrative mark outs.",
+    "category": "Fire Alarms",
+    "count": 698
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Other",
+    "count": 588
+  },
+  {
+    "priority": "All administrative mark outs.",
+    "category": "Uncategorized Fire",
+    "count": 436
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Uncategorized Fire",
+    "count": 318
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Vehicle Fires",
+    "count": 214
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Structure Fires",
+    "count": 161
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Fire Alarms",
+    "count": 138
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Uncategorized Fire",
+    "count": 132
+  },
+  {
+    "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+    "category": "Structure Fires",
+    "count": 122
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Outdoor/Brush Fires",
+    "count": 119
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Uncategorized Fire",
+    "count": 100
+  },
+  {
+    "priority": "All administrative mark outs.",
+    "category": "Vehicle Fires",
+    "count": 95
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Structure Fires",
+    "count": 78
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Vehicle Fires",
+    "count": 76
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Uncategorized Fire",
+    "count": 75
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Electrical Issues",
+    "count": 74
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Gas Issues",
+    "count": 74
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Electrical Issues",
+    "count": 70
+  },
+  {
+    "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+    "category": "Structure Fires",
+    "count": 66
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Electrical Issues",
+    "count": 58
+  },
+  {
+    "priority": "EMS BLS Assistance response",
+    "category": "Uncategorized Fire",
+    "count": 55
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Uncategorized Fire",
+    "count": 54
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Uncategorized Fire",
+    "count": 46
+  },
+  {
+    "priority": "4th Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Structure Fires",
+    "count": 40
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Gas Issues",
+    "count": 35
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Structure Fires",
+    "count": 32
+  },
+  {
+    "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+    "category": "Other",
+    "count": 22
+  },
+  {
+    "priority": "Potential to become a threat to life safety.",
+    "category": "Outdoor/Brush Fires",
+    "count": 20
+  },
+  {
+    "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+    "category": "Structure Fires",
+    "count": 20
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Fire Alarms",
+    "count": 19
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Vehicle Fires",
+    "count": 12
+  },
+  {
+    "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+    "category": "Fire Alarms",
+    "count": 12
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Outdoor/Brush Fires",
+    "count": 11
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Gas Issues",
+    "count": 10
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Uncategorized Fire",
+    "count": 10
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Electrical Issues",
+    "count": 9
+  },
+  {
+    "priority": "5th Alarm Fire (residential, commercial, tunnel, garage/auxiliary building). Highest response level",
+    "category": "Structure Fires",
+    "count": 7
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Structure Fires",
+    "count": 6
+  },
+  {
+    "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+    "category": "Fire Alarms",
+    "count": 6
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Vehicle Fires",
+    "count": 6
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Vehicle Fires",
+    "count": 5
+  },
+  {
+    "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+    "category": "Uncategorized Fire",
+    "count": 5
+  },
+  {
+    "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+    "category": "Hazmat/CO Issues",
+    "count": 5
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Structure Fires",
+    "count": 5
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Gas Issues",
+    "count": 4
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Other",
+    "count": 4
+  },
+  {
+    "priority": "No threat to life safety.",
+    "category": "Vehicle Fires",
+    "count": 4
+  },
+  {
+    "priority": "",
+    "category": "Other",
+    "count": 4
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Outdoor/Brush Fires",
+    "count": 3
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Fire Alarms",
+    "count": 3
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Electrical Issues",
+    "count": 3
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Hazmat/CO Issues",
+    "count": 3
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Hazmat/CO Issues",
+    "count": 2
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Electrical Issues",
+    "count": 2
+  },
+  {
+    "priority": "6th Alarm Fire (commercial)",
+    "category": "Structure Fires",
+    "count": 2
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Hazmat/CO Issues",
+    "count": 2
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Structure Fires",
+    "count": 2
+  },
+  {
+    "priority": "3rd Alarm Fire  (commercial)",
+    "category": "Structure Fires",
+    "count": 2
+  },
+  {
+    "priority": "EMS Standard ALS response",
+    "category": "Hazmat/CO Issues",
+    "count": 2
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Other",
+    "count": 2
+  },
+  {
+    "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+    "category": "Uncategorized Fire",
+    "count": 2
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Uncategorized Fire",
+    "count": 2
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Electrical Issues",
+    "count": 2
+  },
+  {
+    "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+    "category": "Other",
+    "count": 2
+  },
+  {
+    "priority": "",
+    "category": "Uncategorized Fire",
+    "count": 2
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Vehicle Fires",
+    "count": 1
+  },
+  {
+    "priority": "2nd Alarm Fire  (commercial)",
+    "category": "Structure Fires",
+    "count": 1
+  },
+  {
+    "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+    "category": "Vehicle Fires",
+    "count": 1
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Electrical Issues",
+    "count": 1
+  },
+  {
+    "priority": "7th Alarm Fire (commercial). Highest response level",
+    "category": "Structure Fires",
+    "count": 1
+  },
+  {
+    "priority": "4th Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Fire Alarms",
+    "count": 1
+  },
+  {
+    "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+    "category": "Uncategorized Fire",
+    "count": 1
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Vehicle Fires",
+    "count": 1
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Outdoor/Brush Fires",
+    "count": 1
+  },
+  {
+    "priority": "4th Alarm Fire  (commercial)",
+    "category": "Structure Fires",
+    "count": 1
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Electrical Issues",
+    "count": 1
+  },
+  {
+    "priority": "All notification only calls types.",
+    "category": "Uncategorized Fire",
+    "count": 1
+  },
+  {
+    "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Hazmat/CO Issues",
+    "count": 1
+  },
+  {
+    "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+    "category": "Fire Alarms",
+    "count": 1
+  },
+  {
+    "priority": "EMS Standard BLS response",
+    "category": "Outdoor/Brush Fires",
+    "count": 1
+  },
+  {
+    "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+    "category": "Electrical Issues",
+    "count": 1
+  },
+  {
+    "priority": "EMS ALS life threatening response w/ backup",
+    "category": "Gas Issues",
+    "count": 1
+  },
+  {
+    "priority": "All notification only calls types.",
+    "category": "Gas Issues",
+    "count": 1
+  },
+  {
+    "priority": "EMS ALS life threatening response",
+    "category": "Gas Issues",
+    "count": 1
+  },
+  {
+    "priority": "",
+    "category": "Fire Alarms",
+    "count": 1
+  },
+  {
+    "priority": "EMS Advanced Life Support life threatening response with Advanced Life Support backup",
+    "category": "Other",
+    "count": 1
+  },
+  {
+    "priority": "Immediate threat to life safety.",
+    "category": "Outdoor/Brush Fires",
+    "count": 1
+  },
+  {
+    "priority": "",
+    "category": "Hazmat/CO Issues",
+    "count": 1
+  },
+  {
+    "priority": "",
+    "category": "Vehicle Fires",
+    "count": 1
+  }
+]

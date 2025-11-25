@@ -1,0 +1,1050 @@
+{
+  "byYear": [
+    {
+      "year": 2015,
+      "Fire Alarms": 11918,
+      "Structure Fires": 3306,
+      "Outdoor/Brush Fires": 1523,
+      "Electrical Issues": 2544,
+      "Vehicle Fires": 1618,
+      "Gas Issues": 2223,
+      "Hazmat/CO Issues": 1747,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 4062
+    },
+    {
+      "year": 2016,
+      "Fire Alarms": 11841,
+      "Structure Fires": 3112,
+      "Outdoor/Brush Fires": 1529,
+      "Electrical Issues": 2485,
+      "Vehicle Fires": 1532,
+      "Gas Issues": 1933,
+      "Hazmat/CO Issues": 1830,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 3824
+    },
+    {
+      "year": 2017,
+      "Fire Alarms": 12204,
+      "Structure Fires": 2939,
+      "Outdoor/Brush Fires": 1443,
+      "Electrical Issues": 2789,
+      "Vehicle Fires": 1508,
+      "Gas Issues": 2002,
+      "Hazmat/CO Issues": 1680,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 3768
+    },
+    {
+      "year": 2018,
+      "Fire Alarms": 13098,
+      "Structure Fires": 3394,
+      "Outdoor/Brush Fires": 1257,
+      "Electrical Issues": 3079,
+      "Vehicle Fires": 1527,
+      "Gas Issues": 2344,
+      "Hazmat/CO Issues": 2014,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 3895
+    },
+    {
+      "year": 2019,
+      "Fire Alarms": 9866,
+      "Structure Fires": 3144,
+      "Outdoor/Brush Fires": 1321,
+      "Electrical Issues": 3405,
+      "Vehicle Fires": 1440,
+      "Gas Issues": 2195,
+      "Hazmat/CO Issues": 2160,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 3425
+    },
+    {
+      "year": 2020,
+      "Fire Alarms": 21203,
+      "Structure Fires": 2887,
+      "Outdoor/Brush Fires": 1592,
+      "Electrical Issues": 2835,
+      "Vehicle Fires": 748,
+      "Gas Issues": 1979,
+      "Hazmat/CO Issues": 1848,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 1865
+    },
+    {
+      "year": 2021,
+      "Fire Alarms": 24537,
+      "Structure Fires": 2882,
+      "Outdoor/Brush Fires": 1254,
+      "Electrical Issues": 2874,
+      "Vehicle Fires": 818,
+      "Gas Issues": 2094,
+      "Hazmat/CO Issues": 1636,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 1531
+    },
+    {
+      "year": 2022,
+      "Fire Alarms": 25931,
+      "Structure Fires": 2992,
+      "Outdoor/Brush Fires": 1201,
+      "Electrical Issues": 2726,
+      "Vehicle Fires": 794,
+      "Gas Issues": 2440,
+      "Hazmat/CO Issues": 2007,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 1470
+    },
+    {
+      "year": 2023,
+      "Fire Alarms": 25565,
+      "Structure Fires": 2913,
+      "Outdoor/Brush Fires": 1442,
+      "Electrical Issues": 2443,
+      "Vehicle Fires": 763,
+      "Gas Issues": 2539,
+      "Hazmat/CO Issues": 2116,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 1456
+    },
+    {
+      "year": 2024,
+      "Fire Alarms": 31079,
+      "Structure Fires": 2762,
+      "Outdoor/Brush Fires": 1370,
+      "Electrical Issues": 2742,
+      "Vehicle Fires": 759,
+      "Gas Issues": 3623,
+      "Hazmat/CO Issues": 2560,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 1592
+    },
+    {
+      "year": 2025,
+      "Fire Alarms": 18156,
+      "Structure Fires": 1152,
+      "Outdoor/Brush Fires": 611,
+      "Electrical Issues": 2507,
+      "Vehicle Fires": 374,
+      "Gas Issues": 1546,
+      "Hazmat/CO Issues": 1518,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 788
+    }
+  ],
+  "bySeason": [
+    {
+      "season": "Winter",
+      "Fire Alarms": 51426,
+      "Structure Fires": 8485,
+      "Outdoor/Brush Fires": 2435,
+      "Electrical Issues": 5977,
+      "Vehicle Fires": 2725,
+      "Gas Issues": 6866,
+      "Hazmat/CO Issues": 5657,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 6473
+    },
+    {
+      "season": "Spring",
+      "Fire Alarms": 55334,
+      "Structure Fires": 8019,
+      "Outdoor/Brush Fires": 5038,
+      "Electrical Issues": 10852,
+      "Vehicle Fires": 3184,
+      "Gas Issues": 5760,
+      "Hazmat/CO Issues": 5036,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 8017
+    },
+    {
+      "season": "Summer",
+      "Fire Alarms": 51329,
+      "Structure Fires": 7291,
+      "Outdoor/Brush Fires": 4298,
+      "Electrical Issues": 8579,
+      "Vehicle Fires": 3091,
+      "Gas Issues": 5661,
+      "Hazmat/CO Issues": 4865,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 7437
+    },
+    {
+      "season": "Fall",
+      "Fire Alarms": 47309,
+      "Structure Fires": 7688,
+      "Outdoor/Brush Fires": 2772,
+      "Electrical Issues": 5021,
+      "Vehicle Fires": 2881,
+      "Gas Issues": 6631,
+      "Hazmat/CO Issues": 5558,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 5749
+    }
+  ],
+  "byCity": [
+    {
+      "city": "PITTSBURGH",
+      "Fire Alarms": 92348,
+      "Structure Fires": 9912,
+      "Outdoor/Brush Fires": 5572,
+      "Electrical Issues": 12191,
+      "Vehicle Fires": 4548,
+      "Gas Issues": 7518,
+      "Hazmat/CO Issues": 5963,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 8530
+    },
+    {
+      "city": "FINDLAY",
+      "Fire Alarms": 2032,
+      "Structure Fires": 159,
+      "Outdoor/Brush Fires": 66,
+      "Electrical Issues": 13,
+      "Vehicle Fires": 91,
+      "Gas Issues": 124,
+      "Hazmat/CO Issues": 358,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 232
+    },
+    {
+      "city": "MOUNT LEBANON",
+      "Fire Alarms": 6000,
+      "Structure Fires": 757,
+      "Outdoor/Brush Fires": 226,
+      "Electrical Issues": 1913,
+      "Vehicle Fires": 144,
+      "Gas Issues": 1067,
+      "Hazmat/CO Issues": 750,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 945
+    },
+    {
+      "city": "PENN HILLS",
+      "Fire Alarms": 5476,
+      "Structure Fires": 1222,
+      "Outdoor/Brush Fires": 457,
+      "Electrical Issues": 623,
+      "Vehicle Fires": 371,
+      "Gas Issues": 709,
+      "Hazmat/CO Issues": 1102,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 732
+    },
+    {
+      "city": "MCKEESPORT",
+      "Fire Alarms": 4124,
+      "Structure Fires": 1100,
+      "Outdoor/Brush Fires": 393,
+      "Electrical Issues": 390,
+      "Vehicle Fires": 264,
+      "Gas Issues": 664,
+      "Hazmat/CO Issues": 603,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 991
+    },
+    {
+      "city": "PLUM",
+      "Fire Alarms": 4285,
+      "Structure Fires": 409,
+      "Outdoor/Brush Fires": 240,
+      "Electrical Issues": 504,
+      "Vehicle Fires": 140,
+      "Gas Issues": 475,
+      "Hazmat/CO Issues": 435,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 398
+    },
+    {
+      "city": "ROSS",
+      "Fire Alarms": 4722,
+      "Structure Fires": 712,
+      "Outdoor/Brush Fires": 344,
+      "Electrical Issues": 648,
+      "Vehicle Fires": 274,
+      "Gas Issues": 517,
+      "Hazmat/CO Issues": 413,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 869
+    },
+    {
+      "city": "WILKINSBURG",
+      "Fire Alarms": 3414,
+      "Structure Fires": 837,
+      "Outdoor/Brush Fires": 200,
+      "Electrical Issues": 688,
+      "Vehicle Fires": 270,
+      "Gas Issues": 377,
+      "Hazmat/CO Issues": 438,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 513
+    },
+    {
+      "city": "WEST MIFFLIN",
+      "Fire Alarms": 2352,
+      "Structure Fires": 500,
+      "Outdoor/Brush Fires": 266,
+      "Electrical Issues": 399,
+      "Vehicle Fires": 264,
+      "Gas Issues": 539,
+      "Hazmat/CO Issues": 436,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 468
+    },
+    {
+      "city": "MCCANDLESS",
+      "Fire Alarms": 4269,
+      "Structure Fires": 497,
+      "Outdoor/Brush Fires": 212,
+      "Electrical Issues": 483,
+      "Vehicle Fires": 156,
+      "Gas Issues": 354,
+      "Hazmat/CO Issues": 328,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 370
+    },
+    {
+      "city": "SHALER",
+      "Fire Alarms": 1696,
+      "Structure Fires": 421,
+      "Outdoor/Brush Fires": 205,
+      "Electrical Issues": 491,
+      "Vehicle Fires": 128,
+      "Gas Issues": 336,
+      "Hazmat/CO Issues": 348,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 351
+    },
+    {
+      "city": "ROBINSON",
+      "Fire Alarms": 3188,
+      "Structure Fires": 359,
+      "Outdoor/Brush Fires": 234,
+      "Electrical Issues": 173,
+      "Vehicle Fires": 267,
+      "Gas Issues": 340,
+      "Hazmat/CO Issues": 185,
+      "Smoke Investigation": 0,
+      "Uncategorized Fire": 219
+    }
+  ],
+  "byPriority": [
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Fire Alarms",
+      "count": 141417
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Other",
+      "count": 48974
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Other",
+      "count": 37058
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Other",
+      "count": 31746
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Electrical Issues",
+      "count": 30208
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Structure Fires",
+      "count": 24837
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Other",
+      "count": 22223
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Uncategorized Fire",
+      "count": 21249
+    },
+    {
+      "priority": "EMS BLS Assistance response",
+      "category": "Fire Alarms",
+      "count": 17658
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Hazmat/CO Issues",
+      "count": 17278
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Fire Alarms",
+      "count": 14135
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Fire Alarms",
+      "count": 13367
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Gas Issues",
+      "count": 12458
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Gas Issues",
+      "count": 12334
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Other",
+      "count": 11346
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Outdoor/Brush Fires",
+      "count": 10820
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Other",
+      "count": 9332
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Other",
+      "count": 8914
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Fire Alarms",
+      "count": 8544
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Vehicle Fires",
+      "count": 8504
+    },
+    {
+      "priority": "All administrative mark outs.",
+      "category": "Other",
+      "count": 5659
+    },
+    {
+      "priority": "EMS BLS Assistance response",
+      "category": "Other",
+      "count": 5316
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Structure Fires",
+      "count": 5185
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Fire Alarms",
+      "count": 5034
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Uncategorized Fire",
+      "count": 3673
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Outdoor/Brush Fires",
+      "count": 3567
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Hazmat/CO Issues",
+      "count": 2767
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Fire Alarms",
+      "count": 1939
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Vehicle Fires",
+      "count": 1674
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Uncategorized Fire",
+      "count": 1515
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Other",
+      "count": 1510
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Fire Alarms",
+      "count": 1436
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Vehicle Fires",
+      "count": 1287
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Hazmat/CO Issues",
+      "count": 1055
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Fire Alarms",
+      "count": 989
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Structure Fires",
+      "count": 915
+    },
+    {
+      "priority": "All administrative mark outs.",
+      "category": "Fire Alarms",
+      "count": 698
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Other",
+      "count": 588
+    },
+    {
+      "priority": "All administrative mark outs.",
+      "category": "Uncategorized Fire",
+      "count": 436
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Uncategorized Fire",
+      "count": 318
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Vehicle Fires",
+      "count": 214
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Structure Fires",
+      "count": 161
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Fire Alarms",
+      "count": 138
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Uncategorized Fire",
+      "count": 132
+    },
+    {
+      "priority": "Incidents actively occurring or that has just occurred with no immediate threat to life.",
+      "category": "Structure Fires",
+      "count": 122
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Outdoor/Brush Fires",
+      "count": 119
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Uncategorized Fire",
+      "count": 100
+    },
+    {
+      "priority": "All administrative mark outs.",
+      "category": "Vehicle Fires",
+      "count": 95
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Structure Fires",
+      "count": 78
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Vehicle Fires",
+      "count": 76
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Uncategorized Fire",
+      "count": 75
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Electrical Issues",
+      "count": 74
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Gas Issues",
+      "count": 74
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Electrical Issues",
+      "count": 70
+    },
+    {
+      "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+      "category": "Structure Fires",
+      "count": 66
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Electrical Issues",
+      "count": 58
+    },
+    {
+      "priority": "EMS BLS Assistance response",
+      "category": "Uncategorized Fire",
+      "count": 55
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Uncategorized Fire",
+      "count": 54
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Uncategorized Fire",
+      "count": 46
+    },
+    {
+      "priority": "4th Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Structure Fires",
+      "count": 40
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Gas Issues",
+      "count": 35
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Structure Fires",
+      "count": 32
+    },
+    {
+      "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+      "category": "Other",
+      "count": 22
+    },
+    {
+      "priority": "Potential to become a threat to life safety.",
+      "category": "Outdoor/Brush Fires",
+      "count": 20
+    },
+    {
+      "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+      "category": "Structure Fires",
+      "count": 20
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Fire Alarms",
+      "count": 19
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Vehicle Fires",
+      "count": 12
+    },
+    {
+      "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+      "category": "Fire Alarms",
+      "count": 12
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Outdoor/Brush Fires",
+      "count": 11
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Gas Issues",
+      "count": 10
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Uncategorized Fire",
+      "count": 10
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Electrical Issues",
+      "count": 9
+    },
+    {
+      "priority": "5th Alarm Fire (residential, commercial, tunnel, garage/auxiliary building). Highest response level",
+      "category": "Structure Fires",
+      "count": 7
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Structure Fires",
+      "count": 6
+    },
+    {
+      "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+      "category": "Fire Alarms",
+      "count": 6
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Vehicle Fires",
+      "count": 6
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Vehicle Fires",
+      "count": 5
+    },
+    {
+      "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+      "category": "Uncategorized Fire",
+      "count": 5
+    },
+    {
+      "priority": "1st Alarm Fire  (residential, commercial, tunnel). Initial/lowest response.",
+      "category": "Hazmat/CO Issues",
+      "count": 5
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Structure Fires",
+      "count": 5
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Gas Issues",
+      "count": 4
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Other",
+      "count": 4
+    },
+    {
+      "priority": "No threat to life safety.",
+      "category": "Vehicle Fires",
+      "count": 4
+    },
+    {
+      "priority": "",
+      "category": "Other",
+      "count": 4
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Outdoor/Brush Fires",
+      "count": 3
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Fire Alarms",
+      "count": 3
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Electrical Issues",
+      "count": 3
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Hazmat/CO Issues",
+      "count": 3
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Hazmat/CO Issues",
+      "count": 2
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Electrical Issues",
+      "count": 2
+    },
+    {
+      "priority": "6th Alarm Fire (commercial)",
+      "category": "Structure Fires",
+      "count": 2
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Hazmat/CO Issues",
+      "count": 2
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Structure Fires",
+      "count": 2
+    },
+    {
+      "priority": "3rd Alarm Fire  (commercial)",
+      "category": "Structure Fires",
+      "count": 2
+    },
+    {
+      "priority": "EMS Standard ALS response",
+      "category": "Hazmat/CO Issues",
+      "count": 2
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Other",
+      "count": 2
+    },
+    {
+      "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+      "category": "Uncategorized Fire",
+      "count": 2
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Uncategorized Fire",
+      "count": 2
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Electrical Issues",
+      "count": 2
+    },
+    {
+      "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+      "category": "Other",
+      "count": 2
+    },
+    {
+      "priority": "",
+      "category": "Uncategorized Fire",
+      "count": 2
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Vehicle Fires",
+      "count": 1
+    },
+    {
+      "priority": "2nd Alarm Fire  (commercial)",
+      "category": "Structure Fires",
+      "count": 1
+    },
+    {
+      "priority": "1st Alarm Fire  (commercial). Initial/lowest response.",
+      "category": "Vehicle Fires",
+      "count": 1
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Electrical Issues",
+      "count": 1
+    },
+    {
+      "priority": "7th Alarm Fire (commercial). Highest response level",
+      "category": "Structure Fires",
+      "count": 1
+    },
+    {
+      "priority": "4th Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Fire Alarms",
+      "count": 1
+    },
+    {
+      "priority": "High-rise plan: 1 alarm fire that automatically goes to 3 alarms for very tall buildings",
+      "category": "Uncategorized Fire",
+      "count": 1
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Vehicle Fires",
+      "count": 1
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Outdoor/Brush Fires",
+      "count": 1
+    },
+    {
+      "priority": "4th Alarm Fire  (commercial)",
+      "category": "Structure Fires",
+      "count": 1
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Electrical Issues",
+      "count": 1
+    },
+    {
+      "priority": "All notification only calls types.",
+      "category": "Uncategorized Fire",
+      "count": 1
+    },
+    {
+      "priority": "2nd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Hazmat/CO Issues",
+      "count": 1
+    },
+    {
+      "priority": "Police reponse; likely not dispatched as EMS/Fire, just recorded in CAD system",
+      "category": "Fire Alarms",
+      "count": 1
+    },
+    {
+      "priority": "EMS Standard BLS response",
+      "category": "Outdoor/Brush Fires",
+      "count": 1
+    },
+    {
+      "priority": "3rd Alarm Fire  (residential, commercial, tunnel)",
+      "category": "Electrical Issues",
+      "count": 1
+    },
+    {
+      "priority": "EMS ALS life threatening response w/ backup",
+      "category": "Gas Issues",
+      "count": 1
+    },
+    {
+      "priority": "All notification only calls types.",
+      "category": "Gas Issues",
+      "count": 1
+    },
+    {
+      "priority": "EMS ALS life threatening response",
+      "category": "Gas Issues",
+      "count": 1
+    },
+    {
+      "priority": "",
+      "category": "Fire Alarms",
+      "count": 1
+    },
+    {
+      "priority": "EMS Advanced Life Support life threatening response with Advanced Life Support backup",
+      "category": "Other",
+      "count": 1
+    },
+    {
+      "priority": "Immediate threat to life safety.",
+      "category": "Outdoor/Brush Fires",
+      "count": 1
+    },
+    {
+      "priority": "",
+      "category": "Hazmat/CO Issues",
+      "count": 1
+    },
+    {
+      "priority": "",
+      "category": "Vehicle Fires",
+      "count": 1
+    }
+  ],
+  "falseAlarms": [
+    {
+      "name": "Commercial Building Alarms",
+      "value": 131536
+    },
+    {
+      "name": "Residential Alarms",
+      "value": 58569
+    },
+    {
+      "name": "Other/Unknown Alarms",
+      "value": 15293
+    }
+  ],
+  "stats": {
+    "total": 550145,
+    "avgPerYear": 50013,
+    "structureFires": 31483,
+    "fireAlarms": 205398,
+    "alarmPercentage": "37.3",
+    "highPriorityIncidents": 63073
+  },
+  "topCities": [
+    "PITTSBURGH",
+    "FINDLAY",
+    "MOUNT LEBANON",
+    "PENN HILLS",
+    "MCKEESPORT",
+    "PLUM",
+    "ROSS",
+    "WILKINSBURG",
+    "WEST MIFFLIN",
+    "MCCANDLESS",
+    "SHALER",
+    "ROBINSON",
+    "BELLEVUE",
+    "SWISSVALE",
+    "SCOTT",
+    "NORTH FAYETTE",
+    "BALDWIN BORO",
+    "NORTH VERSAILLES",
+    "PINE",
+    "COLLIER",
+    "HAMPTON",
+    "JEFFERSON HILLS",
+    "SOUTH FAYETTE",
+    "MARSHALL",
+    "ELIZABETH TOWNSHIP",
+    "MOON",
+    "HARRISON",
+    "KENNEDY",
+    "DORMONT",
+    "WEST DEER",
+    "O'HARA",
+    "DUQUESNE",
+    "STOWE",
+    "CLAIRTON",
+    "MUNHALL",
+    "HOMESTEAD",
+    "EDGEWOOD",
+    "MCKEES ROCKS",
+    "MOUNT OLIVER",
+    "RICHLAND",
+    "PLEASANT HILLS",
+    "BRENTWOOD",
+    "SOUTH PARK",
+    "SEWICKLEY",
+    "CRAFTON",
+    "GREEN TREE",
+    "CARNEGIE",
+    "FRANKLIN PARK",
+    "WHITE OAK",
+    "WILKINS"
+  ],
+  "metadata": {
+    "generatedAt": "2025-11-25T22:37:35.898Z",
+    "totalRecords": 550145,
+    "years": [
+      "2015",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ]
+  }
+}

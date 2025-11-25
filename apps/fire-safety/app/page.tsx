@@ -2,19 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  getFireIncidents,
-  filterIncidents,
-  aggregateByYear,
-  aggregateBySeason,
-  aggregateByCity,
-  aggregateByPriority,
-  aggregateFalseAlarms,
-  calculateStats,
-  getTopCities,
-  ALL_CATEGORIES,
-  type FireIncident
-} from "../lib/fireData";
+import { ALL_CATEGORIES } from "../lib/fireData";
+import { useHybridData } from "../lib/useHybridData";
 
 // Components
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -32,7 +21,7 @@ import FalseAlarmChallenge from "./components/FalseAlarmChallenge";
 import CallToAction from "./components/CallToAction";
 import DashboardFooter from "./components/DashboardFooter";
 import dynamic from "next/dynamic";
-import { Flame } from "lucide-react";
+import { Flame, Zap, Database } from "lucide-react";
 
 // Dynamic imports for map components
 const InteractiveIncidentMap = dynamic(() => import("./components/InteractiveIncidentMap"), { ssr: false });
@@ -41,43 +30,39 @@ const AdvancedHotspotMap = dynamic(() => import("./components/AdvancedHotspotMap
 const YEARS = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
 export default function FireSafetyDashboard() {
-  const [allData, setAllData] = useState<FireIncident[]>([]);
-  const [filteredData, setFilteredData] = useState<FireIncident[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [topCities, setTopCities] = useState<string[]>([]);
-  const [activeSection, setActiveSection] = useState("overview");
+  // Hybrid data loading (pre-aggregated first, raw data in background)
+  const {
+    initialLoading,
+    filterLoading,
+    dataSource,
+    byYear,
+    bySeason,
+    byCity,
+    byPriority,
+    falseAlarms,
+    stats,
+    cities: topCities,
+    filteredCount,
+    filteredIncidents,
+    applyFilters,
+  } = useHybridData();
 
+  const [activeSection, setActiveSection] = useState("overview");
   const [selectedYears, setSelectedYears] = useState<(string | number)[]>(YEARS);
   const [selectedTypes, setSelectedTypes] = useState<(string | number)[]>([...ALL_CATEGORIES]);
   const [selectedCities, setSelectedCities] = useState<(string | number)[]>([]);
-
   const [mapTab, setMapTab] = useState<"incidents" | "heatmap">("incidents");
-
-  // Load real data on mount
-  useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      const data = await getFireIncidents();
-      setAllData(data);
-
-      const cities = getTopCities(data, 50);
-      setTopCities(cities);
-
-      setFilteredData(data);
-      setLoading(false);
-    }
-    loadData();
-  }, []);
 
   // Apply filters whenever selections change
   useEffect(() => {
-    if (allData.length > 0) {
-      const filtered = filterIncidents(allData, selectedYears, selectedTypes, selectedCities);
-      setFilteredData(filtered);
-    }
-  }, [allData, selectedYears, selectedTypes, selectedCities]);
+    applyFilters(
+      selectedYears.map(Number),
+      selectedTypes.map(String),
+      selectedCities.map(String)
+    );
+  }, [selectedYears, selectedTypes, selectedCities, applyFilters]);
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
         <motion.div
@@ -133,13 +118,31 @@ export default function FireSafetyDashboard() {
     );
   }
 
-  // Calculate all aggregations
-  const stats = calculateStats(filteredData);
-  const byYear = aggregateByYear(filteredData);
-  const bySeason = aggregateBySeason(filteredData);
-  const byCity = aggregateByCity(filteredData, 12);
-  const byPriority = aggregateByPriority(filteredData);
-  const falseAlarmData = aggregateFalseAlarms(filteredData);
+  // Data is now provided by useHybridData hook
+  // Show data source indicator for debugging (can be removed in production)
+  const DataSourceBadge = () => (
+    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-900/80 text-white backdrop-blur">
+      {dataSource === "precomputed" && (
+        <>
+          <Zap className="w-3 h-3 text-yellow-400" />
+          <span>Pre-computed</span>
+        </>
+      )}
+      {dataSource === "duckdb" && (
+        <>
+          <Database className="w-3 h-3 text-green-400" />
+          <span>DuckDB</span>
+        </>
+      )}
+      {dataSource === "fallback" && (
+        <>
+          <Database className="w-3 h-3 text-orange-400" />
+          <span>Live Filter</span>
+        </>
+      )}
+      {filterLoading && <span className="animate-pulse ml-1">⏳</span>}
+    </div>
+  );
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -160,8 +163,8 @@ export default function FireSafetyDashboard() {
           cities={topCities}
           selectedCities={selectedCities}
           setSelectedCities={setSelectedCities}
-          totalCount={allData.length}
-          filteredCount={filteredData.length}
+          totalCount={stats.total}
+          filteredCount={filteredCount}
         />
 
         {/* Main Content */}
@@ -270,8 +273,8 @@ export default function FireSafetyDashboard() {
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <YearlyTrendsChart data={byYear} filteredCount={filteredData.length} />
-                    <SeasonalPatternsChart data={bySeason} filteredCount={filteredData.length} />
+                    <YearlyTrendsChart data={byYear} filteredCount={filteredCount} />
+                    <SeasonalPatternsChart data={bySeason} filteredCount={filteredCount} />
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
@@ -309,7 +312,7 @@ export default function FireSafetyDashboard() {
                     <p className="text-gray-500 dark:text-gray-400 mt-2">Mapping Fire Incidents Across Allegheny County</p>
                   </div>
 
-                  <MunicipalHotspotsChart data={byCity} filteredCount={filteredData.length} />
+                  <MunicipalHotspotsChart data={byCity} filteredCount={filteredCount} />
 
                   {/* Map Tabs */}
                   <div className="bg-white dark:bg-gray-800/50 backdrop-blur rounded-xl border border-gray-200 dark:border-gray-700/50 overflow-hidden shadow-sm">
@@ -338,9 +341,9 @@ export default function FireSafetyDashboard() {
 
                     <div className="p-6">
                       {mapTab === "incidents" ? (
-                        <InteractiveIncidentMap incidents={filteredData} />
+                        <InteractiveIncidentMap incidents={filteredIncidents} />
                       ) : (
-                        <AdvancedHotspotMap incidents={filteredData} />
+                        <AdvancedHotspotMap incidents={filteredIncidents} />
                       )}
                     </div>
                   </div>
@@ -364,7 +367,7 @@ export default function FireSafetyDashboard() {
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <FalseAlarmPieChart data={falseAlarmData} />
+                    <FalseAlarmPieChart data={falseAlarms} />
                     <PriorityTreemapChart data={byPriority} />
                   </div>
 
@@ -396,6 +399,7 @@ export default function FireSafetyDashboard() {
           </div>
         </main>
       </div>
+      <DataSourceBadge />
     </div>
   );
 }

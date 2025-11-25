@@ -1,0 +1,50 @@
+[
+  {
+    "season": "Winter",
+    "Fire Alarms": 51426,
+    "Structure Fires": 8485,
+    "Outdoor/Brush Fires": 2435,
+    "Electrical Issues": 5977,
+    "Vehicle Fires": 2725,
+    "Gas Issues": 6866,
+    "Hazmat/CO Issues": 5657,
+    "Smoke Investigation": 0,
+    "Uncategorized Fire": 6473
+  },
+  {
+    "season": "Spring",
+    "Fire Alarms": 55334,
+    "Structure Fires": 8019,
+    "Outdoor/Brush Fires": 5038,
+    "Electrical Issues": 10852,
+    "Vehicle Fires": 3184,
+    "Gas Issues": 5760,
+    "Hazmat/CO Issues": 5036,
+    "Smoke Investigation": 0,
+    "Uncategorized Fire": 8017
+  },
+  {
+    "season": "Summer",
+    "Fire Alarms": 51329,
+    "Structure Fires": 7291,
+    "Outdoor/Brush Fires": 4298,
+    "Electrical Issues": 8579,
+    "Vehicle Fires": 3091,
+    "Gas Issues": 5661,
+    "Hazmat/CO Issues": 4865,
+    "Smoke Investigation": 0,
+    "Uncategorized Fire": 7437
+  },
+  {
+    "season": "Fall",
+    "Fire Alarms": 47309,
+    "Structure Fires": 7688,
+    "Outdoor/Brush Fires": 2772,
+    "Electrical Issues": 5021,
+    "Vehicle Fires": 2881,
+    "Gas Issues": 6631,
+    "Hazmat/CO Issues": 5558,
+    "Smoke Investigation": 0,
+    "Uncategorized Fire": 5749
+  }
+]
