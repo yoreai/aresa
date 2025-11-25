@@ -61,7 +61,7 @@ const publications: Record<string, Publication> = {
       "Three policy recommendations: smart alarm tech, targeted prevention, seasonal resource allocation",
     ],
     pdfFile: "Data-Driven-Fire-Safety-Analytics.pdf",
-    liveDemo: "https://fire-safety-nu.vercel.app",
+    liveDemo: "https://usfiresafety.vercel.app",
   },
   network: {
     title: "Network Centrality in College Football",

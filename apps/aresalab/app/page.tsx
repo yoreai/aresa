@@ -86,7 +86,7 @@ export default function Home() {
             </div>
             <div className="flex gap-3">
               <a
-                href="https://fire-safety-nu.vercel.app"
+                href="https://usfiresafety.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 px-5 py-2 rounded font-semibold transition"
