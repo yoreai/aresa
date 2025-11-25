@@ -358,7 +358,9 @@ export function calculateStats(incidents: FireIncident[]) {
   const fireAlarms = incidents.filter(i => i.fire_category === "Fire Alarms").length;
   const alarmPercentage = total > 0 ? ((fireAlarms / total) * 100).toFixed(1) : "0";
 
-  const highPriorityIncidents = incidents.filter(i =>
+  // High priority is calculated from ACTUAL FIRES (excluding alarms) - matches Gradio
+  const actualFires = incidents.filter(i => i.fire_category !== "Fire Alarms");
+  const highPriorityIncidents = actualFires.filter(i =>
     i.priority === "F1" || i.priority === "Q0"
   ).length;
 
