@@ -1,7 +1,7 @@
 /**
  * Pre-compute aggregations for instant initial load
  * Run: npx tsx scripts/precompute-aggregations.ts
- * 
+ *
  * This script:
  * 1. Downloads the full CSV from Vercel Blob
  * 2. Processes and classifies all incidents
@@ -17,7 +17,7 @@ const BLOB_URL = "https://lgn0alpssagu0n2c.public.blob.vercel-storage.com/fire_d
 // Fire categories (same as lib/fireData.ts)
 const FIRE_CATEGORIES = [
   "Fire Alarms",
-  "Structure Fires", 
+  "Structure Fires",
   "Outdoor/Brush Fires",
   "Electrical Issues",
   "Vehicle Fires",
@@ -188,9 +188,9 @@ function calculateStats(incidents: ProcessedIncident[]) {
   const structureFires = incidents.filter(i => i.fire_category === "Structure Fires").length;
   const fireAlarms = incidents.filter(i => i.fire_category === "Fire Alarms").length;
   const alarmPercentage = total > 0 ? ((fireAlarms / total) * 100).toFixed(1) : "0";
-  
+
   const actualFires = incidents.filter(i => i.fire_category !== "Fire Alarms");
-  const highPriorityIncidents = actualFires.filter(i => 
+  const highPriorityIncidents = actualFires.filter(i =>
     i.priority === "F1" || i.priority === "Q0"
   ).length;
 

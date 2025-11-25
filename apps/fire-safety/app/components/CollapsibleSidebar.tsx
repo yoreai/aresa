@@ -38,7 +38,7 @@ export default function CollapsibleSidebar({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Filter className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+          <Filter className="w-5 h-5 text-slate-500 dark:text-slate-400" />
           <h2 className="font-bold text-lg text-gray-900 dark:text-white">Filters</h2>
         </div>
         <button
@@ -50,7 +50,7 @@ export default function CollapsibleSidebar({
       </div>
 
       {/* Stats Summary */}
-      <div className="bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-600/20 dark:to-purple-600/20 rounded-xl p-4 border border-blue-300 dark:border-blue-500/30">
+      <div className="bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700/50 dark:to-slate-800/50 rounded-xl p-4 border border-slate-300 dark:border-slate-600/50">
         <div className="text-center">
           <div className="text-3xl font-bold text-gray-900 dark:text-white">{filteredCount.toLocaleString()}</div>
           <div className="text-sm text-gray-600 dark:text-gray-300">of {totalCount.toLocaleString()} incidents</div>
@@ -83,11 +83,11 @@ export default function CollapsibleSidebar({
             Municipalities
           </label>
           {selectedCities.length === 0 ? (
-            <span className="text-xs text-green-600 dark:text-green-400 font-medium">✓ All cities</span>
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">✓ All cities</span>
           ) : (
             <button
               onClick={() => setSelectedCities([])}
-              className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 underline"
             >
               Show all cities
             </button>
@@ -150,7 +150,7 @@ export default function CollapsibleSidebar({
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="lg:hidden fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-full shadow-2xl transition-all duration-300"
+        className="lg:hidden fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 bg-slate-700 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-500 rounded-full shadow-2xl transition-all duration-300"
       >
         <Filter className="w-5 h-5 text-white" />
         <span className="text-white font-medium">Filters</span>

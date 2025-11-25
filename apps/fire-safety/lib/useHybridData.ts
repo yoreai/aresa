@@ -1,6 +1,6 @@
 /**
  * Hybrid Data Hook - Best of both worlds
- * 
+ *
  * 1. Initial load: Pre-aggregated JSON (instant ~200ms)
  * 2. Background: Initialize DuckDB-WASM (~2-3s)
  * 3. Filters: Use DuckDB if ready (instant), otherwise fallback to JS filtering
@@ -52,7 +52,7 @@ export function useHybridData() {
 
   // Pre-aggregated data (original, unfiltered)
   const preAggRef = useRef<any>(null);
-  
+
   // Current data (filtered or original)
   const [byYear, setByYear] = useState<any[]>([]);
   const [bySeason, setBySeason] = useState<any[]>([]);
@@ -74,13 +74,13 @@ export function useHybridData() {
       try {
         console.log("⚡ Loading pre-aggregated data...");
         const startTime = performance.now();
-        
+
         const response = await fetch(AGGREGATIONS_URL);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
+
         const data = await response.json();
         preAggRef.current = data;
-        
+
         // Set initial data
         setByYear(data.byYear || []);
         setBySeason(data.bySeason || []);
@@ -90,17 +90,17 @@ export function useHybridData() {
         setStats(data.stats || defaultStats);
         setCities(data.topCities || []);
         setFilteredCount(data.stats?.total || 0);
-        
+
         const elapsed = ((performance.now() - startTime)).toFixed(0);
         console.log(`✅ Pre-aggregated data loaded in ${elapsed}ms (${data.stats?.total?.toLocaleString()} records)`);
-        
+
         setInitialLoading(false);
       } catch (error) {
         console.error("Failed to load pre-aggregated data:", error);
         setInitialLoading(false);
       }
     }
-    
+
     loadPreAggregated();
   }, []);
 
@@ -120,7 +120,7 @@ export function useHybridData() {
         // App still works with pre-aggregated data + JS filtering
       }
     }
-    
+
     // Start loading DuckDB after a short delay to not block initial render
     const timer = setTimeout(initDB, 500);
     return () => clearTimeout(timer);
@@ -160,11 +160,11 @@ export function useHybridData() {
     if (isDuckDBReady()) {
       setFilterLoading(true);
       setDataSource("duckdb");
-      
+
       try {
         console.log("🔍 Filtering with DuckDB SQL...");
         const startTime = performance.now();
-        
+
         const [
           yearData,
           seasonData,
@@ -182,10 +182,10 @@ export function useHybridData() {
           calculateStatsSQL(years, types, citiesFilter),
           getFilteredIncidents(years, types, citiesFilter),
         ]);
-        
+
         const elapsed = ((performance.now() - startTime)).toFixed(0);
         console.log(`✅ DuckDB filtering complete in ${elapsed}ms (${statsData.total?.toLocaleString()} results)`);
-        
+
         setByYear(yearData);
         setBySeason(seasonData);
         setByCity(cityData);
@@ -205,7 +205,7 @@ export function useHybridData() {
       console.log("⏳ DuckDB still initializing, please wait...");
       setFilterLoading(true);
       setDataSource("fallback");
-      
+
       // Set a timeout to retry when DuckDB is ready
       const checkInterval = setInterval(() => {
         if (isDuckDBReady()) {
@@ -213,7 +213,7 @@ export function useHybridData() {
           applyFilters(years, types, citiesFilter);
         }
       }, 500);
-      
+
       // Clear interval after 10 seconds to avoid infinite loop
       setTimeout(() => clearInterval(checkInterval), 10000);
     }
@@ -225,7 +225,7 @@ export function useHybridData() {
     filterLoading,
     dataSource,
     duckdbReady,
-    
+
     // Aggregated data
     byYear,
     bySeason,
@@ -234,14 +234,14 @@ export function useHybridData() {
     falseAlarms,
     stats,
     cities,
-    
+
     // Counts
     filteredCount,
     totalCount: preAggRef.current?.stats?.total || 0,
-    
+
     // Raw filtered data (for maps)
     filteredIncidents,
-    
+
     // Actions
     applyFilters,
   };

@@ -1,6 +1,6 @@
 /**
  * DuckDB-WASM Service for fast in-browser SQL queries
- * 
+ *
  * This service:
  * 1. Initializes DuckDB-WASM in the browser
  * 2. Loads the Parquet file from Vercel Blob
@@ -66,7 +66,7 @@ export async function initDuckDB(): Promise<void> {
       // Load Parquet file directly from URL
       console.log("📥 Loading Parquet from Vercel Blob...");
       await conn.query(`
-        CREATE TABLE fire_incidents AS 
+        CREATE TABLE fire_incidents AS
         SELECT * FROM read_parquet('${PARQUET_URL}')
       `);
 
@@ -133,8 +133,8 @@ export async function getFilteredIncidents(
 
   const where = buildWhereClause(years, types, cities);
   const result = await conn.query(`
-    SELECT 
-      call_year, season, fire_category, city_name, 
+    SELECT
+      call_year, season, fire_category, city_name,
       priority, priority_desc,
       census_block_group_center__x as lng,
       census_block_group_center__y as lat
@@ -165,14 +165,14 @@ export async function aggregateByYearSQL(
   if (!conn) throw new Error("DuckDB not initialized");
 
   const where = buildWhereClause(years, types, cities);
-  
+
   // Build CASE statements for each category
-  const categoryColumns = FIRE_CATEGORIES.map(cat => 
+  const categoryColumns = FIRE_CATEGORIES.map(cat =>
     `SUM(CASE WHEN fire_category = '${cat}' THEN 1 ELSE 0 END) as "${cat}"`
   ).join(",\n    ");
 
   const result = await conn.query(`
-    SELECT 
+    SELECT
       call_year as year,
       ${categoryColumns}
     FROM fire_incidents
@@ -201,13 +201,13 @@ export async function aggregateBySeasonSQL(
   if (!conn) throw new Error("DuckDB not initialized");
 
   const where = buildWhereClause(years, types, cities);
-  
-  const categoryColumns = FIRE_CATEGORIES.map(cat => 
+
+  const categoryColumns = FIRE_CATEGORIES.map(cat =>
     `SUM(CASE WHEN fire_category = '${cat}' THEN 1 ELSE 0 END) as "${cat}"`
   ).join(",\n    ");
 
   const result = await conn.query(`
-    SELECT 
+    SELECT
       season,
       ${categoryColumns}
     FROM fire_incidents
@@ -241,13 +241,13 @@ export async function aggregateByCitySQL(
   if (!conn) throw new Error("DuckDB not initialized");
 
   const where = buildWhereClause(years, types, cities);
-  
-  const categoryColumns = FIRE_CATEGORIES.map(cat => 
+
+  const categoryColumns = FIRE_CATEGORIES.map(cat =>
     `SUM(CASE WHEN fire_category = '${cat}' THEN 1 ELSE 0 END) as "${cat}"`
   ).join(",\n    ");
 
   const result = await conn.query(`
-    SELECT 
+    SELECT
       city_name as city,
       ${categoryColumns},
       COUNT(*) as total
@@ -280,7 +280,7 @@ export async function aggregateByPrioritySQL(
   const where = buildWhereClause(years, types, cities);
 
   const result = await conn.query(`
-    SELECT 
+    SELECT
       priority_desc as priority,
       fire_category as category,
       COUNT(*) as count
@@ -318,7 +318,7 @@ export async function aggregateFalseAlarmsSQL(
 
   // Pre-2020 breakdown
   const pre2020Result = await conn.query(`
-    SELECT 
+    SELECT
       SUM(CASE WHEN description_short LIKE '%COM%' THEN 1 ELSE 0 END) as commercial,
       SUM(CASE WHEN description_short LIKE '%RES%' THEN 1 ELSE 0 END) as residential,
       COUNT(*) as total
@@ -365,7 +365,7 @@ export async function calculateStatsSQL(
   const where = buildWhereClause(years, types, cities);
 
   const result = await conn.query(`
-    SELECT 
+    SELECT
       COUNT(*) as total,
       COUNT(DISTINCT call_year) as year_count,
       SUM(CASE WHEN fire_category = 'Structure Fires' THEN 1 ELSE 0 END) as structure_fires,
