@@ -1,6 +1,8 @@
 // Fire safety data service - fetches and processes real data from Vercel Blob
 // Replicates Gradio's classification logic for full feature parity
 
+import Papa from "papaparse";
+
 const BLOB_URL = "https://lgn0alpssagu0n2c.public.blob.vercel-storage.com/fire_dispatches_fresh.csv";
 
 // The 9 main fire categories (for charts)
@@ -137,29 +139,6 @@ function getSeasonFromQuarter(quarter: string): string {
 }
 
 /**
- * Parse CSV line handling quoted fields with commas
- */
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-  
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      result.push(current.trim());
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-  result.push(current.trim());
-  return result;
-}
-
-/**
  * Fetch and process all fire incidents from Vercel Blob
  */
 export async function getFireIncidents(): Promise<FireIncident[]> {
@@ -170,23 +149,19 @@ export async function getFireIncidents(): Promise<FireIncident[]> {
     const response = await fetch(BLOB_URL);
     const csvText = await response.text();
 
-    const lines = csvText.split("\n");
-    const headers = parseCSVLine(lines[0]);
+    // Use PapaParse for proper CSV parsing (handles quoted fields, etc.)
+    const parseResult = Papa.parse<RawIncident>(csvText, {
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: (header) => header.trim(),
+    });
 
-    const rawIncidents: RawIncident[] = lines.slice(1)
-      .filter(line => line.trim())
-      .map(line => {
-        const values = parseCSVLine(line);
-        return headers.reduce((obj: any, header, i) => {
-          obj[header] = values[i] || "";
-          return obj;
-        }, {});
-      });
+    console.log(`PapaParse: ${parseResult.data.length} rows, ${parseResult.errors.length} errors`);
 
     // Process and classify incidents
     const fireIncidents: FireIncident[] = [];
 
-    for (const incident of rawIncidents) {
+    for (const incident of parseResult.data) {
       const category = classifyFireCategory(incident);
       if (category) {
         fireIncidents.push({
@@ -197,7 +172,7 @@ export async function getFireIncidents(): Promise<FireIncident[]> {
       }
     }
 
-    console.log(`Processed ${fireIncidents.length} fire incidents from ${rawIncidents.length} raw records`);
+    console.log(`Processed ${fireIncidents.length} fire incidents from ${parseResult.data.length} raw records`);
     cachedData = fireIncidents;
     return cachedData;
   } catch (error) {
