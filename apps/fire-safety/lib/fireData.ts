@@ -53,21 +53,17 @@ export interface FireIncident extends RawIncident {
 let cachedData: FireIncident[] | null = null;
 
 /**
- * Classify fire incidents using Gradio's exact logic
- * - Excludes EMS calls
+ * Classify fire incidents using Gradio's EXACT logic
+ * - Only excludes EMS calls (nothing else!)
  * - Handles post-2019 "Removed" reclassification for fire alarms
+ * - All other records are kept and categorized
  */
 function classifyFireCategory(incident: RawIncident): string | null {
   const desc = incident.description_short || "";
   const year = parseInt(incident.call_year) || 0;
 
-  // Exclude EMS calls (not fire incidents)
+  // ONLY exclude EMS calls - this is the ONLY exclusion (matches Gradio exactly)
   if (desc.includes("EMS")) {
-    return null;
-  }
-
-  // Exclude traffic incidents
-  if (/TRAFFIC/i.test(desc)) {
     return null;
   }
 
@@ -115,22 +111,13 @@ function classifyFireCategory(incident: RawIncident): string | null {
     return "Smoke Investigation";
   }
 
-  // Uncategorized fire
-  if (/FIRE UNCATEGORIZED|UNKNOWN TYPE FIRE/i.test(desc)) {
+  // Uncategorized fire - catch remaining fire-related
+  if (/FIRE UNCATEGORIZED|UNKNOWN TYPE FIRE|FIRE/i.test(desc)) {
     return "Uncategorized Fire";
   }
 
-  // Exclude other non-fire categories
-  if (/MUTUAL AID|RQST ASST|PUBLIC SERVICE|AIRPORT INSPECTION|DETAIL$|LOCKED OUT|CONTAINMENT|CLEAN UP|WATER|FLOOD|RESCUE.*WATER/i.test(desc)) {
-    return null;
-  }
-
-  // Default: Uncategorized Fire for remaining fire-related
-  if (/FIRE/i.test(desc)) {
-    return "Uncategorized Fire";
-  }
-
-  return null; // Exclude non-fire incidents
+  // Everything else goes to "Other" category (kept for total count, filtered from charts)
+  return "Other";
 }
 
 /**
