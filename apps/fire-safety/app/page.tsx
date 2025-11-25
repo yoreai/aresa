@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   getFireIncidents,
   filterIncidents,
-  aggregateByType,
   aggregateByYear,
   aggregateBySeason,
   aggregateByCity,
@@ -12,12 +12,14 @@ import {
   aggregateFalseAlarms,
   calculateStats,
   getTopCities,
-  FIRE_CATEGORIES,
   ALL_CATEGORIES,
   type FireIncident
 } from "../lib/fireData";
 
 // Components
+import { ThemeToggle } from "./components/ThemeToggle";
+import CollapsibleSidebar from "./components/CollapsibleSidebar";
+import SectionNav from "./components/SectionNav";
 import GradientHeader from "./components/GradientHeader";
 import KeyStatsGrid from "./components/KeyStatsGrid";
 import NarrativeSection from "./components/NarrativeSection";
@@ -26,21 +28,26 @@ import SeasonalPatternsChart from "./components/SeasonalPatternsChart";
 import MunicipalHotspotsChart from "./components/MunicipalHotspotsChart";
 import FalseAlarmPieChart from "./components/FalseAlarmPieChart";
 import PriorityTreemapChart from "./components/PriorityTreemapChart";
-import InteractiveIncidentMap from "./components/InteractiveIncidentMap";
-import AdvancedHotspotMap from "./components/AdvancedHotspotMap";
 import FalseAlarmChallenge from "./components/FalseAlarmChallenge";
 import CallToAction from "./components/CallToAction";
 import DashboardFooter from "./components/DashboardFooter";
-import MultiSelectFilter from "./components/MultiSelectFilter";
-import LeadGenModal from "./components/LeadGenModal";
+import dynamic from "next/dynamic";
+import { Flame, Loader2 } from "lucide-react";
+
+// Dynamic imports for map components
+const InteractiveIncidentMap = dynamic(() => import("./components/InteractiveIncidentMap"), { ssr: false });
+const AdvancedHotspotMap = dynamic(() => import("./components/AdvancedHotspotMap"), { ssr: false });
+
+const YEARS = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
 export default function FireSafetyDashboard() {
   const [allData, setAllData] = useState<FireIncident[]>([]);
   const [filteredData, setFilteredData] = useState<FireIncident[]>([]);
   const [loading, setLoading] = useState(true);
   const [topCities, setTopCities] = useState<string[]>([]);
+  const [activeSection, setActiveSection] = useState("overview");
 
-  const [selectedYears, setSelectedYears] = useState<(string | number)[]>([2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
+  const [selectedYears, setSelectedYears] = useState<(string | number)[]>(YEARS);
   const [selectedTypes, setSelectedTypes] = useState<(string | number)[]>([...ALL_CATEGORIES]);
   const [selectedCities, setSelectedCities] = useState<(string | number)[]>([]);
 
@@ -53,12 +60,10 @@ export default function FireSafetyDashboard() {
       const data = await getFireIncidents();
       setAllData(data);
 
-      // Get top 15 cities for the filter options
-      const cities = getTopCities(data, 15);
+      const cities = getTopCities(data, 50);
       setTopCities(cities);
-      // DON'T set selectedCities - empty array means "all cities" in filterIncidents
-      // setSelectedCities(cities);  // This was filtering out ~200K incidents!
 
+      setFilteredData(data);
       setLoading(false);
     }
     loadData();
@@ -74,12 +79,19 @@ export default function FireSafetyDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-red-500 mx-auto mb-4"></div>
-          <p className="text-white text-xl">Loading 550,000+ fire incident records...</p>
-          <p className="text-gray-400 text-sm mt-2">Processing classification and analysis...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-4"
+        >
+          <div className="relative">
+            <Flame className="w-16 h-16 text-orange-500 animate-pulse" />
+            <Loader2 className="absolute inset-0 w-16 h-16 text-blue-500 animate-spin opacity-50" />
+          </div>
+          <p className="text-xl font-medium text-white">Loading fire safety data...</p>
+          <p className="text-gray-400">Analyzing 550,000+ incidents</p>
+        </motion.div>
       </div>
     );
   }
@@ -92,243 +104,207 @@ export default function FireSafetyDashboard() {
   const byPriority = aggregateByPriority(filteredData);
   const falseAlarmData = aggregateFalseAlarms(filteredData);
 
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white">
+      <div className="flex">
+        {/* Collapsible Sidebar */}
+        <CollapsibleSidebar
+          years={YEARS}
+          selectedYears={selectedYears}
+          setSelectedYears={setSelectedYears}
+          selectedTypes={selectedTypes}
+          setSelectedTypes={setSelectedTypes}
+          cities={topCities}
+          selectedCities={selectedCities}
+          setSelectedCities={setSelectedCities}
+          totalCount={allData.length}
+          filteredCount={filteredData.length}
+        />
 
-          {/* ===== LEFT SIDEBAR - Filters ===== */}
-          <div className="lg:col-span-1">
-            <div className="bg-gray-800/90 backdrop-blur-xl rounded-xl p-6 sticky top-6 border border-gray-700 shadow-2xl">
-              <h2 className="text-xl font-bold mb-2 text-blue-400">🎛️ Interactive Filters</h2>
-              <p className="text-xs text-gray-400 mb-6 italic">
-                Adjust filters to explore patterns. Charts update in real-time.
-              </p>
-
-              <MultiSelectFilter
-                label="Select Years"
-                emoji="📅"
-                options={[2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]}
-                defaultSelected={selectedYears}
-                onChange={setSelectedYears}
-              />
-
-              <MultiSelectFilter
-                label="Incident Types"
-                emoji="🔥"
-                options={[...ALL_CATEGORIES]}
-                defaultSelected={selectedTypes}
-                onChange={setSelectedTypes}
-              />
-
-              <MultiSelectFilter
-                label="Municipalities"
-                emoji="🏙️"
-                options={topCities}
-                defaultSelected={selectedCities}
-                onChange={setSelectedCities}
-              />
-
-              {/* Filter Summary */}
-              <div className="mt-6 pt-6 border-t border-gray-700">
-                <div className="text-sm font-bold text-white mb-2">Showing:</div>
-                <div className="text-2xl font-bold text-blue-400">{filteredData.length.toLocaleString()}</div>
-                <div className="text-xs text-gray-400">incidents</div>
-              </div>
-
-              {/* Data Quality Note */}
-              <div className="mt-4 bg-gray-700/50 p-3 rounded-lg border-l-3 border-gray-500">
-                <p className="text-xs text-gray-400">
-                  <strong className="text-gray-300">📊 Data Note:</strong> 2020+ fire alarms reclassified as "Removed" - corrected for analysis.
-                </p>
+        {/* Main Content */}
+        <main className="flex-1 min-h-screen">
+          {/* Header Bar */}
+          <div className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-xl border-b border-gray-700/50 px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Flame className="w-8 h-8 text-orange-500" />
+              <div>
+                <h1 className="text-xl font-bold text-white">Fire Safety Analytics</h1>
+                <p className="text-xs text-gray-400">Allegheny County, PA • 2015-2025</p>
               </div>
             </div>
+            <ThemeToggle />
           </div>
 
-          {/* ===== MAIN CONTENT ===== */}
-          <div className="lg:col-span-3 space-y-8">
+          {/* Section Navigation */}
+          <SectionNav activeSection={activeSection} onSectionChange={setActiveSection} />
 
-            {/* Header */}
-            <GradientHeader />
+          {/* Content Sections */}
+          <div className="p-6">
+            <AnimatePresence mode="wait">
+              {activeSection === "overview" && (
+                <motion.div
+                  key="overview"
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-8"
+                >
+                  <GradientHeader />
+                  <NarrativeSection />
+                  <KeyStatsGrid stats={stats} />
+                </motion.div>
+              )}
 
-            {/* Story Introduction */}
-            <NarrativeSection />
+              {activeSection === "temporal" && (
+                <motion.div
+                  key="temporal"
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                      📈 Temporal Analysis
+                    </h2>
+                    <p className="text-gray-400 mt-2">Understanding Fire Patterns Over Time</p>
+                  </div>
 
-            {/* Key Statistics */}
-            <KeyStatsGrid stats={stats} />
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <YearlyTrendsChart data={byYear} filteredCount={filteredData.length} />
+                    <SeasonalPatternsChart data={bySeason} filteredCount={filteredData.length} />
+                  </div>
 
-            {/* Divider */}
-            <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-full"></div>
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div className="bg-gray-800/50 backdrop-blur rounded-xl p-6 border border-gray-700/50">
+                      <h3 className="text-lg font-bold text-purple-400 mb-3">💡 Key Insight</h3>
+                      <p className="text-gray-300">
+                        Fire alarms dominate our emergency response system. While real structure fires remain 
+                        relatively stable, the volume of alarm calls creates a hidden crisis in resource allocation.
+                      </p>
+                    </div>
+                    <div className="bg-gray-800/50 backdrop-blur rounded-xl p-6 border border-gray-700/50">
+                      <h3 className="text-lg font-bold text-orange-400 mb-3">🔍 Critical Finding</h3>
+                      <p className="text-gray-300">
+                        Different fire types have distinct seasonal patterns. Understanding these can help deploy 
+                        prevention resources more effectively and prepare communities for higher-risk periods.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
-            {/* ===== TEMPORAL ANALYSIS SECTION ===== */}
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
-                📈 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Temporal Analysis</span>
-              </h2>
-              <p className="text-gray-400 mt-2 italic">Understanding Fire Patterns Over Time</p>
-            </div>
+              {activeSection === "geographic" && (
+                <motion.div
+                  key="geographic"
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                      🗺️ Geographic Distribution
+                    </h2>
+                    <p className="text-gray-400 mt-2">Mapping Fire Incidents Across Allegheny County</p>
+                  </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Yearly Trends */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-blue-500">
-                  <h3 className="font-bold text-white">📊 Yearly Trends</h3>
-                </div>
-                <YearlyTrendsChart data={byYear} filteredCount={filteredData.length} />
-              </div>
+                  <MunicipalHotspotsChart data={byCity} filteredCount={filteredData.length} />
 
-              {/* Seasonal Patterns */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-orange-500">
-                  <h3 className="font-bold text-white">🌡️ Seasonal Patterns</h3>
-                </div>
-                <SeasonalPatternsChart data={bySeason} filteredCount={filteredData.length} />
-              </div>
-            </div>
+                  {/* Map Tabs */}
+                  <div className="bg-gray-800/50 backdrop-blur rounded-xl border border-gray-700/50 overflow-hidden">
+                    <div className="flex border-b border-gray-700">
+                      <button
+                        onClick={() => setMapTab("incidents")}
+                        className={`flex-1 px-6 py-4 font-medium transition-all ${
+                          mapTab === "incidents"
+                            ? "bg-blue-600 text-white"
+                            : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                        }`}
+                      >
+                        📍 Incident Distribution
+                      </button>
+                      <button
+                        onClick={() => setMapTab("heatmap")}
+                        className={`flex-1 px-6 py-4 font-medium transition-all ${
+                          mapTab === "heatmap"
+                            ? "bg-orange-600 text-white"
+                            : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+                        }`}
+                      >
+                        🔥 Hotspot Heatmap
+                      </button>
+                    </div>
 
-            {/* Divider */}
-            <div className="h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full"></div>
+                    <div className="p-6">
+                      {mapTab === "incidents" ? (
+                        <InteractiveIncidentMap incidents={filteredData} />
+                      ) : (
+                        <AdvancedHotspotMap incidents={filteredData} />
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
-            {/* ===== GEOGRAPHIC & FALSE ALARM SECTION ===== */}
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
-                🗺️ <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Geographic Distribution and False Alarm Analysis</span>
-              </h2>
-            </div>
+              {activeSection === "analysis" && (
+                <motion.div
+                  key="analysis"
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+                      📊 Deep Analysis
+                    </h2>
+                    <p className="text-gray-400 mt-2">Understanding the False Alarm Crisis</p>
+                  </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Municipal Hotspots */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-purple-500">
-                  <h3 className="font-bold text-white">📍 Municipal Hotspots</h3>
-                </div>
-                <MunicipalHotspotsChart data={byCity} filteredCount={filteredData.length} />
-                <div className="bg-gray-800 p-4 rounded-b-xl border-l-4 border-purple-500 mt-0">
-                  <p className="text-gray-300 text-sm">
-                    <strong>⚖️ Equity Concern:</strong> Fire incidents are not evenly distributed. Some communities bear a
-                    disproportionate burden, suggesting the need for targeted prevention programs.
-                  </p>
-                </div>
-              </div>
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <FalseAlarmPieChart data={falseAlarmData} />
+                    <PriorityTreemapChart data={byPriority} />
+                  </div>
 
-              {/* False Alarm Analysis */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-red-500">
-                  <h3 className="font-bold text-white">🚨 False Alarm Crisis</h3>
-                </div>
-                <FalseAlarmPieChart data={falseAlarmData} />
-                <div className="bg-gray-800 p-4 rounded-b-xl border-l-4 border-red-500 mt-0">
-                  <p className="text-gray-300 text-sm">
-                    <strong>💰 Economic Impact:</strong> False alarms create a massive financial burden on emergency services
-                    and delay response to real emergencies, creating hidden public safety risks.
-                  </p>
-                </div>
-              </div>
-            </div>
+                  <FalseAlarmChallenge />
+                </motion.div>
+              )}
 
-            {/* Divider */}
-            <div className="h-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full"></div>
+              {activeSection === "action" && (
+                <motion.div
+                  key="action"
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-red-400 to-rose-400 bg-clip-text text-transparent">
+                      🚀 Take Action
+                    </h2>
+                    <p className="text-gray-400 mt-2">Solutions for a Safer Community</p>
+                  </div>
 
-            {/* ===== INTERACTIVE MAPS & PRIORITIES SECTION ===== */}
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
-                🗺️ <span className="bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent">Interactive Maps & Emergency Priorities</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Interactive Maps */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-pink-500">
-                  <h3 className="font-bold text-white">🌍 Interactive Maps</h3>
-                </div>
-
-                {/* Map Tabs */}
-                <div className="bg-gray-800 p-4 flex gap-2">
-                  <button
-                    onClick={() => setMapTab("incidents")}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition ${
-                      mapTab === "incidents"
-                        ? "bg-red-600 text-white"
-                        : "bg-gray-700 text-gray-400 hover:bg-gray-600"
-                    }`}
-                  >
-                    🎯 Incident Distribution
-                  </button>
-                  <button
-                    onClick={() => setMapTab("heatmap")}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition ${
-                      mapTab === "heatmap"
-                        ? "bg-orange-600 text-white"
-                        : "bg-gray-700 text-gray-400 hover:bg-gray-600"
-                    }`}
-                  >
-                    🔥 Advanced Hotspot Map
-                  </button>
-                </div>
-
-                {/* Map Content */}
-                <div className="bg-gray-800 p-4 rounded-b-xl">
-                  {mapTab === "incidents" ? (
-                    <>
-                      <div className="bg-gray-700/50 p-3 rounded-lg border-l-3 border-cyan-500 mb-4">
-                        <p className="text-sm text-gray-300">
-                          <strong className="text-cyan-400">🗺️ Where Fires Happen:</strong> Geographic distribution of fire incidents. Each point represents an incident, colored by type.
-                        </p>
-                      </div>
-                      <InteractiveIncidentMap incidents={filteredData} />
-                    </>
-                  ) : (
-                    <>
-                      <div className="bg-gray-700/50 p-3 rounded-lg border-l-3 border-orange-500 mb-4">
-                        <p className="text-sm text-gray-300">
-                          <strong className="text-orange-400">🌡️ Fire Hotspot Analysis:</strong> Municipal density with heatmap analysis to reveal the most critical fire risk areas.
-                        </p>
-                      </div>
-                      <AdvancedHotspotMap incidents={filteredData} />
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Emergency Priorities Treemap */}
-              <div>
-                <div className="bg-gray-800/80 p-4 rounded-t-xl border-l-4 border-orange-500">
-                  <h3 className="font-bold text-white">🎯 Emergency Priorities</h3>
-                </div>
-                <PriorityTreemapChart data={byPriority} />
-                <div className="bg-gray-800 p-4 rounded-b-xl border-l-4 border-orange-500 mt-0">
-                  <p className="text-gray-300 text-sm">
-                    <strong>📋 Resource Planning:</strong> Different incident types have varying priority levels. This analysis helps
-                    emergency services allocate resources and plan response strategies more effectively.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="h-1 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 rounded-full"></div>
-
-            {/* ===== FALSE ALARM CHALLENGE SECTION ===== */}
-            <FalseAlarmChallenge />
-
-            {/* ===== CALL TO ACTION SECTION ===== */}
-            <CallToAction />
-
-            {/* ===== LEAD GENERATION CTA ===== */}
-            <div className="bg-gradient-to-r from-red-900/40 to-orange-900/40 rounded-xl p-8 border-2 border-red-500/40 text-center">
-              <h2 className="text-3xl font-bold mb-4">Reduce False Alarms by 30-50%</h2>
-              <p className="text-gray-300 mb-6 text-lg">
-                Get AI-approved fire alarm systems for your commercial building
-              </p>
-              <LeadGenModal />
-            </div>
-
-            {/* ===== FOOTER ===== */}
-            <DashboardFooter />
+                  <CallToAction />
+                  <DashboardFooter />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }
