@@ -163,17 +163,17 @@ export default function FireSafetyDashboard() {
                   <KeyStatsGrid stats={stats} />
 
                   {/* The Alarm Problem - Featured */}
-                  <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-6 shadow-xl">
+                  <div className="bg-gradient-to-r from-rose-800/90 to-amber-800/90 dark:from-rose-900/90 dark:to-amber-900/90 rounded-xl p-6 shadow-lg border border-rose-700/30">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                       <div className="text-center md:text-left">
                         <h3 className="text-2xl font-bold text-white mb-2">🚨 The Hidden Crisis</h3>
-                        <p className="text-red-100 text-lg">
+                        <p className="text-rose-100/90 text-lg">
                           Fire alarms drain emergency resources and delay response to real emergencies
                         </p>
                       </div>
-                      <div className="bg-white/20 backdrop-blur rounded-xl px-8 py-4 text-center">
+                      <div className="bg-white/10 backdrop-blur rounded-xl px-8 py-4 text-center border border-white/10">
                         <div className="text-5xl font-extrabold text-white">{stats.alarmPercentage}%</div>
-                        <div className="text-red-100 font-medium">of incidents are alarms</div>
+                        <div className="text-rose-100/80 font-medium">of incidents are alarms</div>
                       </div>
                     </div>
                   </div>
@@ -182,34 +182,34 @@ export default function FireSafetyDashboard() {
                   <NarrativeSection alarmPercentage={stats.alarmPercentage} />
 
                   {/* Quick Preview of Data */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="bg-white dark:bg-slate-800/60 rounded-xl p-6 shadow-md border border-gray-200 dark:border-slate-700/50">
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                      📊 Quick Data Preview
+                      📊 Explore the Data
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                       <button
                         onClick={() => setActiveSection("temporal")}
-                        className="bg-purple-50 dark:bg-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-900/50 p-4 rounded-lg transition-colors"
+                        className="bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/80 p-4 rounded-lg transition-colors border border-slate-200 dark:border-slate-600/50"
                       >
                         <div className="text-2xl mb-2">📈</div>
-                        <div className="font-bold text-purple-700 dark:text-purple-300">10+ Years of Data</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Explore temporal trends →</div>
+                        <div className="font-bold text-slate-700 dark:text-slate-200">10+ Years of Data</div>
+                        <div className="text-sm text-gray-500 dark:text-slate-400">Explore temporal trends →</div>
                       </button>
                       <button
                         onClick={() => setActiveSection("geographic")}
-                        className="bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 p-4 rounded-lg transition-colors"
+                        className="bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/80 p-4 rounded-lg transition-colors border border-slate-200 dark:border-slate-600/50"
                       >
                         <div className="text-2xl mb-2">🗺️</div>
-                        <div className="font-bold text-green-700 dark:text-green-300">130+ Municipalities</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">View geographic maps →</div>
+                        <div className="font-bold text-slate-700 dark:text-slate-200">130+ Municipalities</div>
+                        <div className="text-sm text-gray-500 dark:text-slate-400">View geographic maps →</div>
                       </button>
                       <button
                         onClick={() => setActiveSection("analysis")}
-                        className="bg-orange-50 dark:bg-orange-900/30 hover:bg-orange-100 dark:hover:bg-orange-900/50 p-4 rounded-lg transition-colors"
+                        className="bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/80 p-4 rounded-lg transition-colors border border-slate-200 dark:border-slate-600/50"
                       >
                         <div className="text-2xl mb-2">🔍</div>
-                        <div className="font-bold text-orange-700 dark:text-orange-300">Deep Analysis</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Understand the crisis →</div>
+                        <div className="font-bold text-slate-700 dark:text-slate-200">Deep Analysis</div>
+                        <div className="text-sm text-gray-500 dark:text-slate-400">Understand the crisis →</div>
                       </button>
                     </div>
                   </div>
