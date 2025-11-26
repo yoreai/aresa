@@ -129,6 +129,15 @@ export default function HomePage() {
                               <span>PDF</span>
                             </a>
                           )}
+                          {(pub.category === "research" || pub.category === "dashboard") && (
+                            <Link
+                              href={`/publications/${pub.slug}`}
+                              className="inline-flex items-center px-4 py-2 space-x-2 text-sm font-medium text-gray-700 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg transition-all duration-300 dark:from-gray-700 dark:to-gray-600 dark:text-gray-300 hover:shadow-lg"
+                            >
+                              <FileText className="w-4 h-4" />
+                              <span>Read Paper</span>
+                            </Link>
+                          )}
                           {pub.demoUrl && (
                             <a
                               href={pub.demoUrl}
@@ -139,15 +148,6 @@ export default function HomePage() {
                               <ExternalLink className="w-4 h-4" />
                               <span>Live Demo</span>
                             </a>
-                          )}
-                          {pub.category === "research" && (
-                            <Link
-                              href={`/publications/${pub.slug}`}
-                              className="inline-flex items-center px-4 py-2 space-x-2 text-sm font-medium text-gray-700 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg transition-all duration-300 dark:from-gray-700 dark:to-gray-600 dark:text-gray-300 hover:shadow-lg"
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                              <span>Read Paper</span>
-                            </Link>
                           )}
                         </div>
                       </div>

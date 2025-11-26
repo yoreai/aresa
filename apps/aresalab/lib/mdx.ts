@@ -9,7 +9,7 @@ const PUBLICATIONS_DIR = path.join(process.cwd(), "public/publications");
 
 export async function getPublicationContent(slug: string) {
   // Convert slug (kebab-case) to directory name (snake_case)
-  const dirName = slug.replace(/-/g, '_');
+  const dirName = slug.replace(/-/g, "_");
   const filePath = path.join(PUBLICATIONS_DIR, dirName, "preview.mdx");
 
   if (!fs.existsSync(filePath)) {
@@ -35,7 +35,7 @@ export async function getPublicationContent(slug: string) {
 
 export async function getBookContent(slug: string) {
   // Convert slug (kebab-case) to directory name (snake_case)
-  const dirName = slug.replace(/-/g, '_');
+  const dirName = slug.replace(/-/g, "_");
   const filePath = path.join(PUBLICATIONS_DIR, dirName, "preview.mdx");
 
   if (!fs.existsSync(filePath)) {
