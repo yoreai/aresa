@@ -8,8 +8,9 @@ import rehypeKatex from "rehype-katex";
 const PUBLICATIONS_DIR = path.join(process.cwd(), "public/publications");
 
 export async function getPublicationContent(slug: string) {
-  // Look for preview.mdx in the publication's folder
-  const filePath = path.join(PUBLICATIONS_DIR, slug, "preview.mdx");
+  // Convert slug (kebab-case) to directory name (snake_case)
+  const dirName = slug.replace(/-/g, '_');
+  const filePath = path.join(PUBLICATIONS_DIR, dirName, "preview.mdx");
 
   if (!fs.existsSync(filePath)) {
     return null;
@@ -33,8 +34,9 @@ export async function getPublicationContent(slug: string) {
 }
 
 export async function getBookContent(slug: string) {
-  // Look for preview.mdx in the book's folder
-  const filePath = path.join(PUBLICATIONS_DIR, slug, "preview.mdx");
+  // Convert slug (kebab-case) to directory name (snake_case)
+  const dirName = slug.replace(/-/g, '_');
+  const filePath = path.join(PUBLICATIONS_DIR, dirName, "preview.mdx");
 
   if (!fs.existsSync(filePath)) {
     return null;
@@ -65,7 +67,11 @@ export function getAllPublicationSlugs(): string[] {
   return dirs
     .filter((dir) => {
       const dirPath = path.join(PUBLICATIONS_DIR, dir);
-      return fs.statSync(dirPath).isDirectory() && dir !== 'pdf' && dir !== '__pycache__';
+      return (
+        fs.statSync(dirPath).isDirectory() &&
+        dir !== "pdf" &&
+        dir !== "__pycache__"
+      );
     })
     .filter((dir) => {
       // Only include if preview.mdx exists
@@ -77,5 +83,5 @@ export function getAllPublicationSlugs(): string[] {
 export function getAllBookSlugs(): string[] {
   // Books are now also in publications/ directory
   // Just filter for books from the publications list
-  return [];  // We'll use publications.ts for book slugs instead
+  return []; // We'll use publications.ts for book slugs instead
 }
