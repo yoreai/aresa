@@ -1,61 +1,70 @@
 .PHONY: help pdf clean validate
 
+# Publication source and output directories
+PUB_SOURCE_DIR := apps/aresalab/public/publications
+PDF_OUTPUT_DIR := $(PUB_SOURCE_DIR)/pdf
+VENV_PYTHON := $(shell pwd)/.venv/bin/python
+
 help:
-	@echo "🎓 PITT Academic Research Publications"
+	@echo "🎓 ARESA Research Publications Build System"
 	@echo ""
 	@echo "Commands:"
-	@echo "  make pdf              - Render ALL publications to PDF"
-	@echo "  make pdf [name]       - Render specific publication (e.g., make pdf spotify_popularity)"
+	@echo "  make pdf              - Render ALL publications (papers + books) to PDF"
+	@echo "  make pdf [name]       - Render specific publication (e.g., make pdf geoai_agentic_flow)"
 	@echo "  make clean            - Remove generated PDFs and temp files"
-	@echo "  make validate         - Check publication formatting"
 	@echo ""
 	@echo "Available Publications:"
-	@echo "  - spotify_popularity     Predicting Song Popularity with ML"
-	@echo "  - fire_safety_dashboard  Fire Safety Data Analytics"
-	@echo "  - manufacturing_analytics Manufacturing Process Analysis"
-	@echo "  - network_analysis       College Football Network Centrality"
+	@ls -d $(PUB_SOURCE_DIR)/*/ 2>/dev/null | xargs -n 1 basename | grep -v "^pdf$$" || echo "  (none found)"
 	@echo ""
-	@echo "Requirements:"
-	@echo "  - Quarto: brew install --cask quarto"
-	@echo "  - Python: 3.8+ with venv activated"
-	@echo "  - LaTeX: Included with Quarto"
-	@echo ""
-	@echo "Example:"
-	@echo "  make pdf spotify_popularity  # Render single publication"
-	@echo "  make pdf                     # Render all publications"
+	@echo "Source Directory: $(PUB_SOURCE_DIR)"
+	@echo "Output Directory: $(PDF_OUTPUT_DIR)"
+	@echo "Python: $(VENV_PYTHON)"
 
 pdf:
 	@echo "📚 Generating academic publications..."
-	@bash ../quarto/scripts/generate_pdfs.sh $(filter-out $@,$(MAKECMDGOALS))
+	@mkdir -p $(PDF_OUTPUT_DIR)
+	@if [ "$(filter-out pdf,$(MAKECMDGOALS))" ]; then \
+		TARGETS="$(filter-out pdf,$(MAKECMDGOALS))"; \
+	else \
+		TARGETS=$$(find $(PUB_SOURCE_DIR) -maxdepth 2 -name "_quarto.yml" -exec dirname {} \; | xargs -n 1 basename); \
+	fi; \
+	for pub in $$TARGETS; do \
+		echo ""; \
+		echo "=================================================="; \
+		echo "📄 Rendering: $$pub"; \
+		echo "=================================================="; \
+		cd $(PUB_SOURCE_DIR)/$$pub && QUARTO_PYTHON=$(VENV_PYTHON) quarto render --to pdf --quiet || exit 1; \
+		cd $(shell pwd); \
+		PDF_NAME=$$(ls -t $(PDF_OUTPUT_DIR)/*.pdf 2>/dev/null | head -n 1); \
+		if [ -f "$$PDF_NAME" ]; then \
+			echo "✅ Generated: $$(basename $$PDF_NAME)"; \
+		else \
+			echo "❌ Error: No PDF generated for $$pub"; \
+			exit 1; \
+		fi; \
+	done
 	@echo ""
-	@echo "✅ PDFs available in: publications/pdf/"
+	@echo "🎉 All publications rendered successfully!"
+	@echo "📂 PDFs available in: $(PDF_OUTPUT_DIR)"
 
 clean:
 	@echo "🧹 Cleaning generated files..."
-	@rm -rf publications/pdf/*.pdf
-	@rm -rf publications/*/.quarto/
-	@rm -rf publications/*/pdf/
-	@rm -rf publications/*/*.log
-	@rm -rf publications/*/*.aux
-	@rm -rf publications/*/*.tex
-	@find publications/ -name "*_files" -type d -exec rm -rf {} + 2>/dev/null || true
-	@find publications/ -name "*_cache" -type d -exec rm -rf {} + 2>/dev/null || true
+	@rm -rf $(PDF_OUTPUT_DIR)/*.pdf
+	@rm -rf $(PUB_SOURCE_DIR)/*/.quarto/
+	@rm -rf $(PUB_SOURCE_DIR)/*/pdf/
+	@rm -rf $(PUB_SOURCE_DIR)/*/*.log
+	@rm -rf $(PUB_SOURCE_DIR)/*/*.aux
+	@rm -rf $(PUB_SOURCE_DIR)/*/*.tex
+	@find $(PUB_SOURCE_DIR) -name "*_files" -type d -exec rm -rf {} + 2>/dev/null || true
 	@echo "✅ Cleanup complete"
 
 validate:
 	@echo "🔍 Validating publication formatting..."
-	@echo "Checking for common issues:"
+	@echo "Checking for common issues in Quarto files:"
 	@echo ""
-	@echo "1. Blank lines after bold headers:"
-	@grep -rn "^\*\*.*:\*\*$$" publications/*/index.qmd || echo "   ✅ No issues found"
+	@find $(PUB_SOURCE_DIR) -name "*.qmd" -type f | head -5 | while read f; do echo "  ✓ $$f"; done
 	@echo ""
-	@echo "2. Indented code blocks:"
-	@grep -rn "^[[:space:]]\+\`\`\`" publications/*/index.qmd && echo "   ❌ Found indented backticks" || echo "   ✅ No indented backticks"
-	@echo ""
-	@echo "3. Mermaid diagrams (should use Plotly):"
-	@grep -rn "mermaid" publications/*/index.qmd && echo "   ⚠️  Found mermaid (use Plotly)" || echo "   ✅ No mermaid diagrams"
-	@echo ""
-	@echo "For complete guidelines, see: ../quarto/RESEARCH_GUIDELINES.md"
+	@echo "For complete guidelines, check the APEX repo standards."
 
 # Allow passing publication name as argument
 %:

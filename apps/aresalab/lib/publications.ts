@@ -33,7 +33,7 @@ export const publications: Publication[] = [
     abstract: "We introduce GeoAI Agentic Flow, a novel architecture that synthesizes coordinate embedding, spatial neural networks, and multi-agent collaboration to achieve state-of-the-art performance in fire hazard risk assessment. Our contributions include the Coordinate Embedding Framework (CEF) with proven bi-Lipschitz properties, a Spatial Neural Network (SNN) with graph-based attention, and a Multi-Agent Collaboration Protocol (MACP) with convergence guarantees. Evaluation on 546,000+ California addresses demonstrates 89.7% accuracy with sub-100ms latency.",
     keywords: ["GeoAI", "Coordinate Embedding", "Multi-Agent Systems", "Spatial Intelligence", "Fire Hazard Assessment"],
     category: "research",
-    pdfUrl: "/research/GeoAI-Agentic-Flow.pdf",
+    pdfUrl: "/publications/pdf/GeoAI-Agentic-Flow.pdf",
     metrics: [
       { label: "Addresses Processed", value: "546K+" },
       { label: "Accuracy", value: "89.7%" },
@@ -54,7 +54,7 @@ export const publications: Publication[] = [
     abstract: "We present the theoretical foundations of the Coordinate Embedding Framework (CEF), proving that the mapping from geographic coordinates to semantic vectors satisfies key mathematical properties including bi-Lipschitz distance preservation, feature reconstruction bounds, and stage independence. These theoretical results provide rigorous guarantees for geospatial machine learning applications.",
     keywords: ["Coordinate Embedding", "Geospatial ML", "Bi-Lipschitz", "Distance Preservation", "Feature Encoding"],
     category: "research",
-    pdfUrl: "/research/Coordinate-Embedding-Framework.pdf",
+    pdfUrl: "/publications/pdf/Coordinate-Embedding-Framework.pdf",
     metrics: [
       { label: "Embedding Dim", value: "512" },
       { label: "Feature Layers", value: "4" },
@@ -75,7 +75,7 @@ export const publications: Publication[] = [
     abstract: "We formalize the Multi-Agent Collaboration Protocol (MACP) for geospatial risk assessment, proving convergence guarantees, Byzantine fault tolerance bounds, and communication efficiency theorems. A 128-agent system organized into specialized pools achieves weighted consensus with provable optimality and tolerates up to 10 Byzantine failures.",
     keywords: ["Multi-Agent Systems", "Consensus", "Byzantine Fault Tolerance", "Distributed Systems", "Risk Assessment"],
     category: "research",
-    pdfUrl: "/research/Multi-Agent-Geospatial-Coordination.pdf",
+    pdfUrl: "/publications/pdf/Multi-Agent-Geospatial-Coordination.pdf",
     metrics: [
       { label: "Agents", value: "128" },
       { label: "Fault Tolerance", value: "10 nodes" },
@@ -124,7 +124,7 @@ export const publications: Publication[] = [
     abstract: "Machine learning analysis of Spotify audio features to predict track popularity, examining the relationship between acoustic characteristics and streaming success across diverse musical genres.",
     keywords: ["Machine Learning", "Music Analytics", "Spotify", "Audio Features", "Popularity Prediction"],
     category: "research",
-    pdfUrl: "/publications/Predicting-Song-Popularity-on-Spotify.pdf",
+    pdfUrl: "/publications/pdf/Predicting-Song-Popularity-on-Spotify.pdf",
     metrics: [
       { label: "Tracks Analyzed", value: "10K+" },
       { label: "Features", value: "13" },
@@ -143,7 +143,7 @@ export const publications: Publication[] = [
     abstract: "Development of predictive models for manufacturing quality control using multi-sensor data integration, achieving significant improvement in defect detection accuracy through ensemble methods.",
     keywords: ["Manufacturing", "Quality Control", "Sensor Data", "Predictive Analytics", "Industrial ML"],
     category: "research",
-    pdfUrl: "/publications/Manufacturing-Process-Analytics.pdf",
+    pdfUrl: "/publications/pdf/Manufacturing-Process-Analytics.pdf",
     metrics: [
       { label: "Sensors", value: "12" },
       { label: "Accuracy", value: "94.2%" },
@@ -162,7 +162,7 @@ export const publications: Publication[] = [
     abstract: "Comparative analysis of centrality measures in social network graphs, examining the effectiveness of PageRank, eigenvector centrality, and betweenness centrality for influence detection.",
     keywords: ["Network Analysis", "Graph Theory", "PageRank", "Social Networks", "Centrality"],
     category: "research",
-    pdfUrl: "/publications/Network-Centrality-in-College-Football.pdf",
+    pdfUrl: "/publications/pdf/Network-Centrality-in-College-Football.pdf",
     metrics: [
       { label: "Nodes", value: "50K+" },
       { label: "Edges", value: "1.2M" },
@@ -193,7 +193,7 @@ export const books: Book[] = [
     date: "2024",
     description: "A rigorous exploration of linear algebra foundations with applications to machine learning, covering vector spaces, matrix operations, eigendecomposition, and their practical implementations.",
     chapters: 12,
-    pdfUrl: "/books/mathematical-awakening.pdf",
+    pdfUrl: "/publications/pdf/Mathematical-Awakening.pdf",
     coverGradient: "from-purple-600 to-blue-600",
   },
   {
@@ -203,7 +203,7 @@ export const books: Book[] = [
     date: "2024",
     description: "A comprehensive guide bridging theoretical machine learning concepts with production-ready implementations, covering model development, deployment, and monitoring at scale.",
     chapters: 15,
-    pdfUrl: "/books/practical-ml.pdf",
+    pdfUrl: "/publications/pdf/Practical-Machine-Learning.pdf",
     coverGradient: "from-emerald-600 to-cyan-600",
   },
 ];
@@ -223,4 +223,3 @@ export function getPublicationsByCategory(category: Publication["category"]): Pu
 export function getBookBySlug(slug: string): Book | undefined {
   return books.find((book) => book.slug === slug);
 }
-

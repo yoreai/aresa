@@ -1,0 +1,51 @@
+project:
+  type: book
+  output-dir: ../pdf
+
+book:
+  title: "Mathematical Awakening"
+  subtitle: "A Deep Dive into Linear Algebra"
+  chapters:
+    - index.qmd
+
+format:
+  pdf:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    top-level-division: chapter
+    colorlinks: true
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    fontsize: 11pt
+    documentclass: book
+    fig-pos: "H"
+    code-block-bg: true
+    code-block-border-left: "#ef5350"
+    linestretch: 1.2
+    include-before-body:
+      text: |
+        \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+        \usepackage{fancyhdr}
+        \usepackage{microtype}
+        \usepackage{booktabs}
+        \usepackage{amsmath}
+        \usepackage{amssymb}
+        \usepackage{amsthm}
+        \newtheorem{theorem}{Theorem}
+        \newtheorem{definition}{Definition}
+        \author{Yevheniy Chuba}
+        \date{2024}
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
