@@ -1,4 +1,4 @@
-.PHONY: help pdf clean validate
+.PHONY: help pdf mdx clean validate
 
 # Publication source and output directories
 PUB_SOURCE_DIR := apps/aresalab/public/publications
@@ -11,6 +11,7 @@ help:
 	@echo "Commands:"
 	@echo "  make pdf              - Render ALL publications (papers + books) to PDF"
 	@echo "  make pdf [name]       - Render specific publication (e.g., make pdf geoai_agentic_flow)"
+	@echo "  make mdx              - Generate web preview.mdx files from Quarto sources"
 	@echo "  make clean            - Remove generated PDFs and temp files"
 	@echo ""
 	@echo "Available Publications:"
@@ -46,6 +47,12 @@ pdf:
 	@echo ""
 	@echo "🎉 All publications rendered successfully!"
 	@echo "📂 PDFs available in: $(PDF_OUTPUT_DIR)"
+
+mdx:
+	@echo "🌐 Generating web preview MDX files from Quarto sources..."
+	@uv run scripts/generate_mdx_previews.py
+	@echo ""
+	@echo "✅ MDX previews updated!"
 
 clean:
 	@echo "🧹 Cleaning generated files..."
