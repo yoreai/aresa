@@ -135,9 +135,9 @@ export async function getFilteredIncidents(
   const result = await conn.query(`
     SELECT
       call_year, season, fire_category, city_name,
-      priority, priority_desc,
-      census_block_group_center__x as lng,
-      census_block_group_center__y as lat
+      priority, priority_desc, description_short,
+      census_block_group_center__x,
+      census_block_group_center__y
     FROM fire_incidents
     ${where}
   `);
@@ -149,8 +149,9 @@ export async function getFilteredIncidents(
     city_name: row.city_name,
     priority: row.priority,
     priority_desc: row.priority_desc,
-    lng: row.lng,
-    lat: row.lat,
+    description_short: row.description_short,
+    census_block_group_center__x: row.census_block_group_center__x,
+    census_block_group_center__y: row.census_block_group_center__y,
   }));
 }
 

@@ -67,6 +67,7 @@ export function useHybridData() {
   // Track DuckDB initialization
   const [duckdbReady, setDuckdbReady] = useState(false);
   const duckdbInitStarted = useRef(false);
+  const initialIncidentsLoaded = useRef(false);
 
   // 1. Load pre-aggregated JSON (instant first paint)
   useEffect(() => {
@@ -106,6 +107,20 @@ export function useHybridData() {
 
   // 2. Initialize DuckDB in background (for fast filtering)
   useEffect(() => {
+    // Skip if already initialized (DuckDB persists across re-renders)
+    if (isDuckDBReady()) {
+      setDuckdbReady(true);
+      // Load incidents if not already loaded
+      if (!initialIncidentsLoaded.current) {
+        initialIncidentsLoaded.current = true;
+        getFilteredIncidents([], [], []).then(incidents => {
+          setFilteredIncidents(incidents);
+          console.log(`📍 Loaded ${incidents.length.toLocaleString()} incidents for maps`);
+        });
+      }
+      return;
+    }
+
     if (duckdbInitStarted.current) return;
     duckdbInitStarted.current = true;
 
@@ -115,15 +130,23 @@ export function useHybridData() {
         await initDuckDB();
         setDuckdbReady(true);
         console.log("🦆 DuckDB ready for instant filtering!");
+
+        // Load initial incidents for maps (unfiltered)
+        if (!initialIncidentsLoaded.current) {
+          initialIncidentsLoaded.current = true;
+          console.log("📍 Loading initial map incidents...");
+          const incidents = await getFilteredIncidents([], [], []);
+          setFilteredIncidents(incidents);
+          console.log(`📍 Loaded ${incidents.length.toLocaleString()} incidents for maps`);
+        }
       } catch (error) {
         console.error("DuckDB initialization failed (falling back to JS filtering):", error);
         // App still works with pre-aggregated data + JS filtering
       }
     }
 
-    // Start loading DuckDB after a short delay to not block initial render
-    const timer = setTimeout(initDB, 500);
-    return () => clearTimeout(timer);
+    // Start DuckDB initialization immediately (don't use timeout which can be cancelled)
+    initDB();
   }, []);
 
   // 3. Apply filters
@@ -151,8 +174,15 @@ export function useHybridData() {
       setFalseAlarms(preAgg.falseAlarms || []);
       setStats(preAgg.stats || defaultStats);
       setFilteredCount(preAgg.stats?.total || 0);
-      setFilteredIncidents([]);
       setDataSource("precomputed");
+
+      // Load all incidents for maps if DuckDB is ready
+      if (isDuckDBReady()) {
+        getFilteredIncidents([], [], []).then(incidents => {
+          setFilteredIncidents(incidents);
+          console.log(`📍 Loaded ${incidents.length.toLocaleString()} incidents for maps (unfiltered)`);
+        });
+      }
       return;
     }
 
