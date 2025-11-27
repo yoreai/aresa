@@ -19,10 +19,10 @@ impl CredentialStore {
     pub fn store(&self, name: &str, secret: &str) -> Result<()> {
         let entry = Entry::new(SERVICE_NAME, name)
             .context("Failed to create keyring entry")?;
-        
+
         entry.set_password(secret)
             .context("Failed to store credential in keychain")?;
-        
+
         Ok(())
     }
 
@@ -30,7 +30,7 @@ impl CredentialStore {
     pub fn get(&self, name: &str) -> Result<String> {
         let entry = Entry::new(SERVICE_NAME, name)
             .context("Failed to create keyring entry")?;
-        
+
         entry.get_password()
             .context(format!("Credential '{}' not found in keychain", name))
     }
@@ -39,10 +39,10 @@ impl CredentialStore {
     pub fn delete(&self, name: &str) -> Result<()> {
         let entry = Entry::new(SERVICE_NAME, name)
             .context("Failed to create keyring entry")?;
-        
+
         entry.delete_password()
             .context("Failed to delete credential")?;
-        
+
         Ok(())
     }
 

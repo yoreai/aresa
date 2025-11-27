@@ -18,7 +18,7 @@ impl PostgresConnector {
         let pool = PgPool::connect(uri)
             .await
             .context("Failed to connect to PostgreSQL")?;
-        
+
         Ok(Self { pool })
     }
 
@@ -73,9 +73,9 @@ impl PostgresConnector {
     pub async fn list_tables(&self) -> Result<Vec<String>> {
         let rows = sqlx::query(
             r#"
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'public' 
+            SELECT table_name
+            FROM information_schema.tables
+            WHERE table_schema = 'public'
             ORDER BY table_name
             "#,
         )
@@ -94,7 +94,7 @@ impl PostgresConnector {
     pub async fn get_table_sizes(&self) -> Result<Vec<(String, i64, String)>> {
         let rows = sqlx::query(
             r#"
-            SELECT 
+            SELECT
                 relname as table_name,
                 reltuples::bigint as row_count,
                 pg_size_pretty(pg_total_relation_size(relid)) as size
@@ -123,7 +123,7 @@ impl PostgresConnector {
     pub async fn get_columns(&self, table: &str) -> Result<Vec<ColumnInfo>> {
         let rows = sqlx::query(
             r#"
-            SELECT 
+            SELECT
                 column_name,
                 data_type,
                 is_nullable

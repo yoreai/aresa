@@ -1,0 +1,168 @@
+name: Release ARESA CLI
+
+on:
+  push:
+    tags:
+      - 'cli-v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.1.0)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # macOS
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            name: aresa-darwin-arm64
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            name: aresa-darwin-x64
+          # Linux
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: aresa-linux-x64
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: aresa-linux-arm64
+          # Windows
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            name: aresa-windows-x64.exe
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-action@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools (Linux ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build
+        working-directory: tools/aresa-cli
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd tools/aresa-cli/target/${{ matrix.target }}/release
+          chmod +x aresa
+          tar -czvf ../../../${{ matrix.name }}.tar.gz aresa
+          cd ../../..
+          shasum -a 256 ${{ matrix.name }}.tar.gz > ${{ matrix.name }}.tar.gz.sha256
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd tools/aresa-cli/target/${{ matrix.target }}/release
+          Compress-Archive -Path aresa.exe -DestinationPath ../../../${{ matrix.name }}.zip
+          cd ../../..
+          Get-FileHash ${{ matrix.name }}.zip -Algorithm SHA256 | Format-List > ${{ matrix.name }}.zip.sha256
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: |
+            tools/aresa-cli/${{ matrix.name }}.*
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/cli-v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: cli-v${{ steps.version.outputs.version }}
+          name: ARESA CLI v${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/**/*
+          body: |
+            ## ARESA CLI v${{ steps.version.outputs.version }}
+            
+            Natural language interface for searching filesystems, databases, and cloud storage.
+            
+            ### Installation
+            
+            **macOS (Apple Silicon)**
+            ```bash
+            curl -L https://github.com/yoreai/aresa/releases/download/cli-v${{ steps.version.outputs.version }}/aresa-darwin-arm64.tar.gz | tar xz
+            sudo mv aresa /usr/local/bin/
+            ```
+            
+            **macOS (Intel)**
+            ```bash
+            curl -L https://github.com/yoreai/aresa/releases/download/cli-v${{ steps.version.outputs.version }}/aresa-darwin-x64.tar.gz | tar xz
+            sudo mv aresa /usr/local/bin/
+            ```
+            
+            **Linux (x64)**
+            ```bash
+            curl -L https://github.com/yoreai/aresa/releases/download/cli-v${{ steps.version.outputs.version }}/aresa-linux-x64.tar.gz | tar xz
+            sudo mv aresa /usr/local/bin/
+            ```
+            
+            **Windows**
+            Download `aresa-windows-x64.exe.zip` and extract to your PATH.
+            
+            ### Quick Start
+            
+            ```bash
+            # Configure LLM
+            aresa config set-llm openai --api-key sk-...
+            
+            # Add a database
+            aresa config add postgres mydb --uri postgresql://...
+            
+            # Search!
+            aresa "find python files with TODO comments"
+            aresa "show me users who signed up last week"
+            ```
+            
+            ### Checksums
+            
+            See `.sha256` files for verification.
+

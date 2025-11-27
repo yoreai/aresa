@@ -121,7 +121,7 @@ impl OutputRenderer {
 
         // Group by directory
         let mut tree: BTreeMap<String, Vec<&FileMatch>> = BTreeMap::new();
-        
+
         for result in results {
             let dir = result
                 .path
@@ -141,7 +141,7 @@ impl OutputRenderer {
                     .map(|n| n.to_string_lossy().to_string())
                     .unwrap_or_default();
                 println!("  {} {}", prefix.dimmed(), filename.bright_white());
-                
+
                 if let Some(matches) = &file.matches {
                     for m in matches.iter().take(3) {
                         let line_prefix = if i == files.len() - 1 { "    " } else { "│   " };
@@ -191,7 +191,7 @@ impl OutputRenderer {
                         "●".bright_cyan(),
                         result.path.display().to_string().bright_white().bold()
                     );
-                    
+
                     for m in matches {
                         println!(
                             "  {}:{} {}",
@@ -246,7 +246,7 @@ fn highlight_match(line: &str, matched: &str) -> String {
     if matched.is_empty() {
         return line.to_string();
     }
-    
+
     line.replace(matched, &matched.bright_yellow().bold().to_string())
 }
 

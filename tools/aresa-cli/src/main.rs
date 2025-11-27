@@ -15,7 +15,7 @@ use output::OutputRenderer;
 use query::QueryExecutor;
 
 /// ARESA CLI - Natural Language Data Search
-/// 
+///
 /// Search filesystems, databases, and cloud storage using natural language.
 /// Part of the Autonomous Research Engineering & Synthesis Architecture.
 #[derive(Parser)]
@@ -345,14 +345,14 @@ async fn handle_file_search(
     limit: Option<usize>,
 ) -> Result<()> {
     use connectors::filesystem::FilesystemConnector;
-    
+
     let connector = FilesystemConnector::new();
     let results = if content {
         connector.search_content(path, query, limit).await?
     } else {
         connector.search_files(path, query, limit).await?
     };
-    
+
     renderer.render_file_results(&results)?;
     Ok(())
 }
@@ -385,7 +385,7 @@ async fn handle_natural_language_query(
     limit: Option<usize>,
 ) -> Result<()> {
     use indicatif::{ProgressBar, ProgressStyle};
-    
+
     let spinner = ProgressBar::new_spinner();
     spinner.set_style(
         ProgressStyle::default_spinner()
@@ -398,18 +398,18 @@ async fn handle_natural_language_query(
     // Parse natural language query
     let parser = QueryParser::new(config)?;
     let parsed = parser.parse(query).await?;
-    
+
     spinner.set_message(format!("Executing {} query...", parsed.target_type));
-    
+
     // Execute the query
     let executor = QueryExecutor::new(config);
     let results = executor.execute_parsed(&parsed, limit).await?;
-    
+
     spinner.finish_and_clear();
-    
+
     // Render results
     renderer.render_query_results(&results)?;
-    
+
     Ok(())
 }
 

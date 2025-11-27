@@ -51,7 +51,7 @@ impl ConfigManager {
     /// Load configuration from disk
     pub fn load() -> Result<Self> {
         let config_path = Self::config_path()?;
-        
+
         let config = if config_path.exists() {
             let content = fs::read_to_string(&config_path)
                 .context("Failed to read config file")?;
@@ -74,11 +74,11 @@ impl ConfigManager {
     fn config_path() -> Result<PathBuf> {
         let proj_dirs = ProjectDirs::from("ai", "yoreai", "aresa")
             .context("Failed to determine config directory")?;
-        
+
         let config_dir = proj_dirs.config_dir();
         fs::create_dir_all(config_dir)
             .context("Failed to create config directory")?;
-        
+
         Ok(config_dir.join("config.toml"))
     }
 
@@ -127,7 +127,7 @@ impl ConfigManager {
         // Save source config (without sensitive data)
         let mut config = self.config.clone();
         config.sources.insert(name.to_string(), source);
-        
+
         let content = toml::to_string_pretty(&config)?;
         fs::write(&self.config_path, content)?;
 
@@ -138,13 +138,13 @@ impl ConfigManager {
     pub fn remove_source(&self, name: &str) -> Result<()> {
         let mut config = self.config.clone();
         config.sources.remove(name);
-        
+
         // Remove from keychain
         let _ = self.credentials.delete(name);
-        
+
         let content = toml::to_string_pretty(&config)?;
         fs::write(&self.config_path, content)?;
-        
+
         Ok(())
     }
 
@@ -172,7 +172,7 @@ impl ConfigManager {
                 name.bright_white().bold(),
                 format!("({})", type_str).dimmed()
             );
-            
+
             if let Some(project) = &source.project {
                 println!("    {} {}", "project:".dimmed(), project);
             }
@@ -239,7 +239,7 @@ impl ConfigManager {
                 "●".bright_blue(),
                 name.bright_white()
             );
-            
+
             match self.test_connection(name).await {
                 Ok(_) => println!("{}", "✓ connected".bright_green()),
                 Err(e) => println!("{} {}", "✗".bright_red(), e.to_string().dimmed()),
@@ -279,7 +279,7 @@ impl ConfigManager {
         let provider = self.config.llm.as_ref()
             .context("No LLM provider configured")?
             .provider.clone();
-        
+
         self.credentials.get(&format!("llm_{}", provider))
     }
 

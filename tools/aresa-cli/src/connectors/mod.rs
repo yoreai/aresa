@@ -3,11 +3,8 @@
 pub mod filesystem;
 pub mod postgres;
 pub mod sqlite;
-
-// These will be implemented in future phases
-// pub mod bigquery;
-// pub mod s3;
-// pub mod gcs;
+pub mod bigquery;
+pub mod s3;
 
 use anyhow::Result;
 use async_trait::async_trait;

@@ -8,6 +8,8 @@ use crate::config::ConfigManager;
 use crate::connectors::filesystem::FilesystemConnector;
 use crate::connectors::postgres::PostgresConnector;
 use crate::connectors::sqlite::SqliteConnector;
+use crate::connectors::bigquery::BigQueryConnector;
+use crate::connectors::s3::S3Connector;
 use crate::nlp::{ParsedQuery, QueryIntent, TargetType};
 
 /// Query execution result
@@ -84,9 +86,9 @@ impl<'a> QueryExecutor<'a> {
                 let connector = FilesystemConnector::new();
                 let pattern = parsed.pattern.as_deref().unwrap_or("*");
                 let path = parsed.path.as_deref().unwrap_or(".");
-                
+
                 let results = connector.search_files(path, pattern, limit).await?;
-                
+
                 Ok(QueryResult {
                     columns: vec!["path".to_string(), "size".to_string(), "modified".to_string()],
                     rows: results
@@ -117,9 +119,9 @@ impl<'a> QueryExecutor<'a> {
                 let connector = FilesystemConnector::new();
                 let pattern = parsed.pattern.as_deref().unwrap_or("");
                 let path = parsed.path.as_deref().unwrap_or(".");
-                
+
                 let results = connector.search_content(path, pattern, limit).await?;
-                
+
                 Ok(QueryResult {
                     columns: vec!["path".to_string(), "line".to_string(), "content".to_string()],
                     rows: results
@@ -141,9 +143,9 @@ impl<'a> QueryExecutor<'a> {
             (QueryIntent::FindGitRepos, TargetType::Filesystem) => {
                 let connector = FilesystemConnector::new();
                 let path = parsed.path.as_deref().unwrap_or(".");
-                
+
                 let results = connector.find_git_repos(path).await?;
-                
+
                 Ok(QueryResult {
                     columns: vec![
                         "path".to_string(),
@@ -183,12 +185,12 @@ impl<'a> QueryExecutor<'a> {
                     .context("No PostgreSQL source specified")?;
                 let uri = self.config.get_uri(source_name)?;
                 let connector = PostgresConnector::new(&uri).await?;
-                
+
                 let sql = parsed.sql.as_ref()
                     .context("No SQL query generated")?;
-                
+
                 let (columns, rows) = connector.execute_sql(sql, limit).await?;
-                
+
                 Ok(QueryResult {
                     columns,
                     rows,
@@ -201,9 +203,9 @@ impl<'a> QueryExecutor<'a> {
                     .context("No PostgreSQL source specified")?;
                 let uri = self.config.get_uri(source_name)?;
                 let connector = PostgresConnector::new(&uri).await?;
-                
+
                 let tables = connector.list_tables().await?;
-                
+
                 Ok(QueryResult {
                     columns: vec!["table_name".to_string()],
                     rows: tables
@@ -223,11 +225,78 @@ impl<'a> QueryExecutor<'a> {
                     .context("No SQLite source specified")?;
                 let uri = self.config.get_uri(source_name)?;
                 let connector = SqliteConnector::new(&uri).await?;
+
+                let sql = parsed.sql.as_ref()
+                    .context("No SQL query generated")?;
+
+                let (columns, rows) = connector.execute_sql(sql, limit).await?;
+
+                Ok(QueryResult {
+                    columns,
+                    rows,
+                    execution_time_ms: start.elapsed().as_millis() as u64,
+                })
+            }
+
+            // BigQuery operations
+            (QueryIntent::SqlQuery, TargetType::BigQuery) => {
+                let source_name = parsed.target_source.as_ref()
+                    .context("No BigQuery source specified")?;
+                let source = self.config.get_source(source_name)
+                    .context("Source not found")?;
+                let project = source.project.as_ref()
+                    .context("BigQuery project not configured")?;
+                let credentials = source.credentials_path.as_deref();
+                
+                let connector = BigQueryConnector::new(project, credentials).await?;
                 
                 let sql = parsed.sql.as_ref()
                     .context("No SQL query generated")?;
                 
                 let (columns, rows) = connector.execute_sql(sql, limit).await?;
+                
+                Ok(QueryResult {
+                    columns,
+                    rows,
+                    execution_time_ms: start.elapsed().as_millis() as u64,
+                })
+            }
+
+            // S3 operations
+            (QueryIntent::SearchBlobs, TargetType::S3) => {
+                let source_name = parsed.target_source.as_ref()
+                    .context("No S3 source specified")?;
+                let source = self.config.get_source(source_name)
+                    .context("Source not found")?;
+                let bucket = source.bucket.as_ref()
+                    .context("S3 bucket not configured")?;
+                
+                let connector = S3Connector::new(bucket, None, None, None).await?;
+                let pattern = parsed.pattern.as_deref().unwrap_or("");
+                
+                let (columns, rows) = if pattern.is_empty() {
+                    connector.list_as_results(None, limit).await?
+                } else {
+                    let objects = connector.search(pattern, limit).await?;
+                    let columns = vec![
+                        "key".to_string(),
+                        "size".to_string(),
+                        "last_modified".to_string(),
+                        "storage_class".to_string(),
+                    ];
+                    let rows: Vec<std::collections::HashMap<String, String>> = objects
+                        .into_iter()
+                        .map(|obj| {
+                            let mut row = std::collections::HashMap::new();
+                            row.insert("key".to_string(), obj.key);
+                            row.insert("size".to_string(), humansize::format_size(obj.size, humansize::BINARY));
+                            row.insert("last_modified".to_string(), obj.last_modified.format("%Y-%m-%d %H:%M:%S").to_string());
+                            row.insert("storage_class".to_string(), obj.storage_class);
+                            row
+                        })
+                        .collect();
+                    (columns, rows)
+                };
                 
                 Ok(QueryResult {
                     columns,

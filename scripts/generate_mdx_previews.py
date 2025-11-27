@@ -42,31 +42,31 @@ def clean_quarto_syntax(text: str) -> str:
     """Remove Quarto-specific syntax that doesn't work in MDX."""
     # Remove Python code blocks (they won't execute in MDX)
     text = re.sub(r'```\{?python.*?\n.*?```', '', text, flags=re.DOTALL)
-    
+
     # Remove Quarto attributes from headers (e.g., {.unnumbered}, {#sec-intro})
     text = re.sub(r'\s*\{[^}]*\}\s*$', '', text, flags=re.MULTILINE)
-    
+
     # Remove Quarto figure labels
     text = re.sub(r'\{#fig-[^}]+\}', '', text)
-    
+
     # Remove Quarto cross-references
     text = re.sub(r'@fig-[\w-]+', 'Figure', text)
     text = re.sub(r'@tbl-[\w-]+', 'Table', text)
     text = re.sub(r'@eq-[\w-]+', 'Equation', text)
     text = re.sub(r'\[@[\w-]+\]', '', text)  # Remove citation references like [@nfpa2023]
-    
+
     # Convert LaTeX/Quarto em-dashes to proper Unicode
     text = text.replace('---', '—')  # em-dash
     text = text.replace('--', '–')   # en-dash
-    
+
     # Remove standalone em-dashes on their own line
     text = re.sub(r'^\s*—\s*$', '', text, flags=re.MULTILINE)
-    
+
     # Keep LaTeX math as-is (MDX + KaTeX handles it)
-    
+
     # Remove excessive blank lines
     text = re.sub(r'\n{3,}', '\n\n', text)
-    
+
     return text.strip()
 
 
@@ -97,11 +97,11 @@ def generate_preview_mdx(pub_dir: Path) -> bool:
     if not abstract and not introduction:
         # Try to extract Table of Contents section
         toc = extract_section(index_content, "Table of Contents")
-        
+
         if toc:
             # Clean the TOC content
             toc_cleaned = clean_quarto_syntax(toc)
-            
+
             mdx_content = f"## Table of Contents\n\n{toc_cleaned}\n\n---\n\n*Download the full book PDF to explore these topics in depth.*"
             output_mdx.write_text(mdx_content, encoding='utf-8')
             print(f"  ✅ Generated (book TOC): {output_mdx.relative_to(pub_dir.parent.parent.parent)}")

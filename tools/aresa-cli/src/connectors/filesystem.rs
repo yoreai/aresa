@@ -63,7 +63,7 @@ impl FilesystemConnector {
             }
 
             let entry_path = entry.path();
-            
+
             // Skip hidden files and directories
             if entry_path
                 .file_name()
@@ -126,7 +126,7 @@ impl FilesystemConnector {
             }
 
             let entry_path = entry.path();
-            
+
             // Skip directories
             if entry_path.is_dir() {
                 continue;
@@ -203,10 +203,10 @@ impl FilesystemConnector {
             .filter_map(|e| e.ok())
         {
             let entry_path = entry.path();
-            
+
             if entry_path.ends_with(".git") && entry_path.is_dir() {
                 let repo_path = entry_path.parent().unwrap_or(entry_path);
-                
+
                 if let Ok(repo) = git2::Repository::open(repo_path) {
                     let status = get_repo_status(&repo);
                     let branch = get_current_branch(&repo);
@@ -288,7 +288,7 @@ fn matches_pattern(name: &str, pattern: &str) -> bool {
             return re.is_match(name);
         }
     }
-    
+
     // Simple substring match
     name.contains(pattern)
 }
@@ -312,7 +312,7 @@ fn get_repo_status(repo: &git2::Repository) -> RepoStatus {
     if let Ok(statuses) = repo.statuses(None) {
         for entry in statuses.iter() {
             let s = entry.status();
-            
+
             if s.is_wt_modified() || s.is_wt_deleted() || s.is_wt_renamed() {
                 status.modified += 1;
             }

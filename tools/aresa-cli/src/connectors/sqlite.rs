@@ -24,7 +24,7 @@ impl SqliteConnector {
         let pool = SqlitePool::connect(&uri)
             .await
             .context("Failed to connect to SQLite database")?;
-        
+
         Ok(Self { pool })
     }
 
@@ -161,7 +161,7 @@ fn extract_value(row: &sqlx::sqlite::SqliteRow, index: usize, _type_name: &str) 
     if let Ok(v) = row.try_get::<bool, _>(index) {
         return v.to_string();
     }
-    
+
     "NULL".to_string()
 }
 
