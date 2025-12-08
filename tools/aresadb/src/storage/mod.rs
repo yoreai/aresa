@@ -7,12 +7,16 @@ mod local;
 mod bucket;
 mod cache;
 mod parallel;
+pub mod vector;
+pub mod vector_index;
 
-pub use node::{Node, Edge, NodeId, EdgeId, Value, Timestamp};
+pub use node::{Node, Edge, NodeId, EdgeId, Value, Timestamp, DistanceMetric, SimilarityResult};
 pub use local::LocalStorage;
 pub use bucket::BucketStorage;
 pub use cache::CacheLayer;
 pub use parallel::{ParallelExecutor, ParallelTraversalResult, SnapshotReader};
+pub use vector::{VectorSearch, VectorNodeBuilder};
+pub use vector_index::{VectorIndex, IndexStats};
 
 use anyhow::{Result, Context};
 use std::path::{Path, PathBuf};
@@ -328,6 +332,81 @@ impl Database {
     /// Get database name
     pub fn name(&self) -> String {
         self.config.read().name.clone()
+    }
+
+    // ========== Vector/Embedding Operations ==========
+
+    /// Insert a node with a vector embedding
+    pub async fn insert_with_embedding(
+        &self,
+        node_type: &str,
+        properties: serde_json::Value,
+        embedding_field: &str,
+        embedding: Vec<f32>,
+    ) -> Result<Node> {
+        let mut props = Value::from_json(properties)?;
+
+        // Add embedding to properties
+        if let Value::Object(ref mut map) = props {
+            map.insert(embedding_field.to_string(), Value::Vector(embedding));
+        }
+
+        let node = Node::new(node_type, props);
+        self.local.insert_node(&node).await?;
+        Ok(node)
+    }
+
+    /// Perform similarity search on vector embeddings
+    pub async fn similarity_search(
+        &self,
+        query_vector: &[f32],
+        node_type: &str,
+        embedding_field: &str,
+        k: usize,
+        metric: DistanceMetric,
+    ) -> Result<Vec<SimilarityResult>> {
+        // Get all nodes of the type
+        let nodes = self.local.get_nodes_by_type(node_type, None).await?;
+
+        // Create search engine
+        let search = VectorSearch::new(metric);
+
+        // Perform search
+        let results = search.search(query_vector, &nodes, embedding_field, k);
+
+        Ok(results)
+    }
+
+    /// Find similar nodes within a distance threshold
+    pub async fn similarity_search_radius(
+        &self,
+        query_vector: &[f32],
+        node_type: &str,
+        embedding_field: &str,
+        max_distance: f64,
+        metric: DistanceMetric,
+    ) -> Result<Vec<SimilarityResult>> {
+        let nodes = self.local.get_nodes_by_type(node_type, None).await?;
+        let search = VectorSearch::new(metric);
+        let results = search.search_radius(query_vector, &nodes, embedding_field, max_distance);
+        Ok(results)
+    }
+
+    /// Get a node and its embedding
+    pub async fn get_node_with_embedding(
+        &self,
+        id: &str,
+        embedding_field: &str,
+    ) -> Result<Option<(Node, Option<Vec<f32>>)>> {
+        let node = self.get_node(id).await?;
+
+        Ok(node.map(|n| {
+            let embedding = n.properties
+                .get(embedding_field)
+                .and_then(|v| v.as_vector())
+                .map(|v| v.to_vec());
+            (n, embedding)
+        }))
     }
 }
 

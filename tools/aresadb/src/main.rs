@@ -1,31 +1,35 @@
 //! AresaDB CLI Entry Point
 //!
-//! Unified AI-native database engine with natural language queries.
+//! High-performance multi-model database engine with SQL queries.
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-mod ai;
 mod cli;
+mod distributed;
 mod output;
 mod query;
+mod rag;
 mod schema;
 mod storage;
 
-use cli::commands::{handle_command, OutputFormat};
+use cli::commands::OutputFormat;
 use cli::repl::Repl;
 
-/// AresaDB - Unified AI-Native Database Engine
+/// Database format version for compatibility checking
+pub const FORMAT_VERSION: u32 = 1;
+
+/// AresaDB - High-Performance Multi-Model Database Engine
 ///
 /// A blazing-fast database that supports Key/Value, Graph, and Relational
-/// models with AI-powered natural language queries.
+/// models with SQL queries and a unified property graph architecture.
 #[derive(Parser)]
 #[command(name = "aresadb")]
 #[command(author = "Yevheniy Chuba <yevheniyc@gmail.com>")]
 #[command(version)]
-#[command(about = "Unified AI-native database - KV, Graph, and Relational in one", long_about = None)]
+#[command(about = "High-performance multi-model database - KV, Graph, and Relational in one", long_about = None)]
 #[command(propagate_version = true)]
 struct Cli {
     #[command(subcommand)]
@@ -151,6 +155,119 @@ enum Commands {
     Delete {
         /// Node ID
         id: String,
+    },
+
+    /// Vector similarity search (RAG)
+    Search {
+        /// Node type to search in
+        node_type: String,
+        /// Query vector as JSON array [0.1, 0.2, ...]
+        #[arg(short, long)]
+        vector: String,
+        /// Field containing embeddings (default: "embedding")
+        #[arg(short, long, default_value = "embedding")]
+        field: String,
+        /// Number of results to return
+        #[arg(short, long, default_value = "10")]
+        k: usize,
+        /// Distance metric: cosine, euclidean, dot, manhattan
+        #[arg(short, long, default_value = "cosine")]
+        metric: String,
+    },
+
+    /// Insert a node with vector embedding
+    Embed {
+        /// Node type
+        node_type: String,
+        /// Properties as JSON (including content to embed)
+        #[arg(short, long)]
+        props: String,
+        /// Vector embedding as JSON array [0.1, 0.2, ...]
+        #[arg(short, long)]
+        vector: String,
+        /// Field name for embedding (default: "embedding")
+        #[arg(short, long, default_value = "embedding")]
+        field: String,
+    },
+
+    /// Chunk a document for RAG (split into embeddable pieces)
+    Chunk {
+        /// Text content to chunk (or use --file)
+        #[arg(short, long)]
+        text: Option<String>,
+        /// File path to read content from
+        #[arg(short = 'F', long)]
+        file: Option<String>,
+        /// Document ID (for tracking chunks)
+        #[arg(short, long, default_value = "doc")]
+        document_id: String,
+        /// Chunking strategy: fixed, sentence, paragraph, semantic
+        #[arg(short, long, default_value = "fixed")]
+        strategy: String,
+        /// Chunk size (chars for fixed, tokens for sentence)
+        #[arg(short = 'S', long, default_value = "512")]
+        size: usize,
+        /// Overlap between chunks (for fixed strategy)
+        #[arg(short, long, default_value = "50")]
+        overlap: usize,
+        /// Store chunks in database (requires --props for base properties)
+        #[arg(long)]
+        store: bool,
+        /// Base properties for stored chunks (JSON)
+        #[arg(long)]
+        props: Option<String>,
+    },
+
+    /// Retrieve context for RAG query
+    Context {
+        /// Query text
+        query: String,
+        /// Query vector as JSON array
+        #[arg(short, long)]
+        vector: String,
+        /// Node type to search
+        #[arg(short, long, default_value = "chunk")]
+        node_type: String,
+        /// Embedding field name
+        #[arg(short, long, default_value = "embedding")]
+        field: String,
+        /// Maximum tokens to retrieve
+        #[arg(short = 'M', long, default_value = "4096")]
+        max_tokens: usize,
+        /// Minimum similarity score
+        #[arg(short = 's', long, default_value = "0.0")]
+        min_score: f64,
+        /// Output format: llm, json, text
+        #[arg(short, long, default_value = "llm")]
+        output: String,
+    },
+
+    /// Ingest document: chunk + embed + store in one step
+    Ingest {
+        /// Text content to ingest (or use --file)
+        #[arg(short, long)]
+        text: Option<String>,
+        /// File path to read content from
+        #[arg(short = 'F', long)]
+        file: Option<String>,
+        /// Document ID for tracking
+        #[arg(short, long, default_value = "doc")]
+        document_id: String,
+        /// Embedding provider: openai, local
+        #[arg(short, long, default_value = "local")]
+        provider: String,
+        /// OpenAI API key (or set OPENAI_API_KEY)
+        #[arg(long)]
+        api_key: Option<String>,
+        /// Chunk size
+        #[arg(short = 'S', long, default_value = "512")]
+        chunk_size: usize,
+        /// Chunk overlap
+        #[arg(short = 'O', long, default_value = "50")]
+        overlap: usize,
+        /// Additional properties (JSON)
+        #[arg(long)]
+        props: Option<String>,
     },
 }
 
@@ -289,6 +406,36 @@ async fn main() -> Result<()> {
             let db_path = cli.database.as_deref().unwrap_or(".");
             handle_delete(db_path, &id).await?;
         }
+        Some(Commands::Search { node_type, vector, field, k, metric }) => {
+            let db_path = cli.database.as_deref().unwrap_or(".");
+            handle_vector_search(db_path, &node_type, &vector, &field, k, &metric, cli.format).await?;
+        }
+        Some(Commands::Embed { node_type, props, vector, field }) => {
+            let db_path = cli.database.as_deref().unwrap_or(".");
+            handle_embed(db_path, &node_type, &props, &vector, &field, cli.format).await?;
+        }
+        Some(Commands::Chunk { text, file, document_id, strategy, size, overlap, store, props }) => {
+            let db_path = cli.database.as_deref().unwrap_or(".");
+            handle_chunk(
+                db_path, text.as_deref(), file.as_deref(), &document_id,
+                &strategy, size, overlap, store, props.as_deref(), cli.format
+            ).await?;
+        }
+        Some(Commands::Context { query, vector, node_type, field, max_tokens, min_score, output }) => {
+            let db_path = cli.database.as_deref().unwrap_or(".");
+            handle_context(
+                db_path, &query, &vector, &node_type, &field,
+                max_tokens, min_score, &output, cli.format
+            ).await?;
+        }
+        Some(Commands::Ingest { text, file, document_id, provider, api_key, chunk_size, overlap, props }) => {
+            let db_path = cli.database.as_deref().unwrap_or(".");
+            handle_ingest(
+                db_path, text.as_deref(), file.as_deref(), &document_id,
+                &provider, api_key.as_deref(), chunk_size, overlap,
+                props.as_deref(), cli.format
+            ).await?;
+        }
         None => {
             if cli.query.is_empty() {
                 print_welcome();
@@ -357,8 +504,8 @@ fn print_welcome() {
             .bright_cyan()
     );
     println!(
-        "│       {}        │",
-        "Unified AI-Native Database Engine".white().bold()
+        "│     {}      │",
+        "High-Performance Multi-Model Database".white().bold()
     );
     println!(
         "│         {}          │",
@@ -379,22 +526,22 @@ fn print_welcome() {
     println!(
         "  {} {}",
         "aresadb init ./mydata".bright_green(),
-        "                    # Create new database".white()
-    );
-    println!(
-        "  {} {}",
-        "aresadb".bright_green(),
-        "\"find all users with age > 30\"    # Natural language query".white()
+        "               # Create new database".white()
     );
     println!(
         "  {} {}",
         "aresadb query".bright_green(),
-        "\"SELECT * FROM users\"     # SQL query".white()
+        "\"SELECT * FROM users\" # SQL query".white()
     );
     println!(
         "  {} {}",
         "aresadb repl".bright_green(),
-        "                            # Interactive mode".white()
+        "                       # Interactive mode".white()
+    );
+    println!(
+        "  {} {}",
+        "aresadb status".bright_green(),
+        "                     # Database status".white()
     );
     println!();
     println!("{}", "Quick Start:".bright_yellow().bold());
@@ -408,11 +555,11 @@ fn print_welcome() {
     );
     println!(
         "  3. Insert data:   {}",
-        "aresadb \"add user John age 30\"".bright_green()
+        "aresadb insert users --props '{\"name\": \"John\", \"age\": 30}'".bright_green()
     );
     println!(
         "  4. Query data:    {}",
-        "aresadb \"show all users\"".bright_green()
+        "aresadb query \"SELECT * FROM users\"".bright_green()
     );
     println!();
     println!(
@@ -750,33 +897,14 @@ async fn handle_natural_language(
     format: OutputFormat,
     limit: Option<usize>,
 ) -> Result<()> {
-    use indicatif::{ProgressBar, ProgressStyle};
     use storage::Database;
     use query::QueryEngine;
-    use ai::NlpProcessor;
     use output::Renderer;
 
-    let spinner = ProgressBar::new_spinner();
-    spinner.set_style(
-        ProgressStyle::default_spinner()
-            .tick_chars("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏")
-            .template("{spinner:.cyan} {msg}")?,
-    );
-    spinner.set_message("Understanding your query...");
-    spinner.enable_steady_tick(std::time::Duration::from_millis(80));
-
+    // Try to parse as SQL directly
     let db = Database::open(db_path).await?;
-    let nlp = NlpProcessor::new()?;
-
-    // Parse natural language to SQL or operations
-    let parsed = nlp.parse(query, &db).await?;
-
-    spinner.set_message("Executing query...");
-
     let engine = QueryEngine::new(db);
-    let results = engine.execute_parsed(&parsed, limit).await?;
-
-    spinner.finish_and_clear();
+    let results = engine.execute_sql(query, limit).await?;
 
     let renderer = Renderer::new(format);
     renderer.render_results(&results)?;
@@ -784,4 +912,395 @@ async fn handle_natural_language(
     Ok(())
 }
 
+async fn handle_vector_search(
+    db_path: &str,
+    node_type: &str,
+    vector_json: &str,
+    field: &str,
+    k: usize,
+    metric_str: &str,
+    format: OutputFormat,
+) -> Result<()> {
+    use storage::{Database, DistanceMetric};
+    use output::Renderer;
 
+    let db = Database::open(db_path).await?;
+
+    // Parse the query vector
+    let query_vector: Vec<f32> = serde_json::from_str(vector_json)
+        .map_err(|e| anyhow::anyhow!("Invalid vector JSON: {}. Expected format: [0.1, 0.2, ...]", e))?;
+
+    // Parse distance metric
+    let metric = match metric_str.to_lowercase().as_str() {
+        "cosine" => DistanceMetric::Cosine,
+        "euclidean" | "l2" => DistanceMetric::Euclidean,
+        "dot" | "dotproduct" | "inner" => DistanceMetric::DotProduct,
+        "manhattan" | "l1" => DistanceMetric::Manhattan,
+        _ => {
+            println!(
+                "{} Unknown metric '{}', using cosine",
+                "!".bright_yellow(),
+                metric_str
+            );
+            DistanceMetric::Cosine
+        }
+    };
+
+    println!(
+        "{} Searching {} nodes by {} similarity...",
+        "●".bright_blue(),
+        node_type.bright_cyan(),
+        metric_str.bright_yellow()
+    );
+
+    let results = db.similarity_search(&query_vector, node_type, field, k, metric).await?;
+
+    if results.is_empty() {
+        println!(
+            "{} No results found. Make sure nodes have '{}' field with vector embeddings.",
+            "!".bright_yellow(),
+            field
+        );
+    } else {
+        println!(
+            "{} Found {} similar nodes:",
+            "✓".bright_green().bold(),
+            results.len()
+        );
+        println!();
+
+        let renderer = Renderer::new(format);
+        renderer.render_similarity_results(&results, &db).await?;
+    }
+
+    Ok(())
+}
+
+async fn handle_embed(
+    db_path: &str,
+    node_type: &str,
+    props_json: &str,
+    vector_json: &str,
+    field: &str,
+    format: OutputFormat,
+) -> Result<()> {
+    use storage::Database;
+    use output::Renderer;
+
+    let db = Database::open(db_path).await?;
+
+    // Parse properties
+    let props: serde_json::Value = serde_json::from_str(props_json)?;
+
+    // Parse vector
+    let vector: Vec<f32> = serde_json::from_str(vector_json)
+        .map_err(|e| anyhow::anyhow!("Invalid vector JSON: {}. Expected format: [0.1, 0.2, ...]", e))?;
+
+    let node = db.insert_with_embedding(node_type, props, field, vector).await?;
+
+    let renderer = Renderer::new(format);
+    renderer.render_node(&node)?;
+
+    println!(
+        "{} Inserted node {} with {}-dimensional embedding",
+        "✓".bright_green().bold(),
+        node.id.to_string().bright_yellow(),
+        node.properties.get(field)
+            .and_then(|v| v.vector_dimension())
+            .unwrap_or(0)
+    );
+
+    Ok(())
+}
+
+/// Handle chunk command - split document for RAG
+async fn handle_chunk(
+    db_path: &str,
+    text: Option<&str>,
+    file_path: Option<&str>,
+    document_id: &str,
+    strategy: &str,
+    size: usize,
+    overlap: usize,
+    store: bool,
+    props_json: Option<&str>,
+    format: OutputFormat,
+) -> Result<()> {
+    use storage::Database;
+
+    // Get content from text or file
+    let content = if let Some(text) = text {
+        text.to_string()
+    } else if let Some(path) = file_path {
+        std::fs::read_to_string(path)
+            .map_err(|e| anyhow::anyhow!("Failed to read file {}: {}", path, e))?
+    } else {
+        anyhow::bail!("Must provide --text or --file");
+    };
+
+    // Create chunker with strategy
+    let chunk_strategy = match strategy.to_lowercase().as_str() {
+        "fixed" => rag::ChunkStrategy::FixedSize {
+            chunk_size: size,
+            overlap,
+        },
+        "sentence" => rag::ChunkStrategy::Sentence {
+            max_tokens: size,
+        },
+        "paragraph" => rag::ChunkStrategy::Paragraph {
+            max_size: size,
+        },
+        "semantic" => rag::ChunkStrategy::Semantic {
+            max_size: size,
+        },
+        _ => anyhow::bail!("Unknown strategy: {}. Use: fixed, sentence, paragraph, semantic", strategy),
+    };
+
+    let chunker = rag::Chunker::new(chunk_strategy);
+    let chunks = chunker.chunk(document_id, &content);
+
+    println!(
+        "{} Split document into {} chunks using {} strategy",
+        "●".bright_blue(),
+        chunks.len().to_string().bright_yellow(),
+        strategy.bright_cyan()
+    );
+
+    // Display chunks
+    match format {
+        OutputFormat::Json => {
+            let json: Vec<serde_json::Value> = chunks.iter().map(|c| {
+                serde_json::json!({
+                    "id": c.id,
+                    "document_id": c.document_id,
+                    "chunk_index": c.chunk_index,
+                    "total_chunks": c.total_chunks,
+                    "content": c.content,
+                    "start_offset": c.start_offset,
+                    "end_offset": c.end_offset,
+                })
+            }).collect();
+            println!("{}", serde_json::to_string_pretty(&json)?);
+        }
+        _ => {
+            for chunk in &chunks {
+                println!();
+                println!(
+                    "{} Chunk {}/{} (chars: {}-{})",
+                    "─".repeat(40),
+                    chunk.chunk_index + 1,
+                    chunk.total_chunks,
+                    chunk.start_offset,
+                    chunk.end_offset
+                );
+                // Truncate display if too long
+                let preview = if chunk.content.len() > 200 {
+                    format!("{}...", &chunk.content[..200])
+                } else {
+                    chunk.content.clone()
+                };
+                println!("{}", preview.bright_white());
+            }
+        }
+    }
+
+    // Store chunks if requested
+    if store {
+        let db = Database::open(db_path).await?;
+        let base_props: serde_json::Value = if let Some(json) = props_json {
+            serde_json::from_str(json)?
+        } else {
+            serde_json::json!({})
+        };
+
+        for chunk in &chunks {
+            let mut props = base_props.clone();
+            if let Some(obj) = props.as_object_mut() {
+                obj.insert("content".to_string(), serde_json::json!(chunk.content));
+                obj.insert("document_id".to_string(), serde_json::json!(chunk.document_id));
+                obj.insert("chunk_index".to_string(), serde_json::json!(chunk.chunk_index));
+                obj.insert("total_chunks".to_string(), serde_json::json!(chunk.total_chunks));
+                obj.insert("start_offset".to_string(), serde_json::json!(chunk.start_offset));
+                obj.insert("end_offset".to_string(), serde_json::json!(chunk.end_offset));
+            }
+            db.insert_node("chunk", props).await?;
+        }
+
+        println!(
+            "{} Stored {} chunks in database",
+            "✓".bright_green().bold(),
+            chunks.len()
+        );
+    }
+
+    Ok(())
+}
+
+/// Handle context retrieval for RAG
+async fn handle_context(
+    db_path: &str,
+    query_text: &str,
+    vector_json: &str,
+    node_type: &str,
+    field: &str,
+    max_tokens: usize,
+    min_score: f64,
+    output_format: &str,
+    _format: OutputFormat,
+) -> Result<()> {
+    use storage::Database;
+
+    println!(
+        "{} Retrieving context for: \"{}\"",
+        "●".bright_blue(),
+        query_text.bright_cyan()
+    );
+
+    let db = Database::open(db_path).await?;
+
+    // Parse query vector
+    let query_vector: Vec<f32> = serde_json::from_str(vector_json)
+        .map_err(|e| anyhow::anyhow!("Invalid vector JSON: {}. Expected format: [0.1, 0.2, ...]", e))?;
+
+    // Create context retriever
+    let retriever = rag::ContextRetriever::new(&db)
+        .node_type(node_type)
+        .embedding_field(field)
+        .content_field("content")
+        .max_tokens(max_tokens)
+        .min_score(min_score);
+
+    let context = retriever.retrieve(&query_vector, query_text).await?;
+
+    println!(
+        "{} Found {} chunks ({} estimated tokens)",
+        "✓".bright_green().bold(),
+        context.chunks.len(),
+        context.estimated_tokens
+    );
+
+    // Output in requested format
+    match output_format.to_lowercase().as_str() {
+        "json" => {
+            println!("{}", serde_json::to_string_pretty(&context.to_json())?);
+        }
+        "text" => {
+            println!("\n{}", context.text_only());
+        }
+        "llm" | _ => {
+            println!("\n{}", context.format_for_llm());
+        }
+    }
+
+    Ok(())
+}
+
+/// Handle ingest command - chunk + embed + store
+async fn handle_ingest(
+    db_path: &str,
+    text: Option<&str>,
+    file_path: Option<&str>,
+    document_id: &str,
+    provider_name: &str,
+    api_key: Option<&str>,
+    chunk_size: usize,
+    overlap: usize,
+    props_json: Option<&str>,
+    _format: OutputFormat,
+) -> Result<()> {
+    use storage::Database;
+
+    // Get content
+    let content = if let Some(text) = text {
+        text.to_string()
+    } else if let Some(path) = file_path {
+        std::fs::read_to_string(path)
+            .map_err(|e| anyhow::anyhow!("Failed to read file {}: {}", path, e))?
+    } else {
+        anyhow::bail!("Must provide --text or --file");
+    };
+
+    println!(
+        "{} Ingesting document '{}' ({} chars)",
+        "●".bright_blue(),
+        document_id.bright_yellow(),
+        content.len()
+    );
+
+    // Create embedding manager
+    let embedder = rag::EmbeddingManager::from_name(provider_name, api_key)?;
+    println!(
+        "  Provider: {} ({}D)",
+        embedder.name().bright_cyan(),
+        embedder.dimension()
+    );
+
+    // Chunk the document
+    let chunker = rag::Chunker::new(rag::ChunkStrategy::FixedSize {
+        chunk_size,
+        overlap,
+    });
+    let chunks = chunker.chunk(document_id, &content);
+    println!(
+        "  Chunks: {} (size: {}, overlap: {})",
+        chunks.len().to_string().bright_yellow(),
+        chunk_size,
+        overlap
+    );
+
+    // Open database
+    let db = Database::open(db_path).await?;
+
+    // Parse base properties
+    let base_props: serde_json::Value = if let Some(json) = props_json {
+        serde_json::from_str(json)?
+    } else {
+        serde_json::json!({})
+    };
+
+    // Process each chunk
+    let mut inserted = 0;
+    let start = std::time::Instant::now();
+
+    for (i, chunk) in chunks.iter().enumerate() {
+        // Generate embedding
+        let embedding = embedder.embed(&chunk.content).await?;
+
+        // Build properties
+        let mut props = base_props.clone();
+        if let Some(obj) = props.as_object_mut() {
+            obj.insert("content".to_string(), serde_json::json!(chunk.content));
+            obj.insert("document_id".to_string(), serde_json::json!(chunk.document_id));
+            obj.insert("chunk_index".to_string(), serde_json::json!(chunk.chunk_index));
+            obj.insert("total_chunks".to_string(), serde_json::json!(chunk.total_chunks));
+        }
+
+        // Insert with embedding
+        db.insert_with_embedding("chunk", props, "embedding", embedding).await?;
+        inserted += 1;
+
+        // Progress indicator
+        if (i + 1) % 10 == 0 || i + 1 == chunks.len() {
+            print!(
+                "\r  Progress: {}/{} chunks embedded...",
+                i + 1,
+                chunks.len()
+            );
+            std::io::Write::flush(&mut std::io::stdout())?;
+        }
+    }
+
+    let elapsed = start.elapsed();
+    let rate = inserted as f64 / elapsed.as_secs_f64();
+
+    println!();
+    println!(
+        "{} Ingested {} chunks in {:.2}s ({:.1} chunks/sec)",
+        "✓".bright_green().bold(),
+        inserted,
+        elapsed.as_secs_f64(),
+        rate
+    );
+
+    Ok(())
+}

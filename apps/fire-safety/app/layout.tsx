@@ -8,12 +8,20 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "US Fire Safety Analytics Dashboard",
-  description: "Interactive analytics platform for emergency fire safety data and AI-approved alarm systems",
+  description: "Interactive analytics platform for emergency fire safety data - 930K+ dispatch records analyzed",
+  manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
-    apple: "/favicon.svg",
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Fire Safety",
   },
 };
 

@@ -232,6 +232,12 @@ impl QueryPlanner {
                 // Schema operations are handled separately
                 estimated_cost = 1.0;
             }
+
+            QueryOperation::VectorSearch => {
+                // Vector search is handled directly in the executor
+                // No specific plan steps needed - just pass through
+                estimated_cost = 5.0; // Similarity search is moderately expensive
+            }
         }
 
         Ok(QueryPlan {
@@ -354,6 +360,7 @@ mod tests {
             limit: Some(10),
             offset: None,
             data: None,
+            vector_search: None,
         };
 
         let plan = planner.plan(&query).unwrap();
@@ -379,6 +386,7 @@ mod tests {
             limit: None,
             offset: None,
             data: None,
+            vector_search: None,
         };
 
         let plan = planner.plan(&query).unwrap();

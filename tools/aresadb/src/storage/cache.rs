@@ -173,10 +173,13 @@ mod tests {
 
         cache.put("key1", Bytes::from("hello"));
         cache.put("key2", Bytes::from("world"));
-        assert_eq!(cache.entry_count(), 2);
+        // Note: moka cache may not immediately reflect entry count due to async nature
+        assert!(cache.contains("key1"));
+        assert!(cache.contains("key2"));
 
         cache.clear();
-        assert_eq!(cache.entry_count(), 0);
+        assert!(!cache.contains("key1"));
+        assert!(!cache.contains("key2"));
     }
 
     #[tokio::test]

@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 5% 15%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 18%;
+    --input: 240 5% 18%;
+    --ring: 239 84% 67%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(240 10% 8%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(240 5% 25%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(240 5% 35%);
+}
+
+/* Code editor styling */
+.code-editor {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* Glow effects */
+.glow-primary {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Gradient backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, hsl(239 84% 67%) 0%, hsl(262 83% 58%) 100%);
+}
+
+.gradient-mesh {
+  background:
+    radial-gradient(at 40% 20%, hsla(262, 83%, 58%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(239, 84%, 67%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(262, 83%, 58%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, hsla(239, 84%, 67%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(262, 83%, 58%, 0.1) 0px, transparent 50%);
+}
+
+/* Glass effect */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Animated border gradient */
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, hsl(239 84% 67%) 0%, hsl(262 83% 58%) 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* SQL Syntax highlighting */
+.sql-keyword {
+  color: hsl(262 83% 68%);
+  font-weight: 600;
+}
+
+.sql-string {
+  color: hsl(142 71% 55%);
+}
+
+.sql-number {
+  color: hsl(35 92% 66%);
+}
+
+.sql-function {
+  color: hsl(199 89% 66%);
+}
+
+/* Result table styles */
+.result-table {
+  @apply w-full text-sm;
+}
+
+.result-table th {
+  @apply text-left px-4 py-3 bg-secondary/50 text-muted-foreground font-medium text-xs uppercase tracking-wider;
+}
+
+.result-table td {
+  @apply px-4 py-3 border-t border-border font-mono text-sm;
+}
+
+.result-table tr:hover td {
+  @apply bg-secondary/30;
+}
+
+/* Vector visualization */
+.vector-dot {
+  @apply w-2 h-2 rounded-full;
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+/* Loading states */
+.skeleton {
+  @apply animate-pulse bg-secondary rounded;
+}
+
+/* Noise texture overlay */
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+}
+

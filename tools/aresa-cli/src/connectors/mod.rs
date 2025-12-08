@@ -8,6 +8,8 @@
 //! - **DuckDB**: Local analytics on CSV/JSON/Parquet files
 //! - **ClickHouse**: OLAP database via HTTP interface
 //! - **BigQuery**: Google BigQuery via REST API
+//! - **Snowflake**: Snowflake data warehouse via REST API
+//! - **Databricks**: Databricks SQL Warehouse via REST API
 //! - **S3**: AWS S3 object storage
 //! - **GCS**: Google Cloud Storage
 
@@ -18,6 +20,8 @@ pub mod sqlite;
 pub mod duckdb;
 pub mod clickhouse;
 pub mod bigquery;
+pub mod snowflake;
+pub mod databricks;
 pub mod s3;
 pub mod gcs;
 

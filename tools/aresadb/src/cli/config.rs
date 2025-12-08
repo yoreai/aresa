@@ -11,13 +11,13 @@ use std::path::PathBuf;
 /// Configuration structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Config {
-    /// LLM configuration
-    #[serde(default)]
-    pub llm: LlmConfig,
-
-    /// Default output format
+    /// Default output format (table, json, csv)
     #[serde(default)]
     pub default_format: String,
+
+    /// Default query limit
+    #[serde(default)]
+    pub default_limit: Option<usize>,
 
     /// Additional key-value settings
     #[serde(default)]
@@ -26,20 +26,6 @@ pub struct Config {
     /// Path to config file
     #[serde(skip)]
     path: Option<PathBuf>,
-}
-
-/// LLM configuration
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct LlmConfig {
-    /// Provider (openai, anthropic)
-    pub provider: String,
-    /// API key (stored in keyring if possible)
-    #[serde(skip_serializing)]
-    pub api_key: Option<String>,
-    /// Model name
-    pub model: Option<String>,
-    /// API base URL (for custom endpoints)
-    pub base_url: Option<String>,
 }
 
 impl Config {
@@ -51,12 +37,6 @@ impl Config {
             let content = std::fs::read_to_string(&config_path)?;
             let mut config: Config = toml::from_str(&content)?;
             config.path = Some(config_path);
-
-            // Try to load API key from keyring
-            if config.llm.api_key.is_none() && !config.llm.provider.is_empty() {
-                config.llm.api_key = Self::get_api_key_from_keyring(&config.llm.provider);
-            }
-
             Ok(config)
         } else {
             let mut config = Config::default();
@@ -105,18 +85,8 @@ impl Config {
         let mut config = self.clone();
 
         match key {
-            "llm.provider" => config.llm.provider = value.to_string(),
-            "llm.api_key" => {
-                // Store API key in keyring if possible
-                if Self::set_api_key_in_keyring(&config.llm.provider, value) {
-                    config.llm.api_key = None; // Don't store in file
-                } else {
-                    config.llm.api_key = Some(value.to_string());
-                }
-            }
-            "llm.model" => config.llm.model = Some(value.to_string()),
-            "llm.base_url" => config.llm.base_url = Some(value.to_string()),
             "default_format" => config.default_format = value.to_string(),
+            "default_limit" => config.default_limit = value.parse().ok(),
             _ => {
                 config.settings.insert(key.to_string(), value.to_string());
             }
@@ -128,11 +98,8 @@ impl Config {
     /// Get a configuration value
     pub fn get(&self, key: &str) -> Option<String> {
         match key {
-            "llm.provider" => Some(self.llm.provider.clone()),
-            "llm.api_key" => self.llm.api_key.clone(),
-            "llm.model" => self.llm.model.clone(),
-            "llm.base_url" => self.llm.base_url.clone(),
             "default_format" => Some(self.default_format.clone()),
+            "default_limit" => self.default_limit.map(|l| l.to_string()),
             _ => self.settings.get(key).cloned(),
         }
     }
@@ -142,15 +109,9 @@ impl Config {
         println!("{}", "Configuration:".bright_yellow().bold());
         println!();
 
-        println!("{}", "LLM:".bright_cyan());
-        println!("  provider: {}", self.llm.provider);
-        println!("  api_key: {}", if self.llm.api_key.is_some() { "****" } else { "(not set)" });
-        println!("  model: {}", self.llm.model.as_deref().unwrap_or("(default)"));
-        println!("  base_url: {}", self.llm.base_url.as_deref().unwrap_or("(default)"));
-
-        println!();
         println!("{}", "General:".bright_cyan());
         println!("  default_format: {}", if self.default_format.is_empty() { "table" } else { &self.default_format });
+        println!("  default_limit: {}", self.default_limit.map(|l| l.to_string()).unwrap_or_else(|| "1000".to_string()));
 
         if !self.settings.is_empty() {
             println!();
@@ -162,41 +123,4 @@ impl Config {
 
         Ok(())
     }
-
-    /// Try to get API key from system keyring
-    fn get_api_key_from_keyring(provider: &str) -> Option<String> {
-        #[cfg(feature = "keyring")]
-        {
-            let service = format!("aresadb-{}", provider);
-            keyring::Entry::new(&service, "api_key")
-                .ok()
-                .and_then(|entry| entry.get_password().ok())
-        }
-
-        #[cfg(not(feature = "keyring"))]
-        {
-            let _ = provider;
-            None
-        }
-    }
-
-    /// Try to set API key in system keyring
-    fn set_api_key_in_keyring(provider: &str, api_key: &str) -> bool {
-        #[cfg(feature = "keyring")]
-        {
-            let service = format!("aresadb-{}", provider);
-            keyring::Entry::new(&service, "api_key")
-                .ok()
-                .and_then(|entry| entry.set_password(api_key).ok())
-                .is_some()
-        }
-
-        #[cfg(not(feature = "keyring"))]
-        {
-            let _ = (provider, api_key);
-            false
-        }
-    }
 }
-
-

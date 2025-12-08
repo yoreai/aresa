@@ -4,7 +4,7 @@
 
 use anyhow::{Result, Context};
 use parking_lot::RwLock;
-use redb::{Database as RedbDatabase, TableDefinition, ReadableTable, ReadableMultimapTable, MultimapTableDefinition};
+use redb::{Database as RedbDatabase, TableDefinition, ReadableTable, ReadableMultimapTable, MultimapTableDefinition, ReadableTableMetadata};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -174,11 +174,14 @@ impl LocalStorage {
         let node = {
             let mut nodes_table = write_txn.open_table(NODES_TABLE)?;
 
-            // Get existing node
-            let data = nodes_table.get(id.uuid.as_slice())?
-                .ok_or_else(|| anyhow::anyhow!("Node not found: {}", id))?;
+            // Get existing node - clone data to release borrow
+            let node_data = {
+                let guard = nodes_table.get(id.uuid.as_slice())?
+                    .ok_or_else(|| anyhow::anyhow!("Node not found: {}", id))?;
+                guard.value().to_vec()
+            };
 
-            let mut node: Node = serde_json::from_slice(data.value())?;
+            let mut node: Node = serde_json::from_slice(&node_data)?;
 
             // Update properties
             if let Value::Object(new_props) = properties {
@@ -278,8 +281,8 @@ impl LocalStorage {
                 break;
             }
 
-            let id_bytes = result?.value();
-            if let Some(data) = nodes_table.get(id_bytes)? {
+            let id_bytes = result?.value().to_vec();
+            if let Some(data) = nodes_table.get(id_bytes.as_slice())? {
                 let node: Node = serde_json::from_slice(data.value())?;
                 nodes.push(node);
             }
@@ -370,8 +373,8 @@ impl LocalStorage {
         let mut edges = Vec::new();
 
         for result in from_index.get(node_id.uuid.as_slice())? {
-            let edge_id = result?.value();
-            if let Some(data) = edges_table.get(edge_id)? {
+            let edge_id = result?.value().to_vec();
+            if let Some(data) = edges_table.get(edge_id.as_slice())? {
                 let edge: Edge = serde_json::from_slice(data.value())?;
 
                 // Filter by edge type if specified
@@ -399,8 +402,8 @@ impl LocalStorage {
         let mut edges = Vec::new();
 
         for result in to_index.get(node_id.uuid.as_slice())? {
-            let edge_id = result?.value();
-            if let Some(data) = edges_table.get(edge_id)? {
+            let edge_id = result?.value().to_vec();
+            if let Some(data) = edges_table.get(edge_id.as_slice())? {
                 let edge: Edge = serde_json::from_slice(data.value())?;
 
                 // Filter by edge type if specified
@@ -465,8 +468,8 @@ impl LocalStorage {
                 break;
             }
 
-            let id_bytes = result?.value();
-            if let Some(data) = edges_table.get(id_bytes)? {
+            let id_bytes = result?.value().to_vec();
+            if let Some(data) = edges_table.get(id_bytes.as_slice())? {
                 let edge: Edge = serde_json::from_slice(data.value())?;
                 edges.push(edge);
             }
@@ -553,8 +556,12 @@ impl Transaction {
                 }
                 TransactionOp::UpdateNode(id, properties) => {
                     let mut nodes_table = write_txn.open_table(NODES_TABLE)?;
-                    if let Some(data) = nodes_table.get(id.uuid.as_slice())? {
-                        let mut node: Node = serde_json::from_slice(data.value())?;
+                    let node_data = {
+                        nodes_table.get(id.uuid.as_slice())?
+                            .map(|d| d.value().to_vec())
+                    };
+                    if let Some(data) = node_data {
+                        let mut node: Node = serde_json::from_slice(&data)?;
                         if let Value::Object(new_props) = properties {
                             for (k, v) in new_props {
                                 node.properties.insert(k, v);

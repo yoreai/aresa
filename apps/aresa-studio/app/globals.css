@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+
+  /* Cyan palette */
+  --cyan-300: #67e8f9;
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
+  --cyan-600: #0891b2;
+
+  /* Blue palette */
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+
+  /* Purple palette */
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
+
+  /* Pink palette */
+  --pink-600: #db2777;
+  --pink-700: #be185d;
+
+  /* Orange palette */
+  --orange-500: #f97316;
+  --orange-600: #ea580c;
+
+  /* Red palette */
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  /* Green palette */
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+
+  /* Teal palette */
+  --teal-600: #0d9488;
+  --teal-700: #0f766e;
+
+  /* Slate palette */
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-feature-settings: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gradient utilities - Tailwind v4 fix */
+.gradient-text-cyan-blue {
+  background: linear-gradient(to right, var(--cyan-400), var(--blue-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-bg-cyan-blue {
+  background: linear-gradient(to bottom right, var(--cyan-500), var(--blue-600));
+}
+
+.gradient-bg-cyan-blue:hover {
+  background: linear-gradient(to bottom right, var(--cyan-600), var(--blue-700));
+}
+
+.gradient-bg-purple-pink {
+  background: linear-gradient(to bottom right, var(--purple-500), var(--pink-600));
+}
+
+.gradient-bg-purple-pink:hover {
+  background: linear-gradient(to bottom right, var(--purple-600), var(--pink-700));
+}
+
+.gradient-bg-orange-red {
+  background: linear-gradient(to bottom right, var(--orange-500), var(--red-600));
+}
+
+.gradient-bg-orange-red:hover {
+  background: linear-gradient(to bottom right, var(--orange-600), var(--red-700));
+}
+
+.gradient-bg-green-teal {
+  background: linear-gradient(to bottom right, var(--green-500), var(--teal-600));
+}
+
+.gradient-bg-green-teal:hover {
+  background: linear-gradient(to bottom right, var(--green-600), var(--teal-700));
+}
+
+.gradient-bg-slate {
+  background: linear-gradient(to bottom right, var(--slate-900), var(--slate-800));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Custom animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Monaco editor dark theme override */
+.monaco-editor {
+  background-color: transparent !important;
+}

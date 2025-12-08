@@ -6,7 +6,7 @@ mod registry;
 mod migration;
 
 pub use registry::{Schema, SchemaField, FieldType, SchemaRelation, RelationType};
-pub use migration::{Migration, MigrationAction};
+pub use migration::{Migration, MigrationAction, MigrationGenerator};
 
 use anyhow::Result;
 use crate::storage::Database;

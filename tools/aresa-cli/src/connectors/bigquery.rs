@@ -162,14 +162,23 @@ impl BigQueryConnector {
             max_results: limit,
         };
 
-        let response: QueryResponse = self.client
+        let http_response = self.client
             .post(&url)
             .bearer_auth(&self.access_token)
             .json(&request)
             .send()
-            .await?
-            .json()
             .await?;
+
+        // Check for HTTP errors
+        let status = http_response.status();
+        if !status.is_success() {
+            let error_text = http_response.text().await.unwrap_or_default();
+            anyhow::bail!("BigQuery API error ({}): {}", status, error_text);
+        }
+
+        let response_text = http_response.text().await?;
+        let response: QueryResponse = serde_json::from_str(&response_text)
+            .with_context(|| format!("Failed to parse BigQuery response: {}", &response_text[..response_text.len().min(500)]))?;
 
         // If job not complete, poll for results
         let (schema, rows) = if !response.job_complete {

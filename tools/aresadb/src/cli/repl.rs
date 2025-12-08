@@ -1,26 +1,23 @@
 //! Interactive REPL
 //!
-//! Read-Eval-Print Loop with syntax highlighting and auto-completion.
+//! Read-Eval-Print Loop with syntax highlighting for SQL queries.
 
 use anyhow::Result;
 use colored::Colorize;
-use rustyline::config::Configurer;
 use rustyline::error::ReadlineError;
 use rustyline::highlight::Highlighter;
 use rustyline::hint::{Hint, Hinter};
 use rustyline::history::DefaultHistory;
 use rustyline::validate::{ValidationContext, ValidationResult, Validator};
-use rustyline::{Completer, Editor, Helper};
+use rustyline::{Editor, Helper as RustylineHelper};
 use std::borrow::Cow;
 
 use crate::storage::Database;
 use crate::query::QueryEngine;
-use crate::ai::NlpProcessor;
 use crate::output::Renderer;
 use super::commands::OutputFormat;
 
 /// REPL helper for syntax highlighting and completion
-#[derive(Completer, Helper)]
 struct ReplHelper {
     keywords: Vec<String>,
 }
@@ -201,11 +198,17 @@ impl Validator for ReplHelper {
     }
 }
 
+// Implement the required traits for RustylineHelper
+impl rustyline::completion::Completer for ReplHelper {
+    type Candidate = String;
+}
+
+impl RustylineHelper for ReplHelper {}
+
 /// Interactive REPL
 pub struct Repl {
     editor: Editor<ReplHelper, DefaultHistory>,
     db: Database,
-    nlp: NlpProcessor,
     format: OutputFormat,
     history_path: Option<std::path::PathBuf>,
 }
@@ -214,11 +217,9 @@ impl Repl {
     /// Create a new REPL instance
     pub async fn new(db_path: &str) -> Result<Self> {
         let db = Database::open(db_path).await?;
-        let nlp = NlpProcessor::new()?;
 
         let mut editor = Editor::new()?;
         editor.set_helper(Some(ReplHelper::default()));
-        editor.set_auto_add_history(true);
 
         // Load history
         let history_path = dirs::config_dir()
@@ -234,7 +235,6 @@ impl Repl {
         Ok(Self {
             editor,
             db,
-            nlp,
             format: OutputFormat::Table,
             history_path,
         })
@@ -255,6 +255,9 @@ impl Repl {
                         continue;
                     }
 
+                    // Add to history
+                    let _ = self.editor.add_history_entry(line);
+
                     // Handle commands
                     if line.starts_with('.') {
                         if self.handle_command(line).await? {
@@ -263,8 +266,8 @@ impl Repl {
                         continue;
                     }
 
-                    // Execute query
-                    self.execute_input(line).await;
+                    // Execute SQL query
+                    self.execute_sql(line).await;
                 }
                 Err(ReadlineError::Interrupted) => {
                     println!("Use .exit or .quit to exit");
@@ -365,11 +368,12 @@ impl Repl {
         println!("  {} Show schema for a table", ".schema <name>".bright_green());
         println!("  {} Set output format", ".format <fmt>".bright_green());
         println!();
-        println!("{}", "Query Examples:".bright_yellow().bold());
+        println!("{}", "SQL Examples:".bright_yellow().bold());
         println!();
-        println!("  {} {}", "SQL:".bright_cyan(), "SELECT * FROM users WHERE age > 25");
-        println!("  {} {}", "Natural:".bright_cyan(), "find all users with age over 25");
+        println!("  {} {}", "Query:".bright_cyan(), "SELECT * FROM users WHERE age > 25");
         println!("  {} {}", "Insert:".bright_cyan(), "INSERT INTO users (name, age) VALUES ('John', 30)");
+        println!("  {} {}", "Update:".bright_cyan(), "UPDATE users SET age = 31 WHERE name = 'John'");
+        println!("  {} {}", "Delete:".bright_cyan(), "DELETE FROM users WHERE age < 18");
         println!();
     }
 
@@ -463,34 +467,15 @@ impl Repl {
         Ok(())
     }
 
-    async fn execute_input(&self, input: &str) {
+    async fn execute_sql(&self, sql: &str) {
         use std::time::Instant;
 
         let start = Instant::now();
 
-        // Try to parse as SQL first
-        let result = if input.to_uppercase().starts_with("SELECT")
-            || input.to_uppercase().starts_with("INSERT")
-            || input.to_uppercase().starts_with("UPDATE")
-            || input.to_uppercase().starts_with("DELETE")
-        {
-            // SQL query
-            let engine = QueryEngine::new(
-                Database::open(self.db.path()).await.unwrap()
-            );
-            engine.execute_sql(input, None).await
-        } else {
-            // Natural language query
-            match self.nlp.parse(input, &self.db).await {
-                Ok(parsed) => {
-                    let engine = QueryEngine::new(
-                        Database::open(self.db.path()).await.unwrap()
-                    );
-                    engine.execute_parsed(&parsed, None).await
-                }
-                Err(e) => Err(e),
-            }
-        };
+        let engine = QueryEngine::new(
+            Database::open(self.db.path()).await.unwrap()
+        );
+        let result = engine.execute_sql(sql, None).await;
 
         let elapsed = start.elapsed();
 
@@ -556,5 +541,3 @@ mod dirs {
         }
     }
 }
-
-

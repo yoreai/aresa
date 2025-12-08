@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["ContentMatch","FileMatch","FilesystemConnector","GitRepoInfo","RepoStatus"]};

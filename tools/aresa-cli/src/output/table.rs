@@ -3,8 +3,8 @@
 use anyhow::Result;
 use colored::Colorize;
 use tabled::{settings::Style, builder::Builder};
+use std::collections::HashMap;
 
-use crate::query::QueryResult;
 use super::Theme;
 
 /// Renders query results as beautiful tables
@@ -12,8 +12,12 @@ pub struct TableRenderer;
 
 impl TableRenderer {
     /// Render query results as a table
-    pub fn render(results: &QueryResult, _theme: &Theme) -> Result<()> {
-        if results.rows.is_empty() {
+    pub fn render(
+        columns: &[String],
+        rows: &[HashMap<String, String>],
+        _theme: &Theme,
+    ) -> Result<()> {
+        if rows.is_empty() {
             println!("{}", "No results found.".yellow());
             return Ok(());
         }
@@ -21,12 +25,11 @@ impl TableRenderer {
         let mut builder = Builder::default();
 
         // Header
-        builder.push_record(&results.columns);
+        builder.push_record(columns);
 
         // Rows
-        for row in &results.rows {
-            let cells: Vec<String> = results
-                .columns
+        for row in rows {
+            let cells: Vec<String> = columns
                 .iter()
                 .map(|col| {
                     row.get(col)
@@ -59,4 +62,3 @@ impl TableRenderer {
         Ok(())
     }
 }
-

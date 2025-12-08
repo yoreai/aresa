@@ -12,6 +12,8 @@ pub enum SourceType {
     DuckDB,
     ClickHouse,
     BigQuery,
+    Snowflake,
+    Databricks,
     S3,
     GCS,
 }
@@ -24,7 +26,7 @@ pub struct DataSource {
     /// Connection URI (for SQL databases)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub uri: Option<String>,
-    /// Host (for ClickHouse)
+    /// Host (for ClickHouse, Databricks)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub host: Option<String>,
     /// Port (for ClickHouse)
@@ -33,6 +35,9 @@ pub struct DataSource {
     /// Database name
     #[serde(skip_serializing_if = "Option::is_none")]
     pub database: Option<String>,
+    /// Schema name (for Snowflake, Databricks)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub schema: Option<String>,
     /// Username
     #[serde(skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,
@@ -51,6 +56,35 @@ pub struct DataSource {
     /// Path to credentials file (for cloud services)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub credentials_path: Option<String>,
+    /// Account identifier (for Snowflake)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub account: Option<String>,
+    /// Warehouse (for Snowflake, Databricks)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub warehouse: Option<String>,
+    /// Catalog (for Databricks Unity Catalog)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub catalog: Option<String>,
+    /// Access token (for Databricks)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub token: Option<String>,
+}
+
+impl std::fmt::Display for SourceType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SourceType::Postgres => write!(f, "postgres"),
+            SourceType::MySQL => write!(f, "mysql"),
+            SourceType::SQLite => write!(f, "sqlite"),
+            SourceType::DuckDB => write!(f, "duckdb"),
+            SourceType::ClickHouse => write!(f, "clickhouse"),
+            SourceType::BigQuery => write!(f, "bigquery"),
+            SourceType::Snowflake => write!(f, "snowflake"),
+            SourceType::Databricks => write!(f, "databricks"),
+            SourceType::S3 => write!(f, "s3"),
+            SourceType::GCS => write!(f, "gcs"),
+        }
+    }
 }
 
 impl SourceType {
@@ -63,6 +97,8 @@ impl SourceType {
             SourceType::DuckDB => "DuckDB database",
             SourceType::ClickHouse => "ClickHouse OLAP database",
             SourceType::BigQuery => "Google BigQuery",
+            SourceType::Snowflake => "Snowflake Data Warehouse",
+            SourceType::Databricks => "Databricks SQL Warehouse",
             SourceType::S3 => "AWS S3 bucket",
             SourceType::GCS => "Google Cloud Storage bucket",
         }
@@ -78,6 +114,8 @@ impl SourceType {
                 | SourceType::DuckDB
                 | SourceType::ClickHouse
                 | SourceType::BigQuery
+                | SourceType::Snowflake
+                | SourceType::Databricks
         )
     }
 }

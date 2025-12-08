@@ -11,8 +11,8 @@ use sqlparser::dialect::GenericDialect;
 use sqlparser::parser::Parser;
 use std::collections::BTreeMap;
 
-use super::{ParsedQuery, QueryOperation, Condition, Operator, OrderBy};
-use crate::storage::Value;
+use super::{ParsedQuery, QueryOperation, Condition, Operator, OrderBy, VectorSearchParams};
+use crate::storage::{Value, DistanceMetric};
 
 /// SQL query parser
 pub struct QueryParser {
@@ -29,6 +29,12 @@ impl QueryParser {
 
     /// Parse a SQL query string
     pub fn parse(&self, sql: &str) -> Result<ParsedQuery> {
+        // First, try to parse as vector search syntax
+        if let Some(vector_query) = self.parse_vector_search(sql) {
+            return Ok(vector_query);
+        }
+
+        // Fall back to standard SQL parsing
         let statements = Parser::parse_sql(&self.dialect, sql)?;
 
         if statements.is_empty() {
@@ -66,6 +72,7 @@ impl QueryParser {
                     limit: None,
                     offset: None,
                     data,
+                    vector_search: None,
                 })
             }
             Statement::Update { table, assignments, selection, .. } => {
@@ -96,6 +103,7 @@ impl QueryParser {
                     limit: None,
                     offset: None,
                     data: Some(data),
+                    vector_search: None,
                 })
             }
             Statement::Delete { from, selection, .. } => {
@@ -121,6 +129,7 @@ impl QueryParser {
                     limit: None,
                     offset: None,
                     data: None,
+                    vector_search: None,
                 })
             }
             _ => bail!("Unsupported SQL statement type"),
@@ -214,6 +223,7 @@ impl QueryParser {
             limit,
             offset,
             data: None,
+            vector_search: None,
         })
     }
 
@@ -359,6 +369,131 @@ impl Default for QueryParser {
     }
 }
 
+impl QueryParser {
+    /// Validate a SQL query without executing it
+    pub fn validate(&self, sql: &str) -> bool {
+        self.parse(sql).is_ok()
+    }
+
+    /// Try to parse a vector search query
+    /// Supports syntax: VECTOR SEARCH <table> FIELD <field> FOR <vector> [METRIC <metric>] [LIMIT <n>]
+    /// Example: VECTOR SEARCH documents FIELD embedding FOR [0.1, 0.2, 0.3] METRIC cosine LIMIT 10
+    pub fn parse_vector_search(&self, sql: &str) -> Option<ParsedQuery> {
+        let sql_upper = sql.to_uppercase();
+
+        if !sql_upper.starts_with("VECTOR SEARCH") {
+            return None;
+        }
+
+        // Parse the vector search syntax
+        let parts: Vec<&str> = sql.split_whitespace().collect();
+
+        if parts.len() < 6 {
+            return None;
+        }
+
+        // Extract table name (after "VECTOR SEARCH")
+        let target = parts.get(2)?.to_string();
+
+        // Find FIELD keyword
+        let field_idx = parts.iter().position(|&p| p.eq_ignore_ascii_case("FIELD"))?;
+        let embedding_field = parts.get(field_idx + 1)?.to_string();
+
+        // Find FOR keyword and extract vector
+        let for_idx = parts.iter().position(|&p| p.eq_ignore_ascii_case("FOR"))?;
+
+        // Find the vector - it starts with [ and ends with ]
+        let vector_start = sql.find('[')? + 1;
+        let vector_end = sql.find(']')?;
+        let vector_str = &sql[vector_start..vector_end];
+
+        let query_vector: Vec<f32> = vector_str
+            .split(',')
+            .filter_map(|s| s.trim().parse().ok())
+            .collect();
+
+        if query_vector.is_empty() {
+            return None;
+        }
+
+        // Extract metric (default: cosine)
+        let metric = parts.iter()
+            .position(|&p| p.eq_ignore_ascii_case("METRIC"))
+            .and_then(|idx| parts.get(idx + 1))
+            .map(|m| match m.to_lowercase().as_str() {
+                "euclidean" | "l2" => DistanceMetric::Euclidean,
+                "dot" | "dotproduct" => DistanceMetric::DotProduct,
+                "manhattan" | "l1" => DistanceMetric::Manhattan,
+                _ => DistanceMetric::Cosine,
+            })
+            .unwrap_or(DistanceMetric::Cosine);
+
+        // Extract limit (default: 10)
+        let k = parts.iter()
+            .position(|&p| p.eq_ignore_ascii_case("LIMIT"))
+            .and_then(|idx| parts.get(idx + 1))
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(10);
+
+        Some(ParsedQuery {
+            operation: QueryOperation::VectorSearch,
+            target,
+            columns: Vec::new(),
+            conditions: Vec::new(),
+            order_by: Vec::new(),
+            limit: Some(k),
+            offset: None,
+            data: None,
+            vector_search: Some(VectorSearchParams {
+                query_vector,
+                embedding_field,
+                k,
+                metric,
+            }),
+        })
+    }
+
+    /// Parse a natural language query (falls back to SQL if not recognized)
+    /// In production, this would use LLM APIs for NL processing
+    pub fn parse_natural_language(&self, query: &str) -> Result<ParsedQuery> {
+        // Simple pattern matching for common NL queries
+        let query_lower = query.to_lowercase();
+
+        if query_lower.starts_with("get all ") || query_lower.starts_with("find all ") {
+            // "get all users" -> "SELECT * FROM users"
+            let words: Vec<&str> = query.split_whitespace().collect();
+            if words.len() >= 3 {
+                let table = words[2];
+                let sql = format!("SELECT * FROM {}", table);
+                return self.parse(&sql);
+            }
+        }
+
+        if query_lower.starts_with("show me ") {
+            let words: Vec<&str> = query.split_whitespace().collect();
+            if words.len() >= 4 {
+                let table = words.last().unwrap();
+                let sql = format!("SELECT * FROM {} LIMIT 10", table);
+                return self.parse(&sql);
+            }
+        }
+
+        if query_lower.starts_with("delete ") && query_lower.contains("from") {
+            let words: Vec<&str> = query.split_whitespace().collect();
+            if let Some(idx) = words.iter().position(|&w| w == "from") {
+                if idx + 1 < words.len() {
+                    let table = words[idx + 1];
+                    let sql = format!("DELETE FROM {}", table);
+                    return self.parse(&sql);
+                }
+            }
+        }
+
+        // Fall back to trying to parse as SQL
+        self.parse(query)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -412,6 +547,36 @@ mod tests {
         let query = parser.parse("DELETE FROM users WHERE age < 18").unwrap();
         assert_eq!(query.operation, QueryOperation::Delete);
         assert_eq!(query.conditions.len(), 1);
+    }
+
+    #[test]
+    fn test_parse_vector_search() {
+        let parser = QueryParser::new();
+
+        let query = parser.parse(
+            "VECTOR SEARCH documents FIELD embedding FOR [0.1, 0.2, 0.3] METRIC cosine LIMIT 10"
+        ).unwrap();
+
+        assert_eq!(query.operation, QueryOperation::VectorSearch);
+        assert_eq!(query.target, "documents");
+
+        let params = query.vector_search.unwrap();
+        assert_eq!(params.embedding_field, "embedding");
+        assert_eq!(params.query_vector, vec![0.1, 0.2, 0.3]);
+        assert_eq!(params.k, 10);
+    }
+
+    #[test]
+    fn test_parse_vector_search_euclidean() {
+        let parser = QueryParser::new();
+
+        let query = parser.parse(
+            "VECTOR SEARCH docs FIELD vec FOR [1.0, 2.0] METRIC euclidean LIMIT 5"
+        ).unwrap();
+
+        let params = query.vector_search.unwrap();
+        assert_eq!(params.metric, crate::storage::DistanceMetric::Euclidean);
+        assert_eq!(params.k, 5);
     }
 }
 

@@ -94,7 +94,7 @@ impl ConfigManager {
         Ok(())
     }
 
-    /// Add a new data source
+    /// Add a new data source (simple version)
     pub fn add_source(
         &self,
         name: &str,
@@ -104,6 +104,22 @@ impl ConfigManager {
         bucket: Option<&str>,
         credentials_path: Option<&str>,
     ) -> Result<()> {
+        self.add_source_full(name, source_type_str, uri, project, bucket, None, None, None, credentials_path)
+    }
+
+    /// Add a new data source (full version with all options)
+    pub fn add_source_full(
+        &self,
+        name: &str,
+        source_type_str: &str,
+        uri: Option<&str>,
+        project: Option<&str>,
+        bucket: Option<&str>,
+        region: Option<&str>,
+        host: Option<&str>,
+        port: Option<u16>,
+        credentials_path: Option<&str>,
+    ) -> Result<()> {
         let source_type = match source_type_str.to_lowercase().as_str() {
             "postgres" => SourceType::Postgres,
             "mysql" => SourceType::MySQL,
@@ -111,6 +127,8 @@ impl ConfigManager {
             "duckdb" => SourceType::DuckDB,
             "clickhouse" => SourceType::ClickHouse,
             "bigquery" => SourceType::BigQuery,
+            "snowflake" => SourceType::Snowflake,
+            "databricks" => SourceType::Databricks,
             "s3" => SourceType::S3,
             "gcs" => SourceType::GCS,
             _ => return Err(anyhow::anyhow!("Unknown source type: {}", source_type_str)),
@@ -119,15 +137,20 @@ impl ConfigManager {
         let source = DataSource {
             source_type,
             uri: uri.map(String::from),
-            host: None,
-            port: None,
+            host: host.map(String::from),
+            port,
             database: None,
+            schema: None,
             username: None,
             password: None,
             project: project.map(String::from),
             bucket: bucket.map(String::from),
-            region: None,
+            region: region.map(String::from),
             credentials_path: credentials_path.map(String::from),
+            account: None,
+            warehouse: None,
+            catalog: None,
+            token: None,
         };
 
         // Store sensitive URI in keychain if provided
@@ -159,44 +182,135 @@ impl ConfigManager {
         Ok(())
     }
 
-    /// List all configured data sources
+    /// List all configured data sources (simple text format)
     pub fn list_sources(&self) -> Result<()> {
+        use tabled::{settings::Style, builder::Builder};
+
         if self.config.sources.is_empty() {
             println!("{}", "No data sources configured.".yellow());
             println!();
             println!("Add one with:");
             println!(
                 "  {}",
-                "aresa config add postgres mydb --uri postgresql://...".bright_green()
+                "aresa config add bigquery prod --project my-project".bright_cyan()
+            );
+            println!(
+                "  {}",
+                "aresa config add postgres mydb --uri postgresql://user:pass@host/db".bright_cyan()
             );
             return Ok(());
         }
 
-        println!("{}", "Configured Data Sources:".bright_yellow().bold());
-        println!();
+        // Build a nice table
+        let mut builder = Builder::default();
+        builder.push_record(["Name", "Type", "Connection Details", "Command"]);
 
         for (name, source) in &self.config.sources {
-            let type_str = format!("{:?}", source.source_type).to_lowercase();
-            println!(
-                "  {} {} {}",
-                "●".bright_cyan(),
-                name.bright_white().bold(),
-                format!("({})", type_str).dimmed()
-            );
+            let type_str = source.source_type.to_string();
 
-            if let Some(project) = &source.project {
-                println!("    {} {}", "project:".dimmed(), project);
-            }
-            if let Some(bucket) = &source.bucket {
-                println!("    {} {}", "bucket:".dimmed(), bucket);
-            }
-            if source.uri.is_some() || self.credentials.exists(name) {
-                println!("    {} {}", "uri:".dimmed(), "********".dimmed());
-            }
+            // Build connection details string
+            let details = match source.source_type {
+                SourceType::BigQuery => {
+                    source.project.as_ref()
+                        .map(|p| format!("project: {}", p))
+                        .unwrap_or_else(|| "(no project)".to_string())
+                }
+                SourceType::Postgres | SourceType::MySQL => {
+                    if source.uri.is_some() || self.credentials.exists(name) {
+                        if let Some(uri) = &source.uri {
+                            // Parse URI to show host without password
+                            Self::mask_uri(uri)
+                        } else {
+                            "uri: ●●●●●●●●".to_string()
+                        }
+                    } else {
+                        "(no uri)".to_string()
+                    }
+                }
+                SourceType::SQLite | SourceType::DuckDB => {
+                    source.uri.as_ref()
+                        .map(|u| format!("path: {}", u))
+                        .unwrap_or_else(|| "(no path)".to_string())
+                }
+                SourceType::ClickHouse => {
+                    let host = source.host.as_deref().unwrap_or("localhost");
+                    let port = source.port.unwrap_or(8123);
+                    format!("{}:{}", host, port)
+                }
+                SourceType::S3 => {
+                    let bucket = source.bucket.as_deref().unwrap_or("(no bucket)");
+                    let region = source.region.as_deref().unwrap_or("us-east-1");
+                    format!("s3://{} ({})", bucket, region)
+                }
+                SourceType::GCS => {
+                    source.bucket.as_ref()
+                        .map(|b| format!("gs://{}", b))
+                        .unwrap_or_else(|| "(no bucket)".to_string())
+                }
+                SourceType::Snowflake => {
+                    let account = source.account.as_deref().unwrap_or("(no account)");
+                    let warehouse = source.warehouse.as_deref().unwrap_or("(no warehouse)");
+                    format!("account: {}, warehouse: {}", account, warehouse)
+                }
+                SourceType::Databricks => {
+                    let host = source.host.as_deref().unwrap_or("(no host)");
+                    format!("host: {}", host)
+                }
+            };
+
+            // Build example command
+            let cmd = match source.source_type {
+                SourceType::BigQuery => format!("aresa bq {} \"SELECT ...\"", name),
+                SourceType::Postgres => format!("aresa pg {} \"SELECT ...\"", name),
+                SourceType::MySQL => format!("aresa mysql {} \"SELECT ...\"", name),
+                SourceType::SQLite => format!("aresa sqlite <path> \"SELECT ...\""),
+                SourceType::DuckDB => format!("aresa duckdb <path> \"SELECT ...\""),
+                SourceType::ClickHouse => format!("aresa ch {} \"SELECT ...\"", name),
+                SourceType::Snowflake => format!("aresa query {} \"SELECT ...\"", name),
+                SourceType::Databricks => format!("aresa query {} \"SELECT ...\"", name),
+                SourceType::S3 => format!("aresa s3 {} --list", name),
+                SourceType::GCS => format!("aresa gcs {} --list", name),
+            };
+
+            builder.push_record([name.as_str(), &type_str, &details, &cmd]);
         }
+
+        let mut table = builder.build();
+        table.with(Style::rounded());
+
+        println!();
+        println!("{}", "📊 Configured Data Sources".bright_yellow().bold());
+        println!();
+        println!("{table}");
+        println!();
+        println!(
+            "{} {} source{} configured",
+            "→".bright_blue(),
+            self.config.sources.len(),
+            if self.config.sources.len() == 1 { "" } else { "s" }
+        );
         println!();
 
         Ok(())
+    }
+
+    /// Mask sensitive parts of a URI
+    fn mask_uri(uri: &str) -> String {
+        // Try to parse and mask password
+        if let Ok(parsed) = url::Url::parse(uri) {
+            let host = parsed.host_str().unwrap_or("localhost");
+            let port = parsed.port().map(|p| format!(":{}", p)).unwrap_or_default();
+            let db = parsed.path().trim_start_matches('/');
+            let user = parsed.username();
+
+            if user.is_empty() {
+                format!("{}{}/{}", host, port, db)
+            } else {
+                format!("{}:●●●@{}{}/{}", user, host, port, db)
+            }
+        } else {
+            "●●●●●●●●".to_string()
+        }
     }
 
     /// Test connection to a data source
@@ -243,6 +357,41 @@ impl ConfigManager {
             SourceType::GCS => {
                 // GCS connection test would go here
                 println!("{}", "GCS connection test not yet implemented".yellow());
+            }
+            SourceType::Snowflake => {
+                let account = source.account.as_ref()
+                    .context("Snowflake account not configured")?;
+                let username = source.username.as_ref()
+                    .context("Snowflake username not configured")?;
+                let password = source.password.as_ref()
+                    .context("Snowflake password not configured")?;
+                let warehouse = source.warehouse.as_ref()
+                    .context("Snowflake warehouse not configured")?;
+                let connector = crate::connectors::snowflake::SnowflakeConnector::new(
+                    account,
+                    username,
+                    password,
+                    warehouse,
+                    source.database.as_deref(),
+                    source.schema.as_deref(),
+                ).await.context("Failed to connect to Snowflake")?;
+                connector.test_connection().await?;
+            }
+            SourceType::Databricks => {
+                let host = source.host.as_ref()
+                    .context("Databricks host not configured")?;
+                let warehouse = source.warehouse.as_ref()
+                    .context("Databricks warehouse_id not configured")?;
+                let token = source.token.as_ref()
+                    .context("Databricks token not configured")?;
+                let connector = crate::connectors::databricks::DatabricksConnector::new(
+                    host,
+                    warehouse,
+                    token,
+                    source.catalog.as_deref(),
+                    source.schema.as_deref(),
+                ).await.context("Failed to connect to Databricks")?;
+                connector.test_connection().await?;
             }
         }
 

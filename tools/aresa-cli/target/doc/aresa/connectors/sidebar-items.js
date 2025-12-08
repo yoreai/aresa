@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["bigquery","clickhouse","duckdb","filesystem","gcs","mysql","postgres","s3","sqlite"],"struct":["ColumnInfo","SchemaInfo","TableInfo"],"trait":["Connector"]};

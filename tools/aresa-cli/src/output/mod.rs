@@ -5,20 +5,20 @@ mod theme;
 
 use anyhow::Result;
 use colored::Colorize;
+use std::collections::HashMap;
 
 pub use table::TableRenderer;
 pub use theme::Theme;
 
 use crate::connectors::filesystem::FileMatch;
-use crate::query::QueryResult;
+
 /// Output format enum
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, clap::ValueEnum)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum OutputFormat {
     #[default]
     Table,
     Json,
     Csv,
-    Tree,
 }
 
 /// Main output renderer
@@ -64,9 +64,6 @@ impl OutputRenderer {
                     }
                 }
             }
-            OutputFormat::Tree => {
-                self.render_file_tree(results)?;
-            }
             OutputFormat::Table => {
                 self.render_file_table(results)?;
             }
@@ -75,19 +72,27 @@ impl OutputRenderer {
         Ok(())
     }
 
-    /// Render query results
-    pub fn render_query_results(&self, results: &QueryResult) -> Result<()> {
+    /// Render query results (simple version with columns and rows)
+    pub fn render_query_results_simple(
+        &self,
+        columns: &[String],
+        rows: &[HashMap<String, String>],
+    ) -> Result<()> {
+        if rows.is_empty() {
+            println!("{}", "No results.".yellow());
+            return Ok(());
+        }
+
         match self.format {
             OutputFormat::Json => {
-                println!("{}", serde_json::to_string_pretty(&results.rows)?);
+                println!("{}", serde_json::to_string_pretty(&rows)?);
             }
             OutputFormat::Csv => {
                 // Header
-                println!("{}", results.columns.join(","));
+                println!("{}", columns.join(","));
                 // Rows
-                for row in &results.rows {
-                    let values: Vec<String> = results
-                        .columns
+                for row in rows {
+                    let values: Vec<String> = columns
                         .iter()
                         .map(|col| {
                             row.get(col)
@@ -98,19 +103,25 @@ impl OutputRenderer {
                     println!("{}", values.join(","));
                 }
             }
-            OutputFormat::Tree | OutputFormat::Table => {
-                TableRenderer::render(results, &self.theme)?;
+            OutputFormat::Table => {
+                use tabled::{settings::Style, builder::Builder};
+
+                let mut builder = Builder::default();
+                builder.push_record(columns.iter().map(|s| s.as_str()));
+
+                for row in rows {
+                    let values: Vec<&str> = columns
+                        .iter()
+                        .map(|col| row.get(col).map(|s| s.as_str()).unwrap_or(""))
+                        .collect();
+                    builder.push_record(values);
+                }
+
+                let mut table = builder.build();
+                table.with(Style::rounded());
+                println!("{table}");
             }
         }
-
-        // Show row count
-        println!();
-        println!(
-            "{} {} row{}",
-            "→".bright_cyan(),
-            results.rows.len().to_string().bright_white().bold(),
-            if results.rows.len() == 1 { "" } else { "s" }
-        );
 
         Ok(())
     }

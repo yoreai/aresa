@@ -16,7 +16,7 @@ use colored::Colorize;
 use crate::cli::commands::OutputFormat;
 use crate::query::{QueryResult, TraversalResult};
 use crate::schema::Schema;
-use crate::storage::{Node, GraphView, KvView};
+use crate::storage::{Node, GraphView, KvView, SimilarityResult, Database};
 
 /// Main renderer that dispatches to appropriate sub-renderers
 pub struct Renderer {
@@ -276,6 +276,72 @@ impl Renderer {
         }
 
         Ok(())
+    }
+
+    /// Render similarity search results
+    pub async fn render_similarity_results(&self, results: &[SimilarityResult], db: &Database) -> Result<()> {
+        match self.format {
+            OutputFormat::Table => {
+                println!();
+                println!(
+                    "  {:<4} {:<40} {:<12} {:<12}",
+                    "#".bright_yellow(),
+                    "Node ID".bright_yellow(),
+                    "Score".bright_yellow(),
+                    "Distance".bright_yellow()
+                );
+                println!("  {}", "─".repeat(70));
+
+                for (i, result) in results.iter().enumerate() {
+                    // Get the node to show some content
+                    let node = db.get_node(&result.node_id.to_string()).await?;
+                    let preview = node.as_ref()
+                        .and_then(|n| n.properties.get("content").or(n.properties.get("text")).or(n.properties.get("title")))
+                        .map(|v| {
+                            let s = format!("{}", v);
+                            if s.len() > 50 {
+                                format!("{}...", &s[..47])
+                            } else {
+                                s
+                            }
+                        })
+                        .unwrap_or_default();
+
+                    println!(
+                        "  {:<4} {:<40} {:<12.4} {:<12.4}",
+                        (i + 1).to_string().bright_cyan(),
+                        result.node_id.to_string().bright_white(),
+                        result.score,
+                        result.distance
+                    );
+
+                    if !preview.is_empty() {
+                        println!("       {}", preview.bright_black());
+                    }
+                }
+
+                println!();
+                Ok(())
+            }
+            OutputFormat::Json => {
+                let json = serde_json::to_string_pretty(&results)?;
+                println!("{}", json);
+                Ok(())
+            }
+            OutputFormat::Csv => {
+                println!("rank,node_id,score,distance");
+                for (i, result) in results.iter().enumerate() {
+                    println!(
+                        "{},{},{:.6},{:.6}",
+                        i + 1,
+                        result.node_id,
+                        result.score,
+                        result.distance
+                    );
+                }
+                Ok(())
+            }
+        }
     }
 }
 

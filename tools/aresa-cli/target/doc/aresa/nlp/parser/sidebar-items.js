@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["extract_file_pattern","extract_path","extract_quoted_string","extract_table_name"],"struct":["QueryParser"]};

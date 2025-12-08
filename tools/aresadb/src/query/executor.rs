@@ -7,10 +7,11 @@ use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::time::Instant;
 
 use super::{
-    QueryParser, QueryPlanner, QueryPlan, PlanStep, ParsedQuery, QueryResult,
-    TraversalResult, QueryOperation, Condition,
+    QueryParser, QueryPlanner, QueryPlan, ParsedQuery, QueryResult,
+    TraversalResult, Condition, QueryOperation,
 };
-use crate::storage::{Database, Node, Edge, NodeId, Value};
+use super::planner::PlanStep;
+use crate::storage::{Database, Node, Edge, NodeId, Value, SimilarityResult};
 
 /// Query executor
 pub struct QueryEngine {
@@ -41,6 +42,14 @@ impl QueryEngine {
             query.limit = Some(query.limit.map(|ql| ql.min(l)).unwrap_or(l));
         }
 
+        // Handle vector search separately
+        if query.operation == QueryOperation::VectorSearch {
+            let results = self.execute_vector_search(&query).await?;
+            let mut result = self.vector_results_to_query_result(results).await?;
+            result.execution_time_ms = start.elapsed().as_millis() as u64;
+            return Ok(result);
+        }
+
         // Plan and execute
         let plan = self.planner.plan(&query)?;
         let mut result = self.execute_plan(&plan, &query).await?;
@@ -58,11 +67,65 @@ impl QueryEngine {
             query.limit = Some(query.limit.map(|ql| ql.min(l)).unwrap_or(l));
         }
 
+        // Handle vector search separately
+        if query.operation == QueryOperation::VectorSearch {
+            let results = self.execute_vector_search(&query).await?;
+            let mut result = self.vector_results_to_query_result(results).await?;
+            result.execution_time_ms = start.elapsed().as_millis() as u64;
+            return Ok(result);
+        }
+
         let plan = self.planner.plan(&query)?;
         let mut result = self.execute_plan(&plan, &query).await?;
 
         result.execution_time_ms = start.elapsed().as_millis() as u64;
         Ok(result)
+    }
+
+    /// Execute a vector search query
+    pub async fn execute_vector_search(&self, query: &ParsedQuery) -> Result<Vec<SimilarityResult>> {
+        let params = query.vector_search.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Missing vector search parameters"))?;
+
+        self.db.similarity_search(
+            &params.query_vector,
+            &query.target,
+            &params.embedding_field,
+            params.k,
+            params.metric.clone(),
+        ).await
+    }
+
+    /// Convert vector search results to QueryResult
+    async fn vector_results_to_query_result(&self, results: Vec<SimilarityResult>) -> Result<QueryResult> {
+        let columns = vec![
+            "rank".to_string(),
+            "id".to_string(),
+            "type".to_string(),
+            "score".to_string(),
+            "distance".to_string(),
+        ];
+
+        let mut rows = Vec::new();
+
+        for (i, result) in results.iter().enumerate() {
+            if let Some(node) = self.db.get_node(&result.node_id.to_string()).await? {
+                rows.push(vec![
+                    Value::Int((i + 1) as i64),
+                    Value::String(result.node_id.to_string()),
+                    Value::String(node.node_type.clone()),
+                    Value::Float(result.score),
+                    Value::Float(result.distance),
+                ]);
+            }
+        }
+
+        Ok(QueryResult {
+            columns,
+            rows,
+            rows_affected: 0,
+            execution_time_ms: 0,
+        })
     }
 
     /// Execute a query plan

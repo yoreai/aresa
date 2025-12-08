@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["extract_xml_value"],"struct":["ListObjectsResponse","S3Connector","S3Object"]};

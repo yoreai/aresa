@@ -1,0 +1,100 @@
+# AresaDB Docker Compose Configuration
+# For development and testing environments
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # AresaDB - Main Database Service
+  # ==========================================================================
+  aresadb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aresadb
+    ports:
+      - "6379:6379"
+    volumes:
+      - aresadb_data:/data
+    environment:
+      - ARESADB_DATA_DIR=/data
+      - RUST_LOG=info
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "aresadb", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # ==========================================================================
+  # AresaDB Studio - Web UI (optional)
+  # ==========================================================================
+  studio:
+    build:
+      context: ../../apps/aresadb-studio
+      dockerfile: Dockerfile
+    container_name: aresadb-studio
+    ports:
+      - "3000:3000"
+    environment:
+      - ARESA_DB_HOST=aresadb
+      - ARESA_DB_PORT=6379
+    depends_on:
+      - aresadb
+    restart: unless-stopped
+    profiles:
+      - studio
+
+  # ==========================================================================
+  # Prometheus - Metrics Collection (optional)
+  # ==========================================================================
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: aresadb-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  # ==========================================================================
+  # Grafana - Metrics Visualization (optional)
+  # ==========================================================================
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: aresadb-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=aresadb
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  aresadb_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  default:
+    name: aresadb-network
+

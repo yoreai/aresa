@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AresaDB Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">AresaDB</span>
+            </div>
+
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-view="overview">
+                    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item" data-view="query">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Query</span>
+                </a>
+                <a href="#" class="nav-item" data-view="vectors">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Vectors</span>
+                </a>
+                <a href="#" class="nav-item" data-view="rag">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="2"/><rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="2"/><path d="M9 12h6M9 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>RAG</span>
+                </a>
+                <a href="#" class="nav-item" data-view="graph">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="2"/><path d="M7.5 7.5L10.5 16M16.5 7.5L13.5 16" stroke="currentColor" stroke-width="2"/></svg>
+                    <span>Graph</span>
+                </a>
+                <a href="#" class="nav-item" data-view="benchmark">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Benchmarks</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <span class="status-dot connected"></span>
+                    <span>Connected</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Overview View -->
+            <section id="overview" class="view active">
+                <header class="view-header">
+                    <h1>Database Overview</h1>
+                    <button class="btn btn-primary" onclick="refreshStatus()">
+                        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M23 4v6h-6M1 20v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Refresh
+                    </button>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon nodes">
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="node-count">0</span>
+                            <span class="stat-label">Nodes</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon edges">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15,3 21,3 21,9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="edge-count">0</span>
+                            <span class="stat-label">Edges</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon schemas">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="schema-count">0</span>
+                            <span class="stat-label">Schemas</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon vectors">
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="vector-count">0</span>
+                            <span class="stat-label">Embeddings</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-list" id="activity-list">
+                                <div class="activity-item">
+                                    <span class="activity-time">Just now</span>
+                                    <span class="activity-text">Dashboard loaded</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Node Types Distribution</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="type-chart">
+                                <canvas id="typeDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Query View -->
+            <section id="query" class="view">
+                <header class="view-header">
+                    <h1>SQL Query Interface</h1>
+                </header>
+
+                <div class="query-container">
+                    <div class="query-editor">
+                        <div class="editor-header">
+                            <span class="editor-label">SQL Query</span>
+                            <div class="editor-actions">
+                                <button class="btn btn-sm" onclick="clearQuery()">Clear</button>
+                                <button class="btn btn-sm btn-primary" onclick="executeQuery()">
+                                    <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+                                    Run (⌘+Enter)
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="sql-input" placeholder="SELECT * FROM users LIMIT 10;" spellcheck="false"></textarea>
+                    </div>
+
+                    <div class="query-templates">
+                        <span class="templates-label">Templates:</span>
+                        <button class="template-btn" onclick="setQuery('SELECT * FROM ')">SELECT</button>
+                        <button class="template-btn" onclick="setQuery('INSERT INTO ')">INSERT</button>
+                        <button class="template-btn" onclick="setQuery('UPDATE ')">UPDATE</button>
+                        <button class="template-btn" onclick="setQuery('DELETE FROM ')">DELETE</button>
+                        <button class="template-btn" onclick="setQuery('VECTOR SEARCH chunk FIELD embedding FOR \'[0.1, 0.2, ...]\' METRIC cosine LIMIT 10')">VECTOR SEARCH</button>
+                    </div>
+
+                    <div class="query-results">
+                        <div class="results-header">
+                            <span class="results-label">Results</span>
+                            <span class="results-meta" id="results-meta"></span>
+                        </div>
+                        <div class="results-table-container" id="results-container">
+                            <div class="results-placeholder">
+                                <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" stroke="currentColor" stroke-width="1.5"/><polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="1.5"/></svg>
+                                <p>Run a query to see results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vectors View -->
+            <section id="vectors" class="view">
+                <header class="view-header">
+                    <h1>Vector Embeddings</h1>
+                </header>
+
+                <div class="vectors-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Similarity Search</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Search Text</label>
+                                <input type="text" id="vector-search-text" placeholder="Enter text to find similar documents..." class="input">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Node Type</label>
+                                    <input type="text" id="vector-node-type" value="chunk" class="input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Distance Metric</label>
+                                    <select id="vector-metric" class="input">
+                                        <option value="cosine">Cosine</option>
+                                        <option value="euclidean">Euclidean</option>
+                                        <option value="dot">Dot Product</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Top K</label>
+                                    <input type="number" id="vector-k" value="5" min="1" max="100" class="input">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="searchVectors()">
+                                <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Search Results</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="vector-results" class="vector-results">
+                                <div class="results-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="1.5"/></svg>
+                                    <p>Enter text to search for similar vectors</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RAG View -->
+            <section id="rag" class="view">
+                <header class="view-header">
+                    <h1>RAG Playground</h1>
+                </header>
+
+                <div class="rag-container">
+                    <div class="rag-panel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Document Ingestion</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Document Content</label>
+                                    <textarea id="rag-document" class="input textarea" rows="6" placeholder="Paste your document content here..."></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Document ID</label>
+                                        <input type="text" id="rag-doc-id" value="doc-1" class="input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Chunk Size</label>
+                                        <input type="number" id="rag-chunk-size" value="512" class="input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Overlap</label>
+                                        <input type="number" id="rag-overlap" value="50" class="input">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" onclick="ingestDocument()">
+                                    <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17,8 12,3 7,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    Ingest Document
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Context Retrieval</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Query</label>
+                                    <input type="text" id="rag-query" placeholder="What would you like to know?" class="input">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Max Tokens</label>
+                                        <input type="number" id="rag-max-tokens" value="2048" class="input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Min Score</label>
+                                        <input type="number" id="rag-min-score" value="0.5" step="0.1" min="0" max="1" class="input">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" onclick="retrieveContext()">
+                                    <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                    Retrieve Context
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rag-output">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <h3>Retrieved Context</h3>
+                                <button class="btn btn-sm" onclick="copyContext()">Copy</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="rag-context" class="rag-context-output">
+                                    <div class="results-placeholder">
+                                        <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+                                        <p>Ingest a document and query to retrieve context</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graph View -->
+            <section id="graph" class="view">
+                <header class="view-header">
+                    <h1>Graph Visualization</h1>
+                </header>
+
+                <div class="graph-container">
+                    <div class="graph-controls">
+                        <div class="form-group">
+                            <label>Starting Node</label>
+                            <input type="text" id="graph-start-node" placeholder="Node ID" class="input">
+                        </div>
+                        <div class="form-group">
+                            <label>Depth</label>
+                            <input type="number" id="graph-depth" value="2" min="1" max="5" class="input">
+                        </div>
+                        <button class="btn btn-primary" onclick="visualizeGraph()">
+                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="5" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="6" r="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                            Visualize
+                        </button>
+                    </div>
+                    <div class="graph-canvas" id="graph-canvas">
+                        <div class="results-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" width="64" height="64"><circle cx="5" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="19" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="18" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 7.5L10.5 16M16.5 7.5L13.5 16" stroke="currentColor" stroke-width="1.5"/></svg>
+                            <p>Enter a node ID to visualize its connections</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benchmark View -->
+            <section id="benchmark" class="view">
+                <header class="view-header">
+                    <h1>Performance Benchmarks</h1>
+                    <button class="btn btn-primary" onclick="runBenchmarks()">
+                        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+                        Run Benchmarks
+                    </button>
+                </header>
+
+                <div class="benchmark-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Insert Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="benchmark-result">
+                                <div class="benchmark-value" id="bench-insert">--</div>
+                                <div class="benchmark-unit">records/sec</div>
+                            </div>
+                            <div class="benchmark-comparison">
+                                <div class="comparison-bar">
+                                    <div class="bar aresadb" id="bar-insert-aresadb" style="width: 0%"></div>
+                                </div>
+                                <div class="comparison-labels">
+                                    <span>AresaDB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Query Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="benchmark-result">
+                                <div class="benchmark-value" id="bench-query">--</div>
+                                <div class="benchmark-unit">ms</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Vector Search</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="benchmark-result">
+                                <div class="benchmark-value" id="bench-vector">--</div>
+                                <div class="benchmark-unit">ms</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Graph Traversal</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="benchmark-result">
+                                <div class="benchmark-value" id="bench-traverse">--</div>
+                                <div class="benchmark-unit">ms</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Comparison: AresaDB vs Others</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="benchmark-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Operation</th>
+                                        <th>AresaDB</th>
+                                        <th>SQLite</th>
+                                        <th>DuckDB</th>
+                                        <th>Pandas</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="benchmark-comparison-table">
+                                    <tr>
+                                        <td>10K Insert</td>
+                                        <td class="highlight">312 rec/s</td>
+                                        <td>1,200 rec/s</td>
+                                        <td>10,949 rec/s</td>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Point Query</td>
+                                        <td class="highlight">0.05 ms</td>
+                                        <td>0.02 ms</td>
+                                        <td>0.5 ms</td>
+                                        <td>1.2 ms</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Filter (1M rows)</td>
+                                        <td class="highlight">45 ms</td>
+                                        <td>120 ms</td>
+                                        <td>10 ms</td>
+                                        <td>85 ms</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vector Search (10K)</td>
+                                        <td class="highlight">2.3 ms</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Graph Traverse (depth=3)</td>
+                                        <td class="highlight">0.8 ms</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

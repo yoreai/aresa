@@ -1,0 +1,669 @@
+{
+  "metadata": {
+    "knowledgeBase": "omim",
+    "documentCount": 15,
+    "chunkCount": 30,
+    "createdAt": "2025-12-01T01:29:18.763Z",
+    "updatedAt": "2025-12-01T01:29:18.763Z",
+    "version": "1.0.0"
+  },
+  "documents": [
+    {
+      "id": "omim_cf",
+      "title": "Cystic Fibrosis",
+      "content": "Disease: Cystic Fibrosis\nAlso known as: CF, Mucoviscidosis\n\nGenes: CFTR\nInheritance: Autosomal recessive\nPrevalence: 1 in 2,500-3,500 Caucasians\nAge of Onset: Neonatal/Infancy\n\nDescription:\nCystic fibrosis is an autosomal recessive disorder caused by mutations in the CFTR gene, which encodes a chloride channel. The disease primarily affects the lungs, pancreas, liver, intestines, and reproductive system. Defective chloride transport leads to thick, viscous secretions that obstruct airways and ducts. Progressive lung disease is the primary cause of morbidity and mortality.\n\nClinical Features:\n• Chronic pulmonary infections\n• Pancreatic insufficiency\n• Elevated sweat chloride\n• Male infertility (absent vas deferens)\n• Meconium ileus in newborns\n• Bronchiectasis\n• Nasal polyps\n• Hepatobiliary disease\n\nOMIM ID: 219700",
+      "source": "omim",
+      "sourceId": "219700",
+      "sourceUrl": "https://omim.org/entry/219700",
+      "metadata": {
+        "mimNumber": "219700",
+        "geneSymbol": "CFTR",
+        "inheritance": [
+          "Autosomal recessive"
+        ],
+        "clinicalFeatures": [
+          "Chronic pulmonary infections",
+          "Pancreatic insufficiency",
+          "Elevated sweat chloride",
+          "Male infertility (absent vas deferens)",
+          "Meconium ileus in newborns",
+          "Bronchiectasis",
+          "Nasal polyps",
+          "Hepatobiliary disease"
+        ],
+        "prevalence": "1 in 2,500-3,500 Caucasians",
+        "onsetAge": "Neonatal/Infancy",
+        "alternateNames": [
+          "CF",
+          "Mucoviscidosis"
+        ]
+      }
+    },
+    {
+      "id": "omim_hd",
+      "title": "Huntington's Disease",
+      "content": "Disease: Huntington's Disease\nAlso known as: HD, Huntington's Chorea\n\nGenes: HTT\nInheritance: Autosomal dominant\nPrevalence: 3-7 per 100,000 in Western populations\nAge of Onset: Adult onset (30-50 years typically)\n\nDescription:\nHuntington's disease is an autosomal dominant neurodegenerative disorder caused by CAG trinucleotide repeat expansion in the HTT gene. The mutation results in an abnormally long polyglutamine tract in the huntingtin protein, leading to neuronal dysfunction and death, particularly in the striatum and cortex. The disease is characterized by a triad of motor, cognitive, and psychiatric symptoms.\n\nClinical Features:\n• Chorea (involuntary movements)\n• Progressive dementia\n• Psychiatric disturbances\n• Depression\n• Personality changes\n• Impaired judgment\n• Dysarthria\n• Dysphagia\n• Gait abnormalities\n\nOMIM ID: 143100",
+      "source": "omim",
+      "sourceId": "143100",
+      "sourceUrl": "https://omim.org/entry/143100",
+      "metadata": {
+        "mimNumber": "143100",
+        "geneSymbol": "HTT",
+        "inheritance": [
+          "Autosomal dominant"
+        ],
+        "clinicalFeatures": [
+          "Chorea (involuntary movements)",
+          "Progressive dementia",
+          "Psychiatric disturbances",
+          "Depression",
+          "Personality changes",
+          "Impaired judgment",
+          "Dysarthria",
+          "Dysphagia",
+          "Gait abnormalities"
+        ],
+        "prevalence": "3-7 per 100,000 in Western populations",
+        "onsetAge": "Adult onset (30-50 years typically)",
+        "alternateNames": [
+          "HD",
+          "Huntington's Chorea"
+        ]
+      }
+    },
+    {
+      "id": "omim_sca",
+      "title": "Sickle Cell Disease",
+      "content": "Disease: Sickle Cell Disease\nAlso known as: SCD, Sickle Cell Anemia, HbSS Disease\n\nGenes: HBB\nInheritance: Autosomal recessive\nPrevalence: 1 in 365 African Americans\nAge of Onset: Infancy (after fetal hemoglobin decline)\n\nDescription:\nSickle cell disease is an autosomal recessive hemoglobinopathy caused by a point mutation in the HBB gene, resulting in production of abnormal hemoglobin S (HbS). Under low oxygen conditions, HbS polymerizes causing red blood cells to assume a rigid sickle shape. These deformed cells cause vaso-occlusion, hemolysis, and progressive organ damage.\n\nClinical Features:\n• Vaso-occlusive pain crises\n• Chronic hemolytic anemia\n• Splenic sequestration\n• Acute chest syndrome\n• Stroke\n• Avascular necrosis\n• Leg ulcers\n• Priapism\n• Increased infection susceptibility\n\nOMIM ID: 603903",
+      "source": "omim",
+      "sourceId": "603903",
+      "sourceUrl": "https://omim.org/entry/603903",
+      "metadata": {
+        "mimNumber": "603903",
+        "geneSymbol": "HBB",
+        "inheritance": [
+          "Autosomal recessive"
+        ],
+        "clinicalFeatures": [
+          "Vaso-occlusive pain crises",
+          "Chronic hemolytic anemia",
+          "Splenic sequestration",
+          "Acute chest syndrome",
+          "Stroke",
+          "Avascular necrosis",
+          "Leg ulcers",
+          "Priapism",
+          "Increased infection susceptibility"
+        ],
+        "prevalence": "1 in 365 African Americans",
+        "onsetAge": "Infancy (after fetal hemoglobin decline)",
+        "alternateNames": [
+          "SCD",
+          "Sickle Cell Anemia",
+          "HbSS Disease"
+        ]
+      }
+    },
+    {
+      "id": "omim_dmd",
+      "title": "Duchenne Muscular Dystrophy",
+      "content": "Disease: Duchenne Muscular Dystrophy\nAlso known as: DMD, Pseudohypertrophic Muscular Dystrophy\n\nGenes: DMD\nInheritance: X-linked recessive\nPrevalence: 1 in 3,500-5,000 male births\nAge of Onset: Early childhood (2-5 years)\n\nDescription:\nDuchenne muscular dystrophy is an X-linked recessive disorder caused by mutations in the DMD gene encoding dystrophin. Absence of functional dystrophin leads to progressive muscle fiber degeneration and replacement by fibrotic and adipose tissue. It is the most common and severe form of muscular dystrophy.\n\nClinical Features:\n• Progressive proximal muscle weakness\n• Pseudohypertrophy of calves\n• Gowers sign\n• Cardiomyopathy\n• Respiratory insufficiency\n• Elevated creatine kinase\n• Loss of ambulation (by age 12)\n• Scoliosis\n• Cognitive impairment\n\nOMIM ID: 310200",
+      "source": "omim",
+      "sourceId": "310200",
+      "sourceUrl": "https://omim.org/entry/310200",
+      "metadata": {
+        "mimNumber": "310200",
+        "geneSymbol": "DMD",
+        "inheritance": [
+          "X-linked recessive"
+        ],
+        "clinicalFeatures": [
+          "Progressive proximal muscle weakness",
+          "Pseudohypertrophy of calves",
+          "Gowers sign",
+          "Cardiomyopathy",
+          "Respiratory insufficiency",
+          "Elevated creatine kinase",
+          "Loss of ambulation (by age 12)",
+          "Scoliosis",
+          "Cognitive impairment"
+        ],
+        "prevalence": "1 in 3,500-5,000 male births",
+        "onsetAge": "Early childhood (2-5 years)",
+        "alternateNames": [
+          "DMD",
+          "Pseudohypertrophic Muscular Dystrophy"
+        ]
+      }
+    },
+    {
+      "id": "omim_pku",
+      "title": "Phenylketonuria",
+      "content": "Disease: Phenylketonuria\nAlso known as: PKU, Phenylalanine Hydroxylase Deficiency\n\nGenes: PAH\nInheritance: Autosomal recessive\nPrevalence: 1 in 10,000-15,000 births\nAge of Onset: Neonatal (detectable at birth)\n\nDescription:\nPhenylketonuria is an autosomal recessive inborn error of metabolism caused by deficiency of phenylalanine hydroxylase (PAH), the enzyme that converts phenylalanine to tyrosine. Accumulation of phenylalanine and its metabolites causes irreversible intellectual disability if untreated. Newborn screening and dietary restriction of phenylalanine can prevent neurological damage.\n\nClinical Features:\n• Intellectual disability (if untreated)\n• Seizures\n• Musty body odor\n• Fair skin and hair (hypopigmentation)\n• Eczema\n• Behavioral problems\n• Microcephaly\n• Hyperactivity\n\nOMIM ID: 261600",
+      "source": "omim",
+      "sourceId": "261600",
+      "sourceUrl": "https://omim.org/entry/261600",
+      "metadata": {
+        "mimNumber": "261600",
+        "geneSymbol": "PAH",
+        "inheritance": [
+          "Autosomal recessive"
+        ],
+        "clinicalFeatures": [
+          "Intellectual disability (if untreated)",
+          "Seizures",
+          "Musty body odor",
+          "Fair skin and hair (hypopigmentation)",
+          "Eczema",
+          "Behavioral problems",
+          "Microcephaly",
+          "Hyperactivity"
+        ],
+        "prevalence": "1 in 10,000-15,000 births",
+        "onsetAge": "Neonatal (detectable at birth)",
+        "alternateNames": [
+          "PKU",
+          "Phenylalanine Hydroxylase Deficiency"
+        ]
+      }
+    },
+    {
+      "id": "omim_marfan",
+      "title": "Marfan Syndrome",
+      "content": "Disease: Marfan Syndrome\nAlso known as: MFS\n\nGenes: FBN1\nInheritance: Autosomal dominant\nPrevalence: 1 in 5,000-10,000\nAge of Onset: Variable (childhood to adult)\n\nDescription:\nMarfan syndrome is an autosomal dominant connective tissue disorder caused by mutations in the FBN1 gene encoding fibrillin-1. The condition affects multiple organ systems including the cardiovascular, skeletal, and ocular systems. Aortic root dilation and dissection are the primary causes of morbidity and mortality.\n\nClinical Features:\n• Aortic root dilation\n• Mitral valve prolapse\n• Ectopia lentis (lens dislocation)\n• Tall stature with long limbs\n• Arachnodactyly\n• Pectus excavatum/carinatum\n• Scoliosis\n• Joint hypermobility\n• Dural ectasia\n• Spontaneous pneumothorax\n\nOMIM ID: 154700",
+      "source": "omim",
+      "sourceId": "154700",
+      "sourceUrl": "https://omim.org/entry/154700",
+      "metadata": {
+        "mimNumber": "154700",
+        "geneSymbol": "FBN1",
+        "inheritance": [
+          "Autosomal dominant"
+        ],
+        "clinicalFeatures": [
+          "Aortic root dilation",
+          "Mitral valve prolapse",
+          "Ectopia lentis (lens dislocation)",
+          "Tall stature with long limbs",
+          "Arachnodactyly",
+          "Pectus excavatum/carinatum",
+          "Scoliosis",
+          "Joint hypermobility",
+          "Dural ectasia",
+          "Spontaneous pneumothorax"
+        ],
+        "prevalence": "1 in 5,000-10,000",
+        "onsetAge": "Variable (childhood to adult)",
+        "alternateNames": [
+          "MFS"
+        ]
+      }
+    },
+    {
+      "id": "omim_brca",
+      "title": "Hereditary Breast and Ovarian Cancer Syndrome",
+      "content": "Disease: Hereditary Breast and Ovarian Cancer Syndrome\nAlso known as: HBOC, BRCA-related Cancer\n\nGenes: BRCA1, BRCA2\nInheritance: Autosomal dominant\nPrevalence: 1 in 300-500 (general); 1 in 40 (Ashkenazi Jewish)\nAge of Onset: Adult (cancer risk increases with age)\n\nDescription:\nHereditary breast and ovarian cancer syndrome is caused by germline mutations in BRCA1 or BRCA2 genes, which encode proteins involved in DNA repair. Mutations significantly increase lifetime risk of breast cancer (50-85%) and ovarian cancer (15-45%). The condition is inherited in an autosomal dominant pattern with incomplete penetrance.\n\nClinical Features:\n• Early-onset breast cancer\n• Bilateral breast cancer\n• Ovarian cancer\n• Male breast cancer\n• Pancreatic cancer\n• Prostate cancer (BRCA2)\n• Triple-negative breast cancer (BRCA1)\n\nOMIM ID: 604370",
+      "source": "omim",
+      "sourceId": "604370",
+      "sourceUrl": "https://omim.org/entry/604370",
+      "metadata": {
+        "mimNumber": "604370",
+        "geneSymbol": "BRCA1, BRCA2",
+        "inheritance": [
+          "Autosomal dominant"
+        ],
+        "clinicalFeatures": [
+          "Early-onset breast cancer",
+          "Bilateral breast cancer",
+          "Ovarian cancer",
+          "Male breast cancer",
+          "Pancreatic cancer",
+          "Prostate cancer (BRCA2)",
+          "Triple-negative breast cancer (BRCA1)"
+        ],
+        "prevalence": "1 in 300-500 (general); 1 in 40 (Ashkenazi Jewish)",
+        "onsetAge": "Adult (cancer risk increases with age)",
+        "alternateNames": [
+          "HBOC",
+          "BRCA-related Cancer"
+        ]
+      }
+    },
+    {
+      "id": "omim_hemophilia_a",
+      "title": "Hemophilia A",
+      "content": "Disease: Hemophilia A\nAlso known as: Classic Hemophilia, Factor VIII Deficiency\n\nGenes: F8\nInheritance: X-linked recessive\nPrevalence: 1 in 5,000 male births\nAge of Onset: Infancy/early childhood\n\nDescription:\nHemophilia A is an X-linked recessive bleeding disorder caused by deficiency of coagulation factor VIII. The severity of bleeding correlates with factor VIII activity levels. Patients experience spontaneous and trauma-induced bleeding, particularly into joints and muscles, leading to chronic arthropathy without proper treatment.\n\nClinical Features:\n• Hemarthrosis (joint bleeding)\n• Muscle hematomas\n• Prolonged bleeding after injury\n• Easy bruising\n• Intracranial hemorrhage\n• Chronic arthropathy\n• Excessive post-surgical bleeding\n\nOMIM ID: 306700",
+      "source": "omim",
+      "sourceId": "306700",
+      "sourceUrl": "https://omim.org/entry/306700",
+      "metadata": {
+        "mimNumber": "306700",
+        "geneSymbol": "F8",
+        "inheritance": [
+          "X-linked recessive"
+        ],
+        "clinicalFeatures": [
+          "Hemarthrosis (joint bleeding)",
+          "Muscle hematomas",
+          "Prolonged bleeding after injury",
+          "Easy bruising",
+          "Intracranial hemorrhage",
+          "Chronic arthropathy",
+          "Excessive post-surgical bleeding"
+        ],
+        "prevalence": "1 in 5,000 male births",
+        "onsetAge": "Infancy/early childhood",
+        "alternateNames": [
+          "Classic Hemophilia",
+          "Factor VIII Deficiency"
+        ]
+      }
+    },
+    {
+      "id": "omim_down",
+      "title": "Down Syndrome",
+      "content": "Disease: Down Syndrome\nAlso known as: Trisomy 21, DS\n\nGenes: Chromosome 21 trisomy\nInheritance: Chromosomal (usually de novo)\nPrevalence: 1 in 700-800 live births\nAge of Onset: Congenital\n\nDescription:\nDown syndrome is the most common chromosomal abnormality, caused by the presence of an extra copy of chromosome 21 (trisomy 21). The condition results from nondisjunction during meiosis. It is characterized by intellectual disability, distinctive facial features, and an increased risk of various medical conditions including congenital heart defects.\n\nClinical Features:\n• Intellectual disability\n• Characteristic facial features\n• Congenital heart defects (40-50%)\n• Hypotonia\n• Short stature\n• Atlantoaxial instability\n• Hypothyroidism\n• Increased leukemia risk\n• Early-onset Alzheimer disease\n• Hearing loss\n\nOMIM ID: 190685",
+      "source": "omim",
+      "sourceId": "190685",
+      "sourceUrl": "https://omim.org/entry/190685",
+      "metadata": {
+        "mimNumber": "190685",
+        "geneSymbol": "Chromosome 21 trisomy",
+        "inheritance": [
+          "Chromosomal (usually de novo)"
+        ],
+        "clinicalFeatures": [
+          "Intellectual disability",
+          "Characteristic facial features",
+          "Congenital heart defects (40-50%)",
+          "Hypotonia",
+          "Short stature",
+          "Atlantoaxial instability",
+          "Hypothyroidism",
+          "Increased leukemia risk",
+          "Early-onset Alzheimer disease",
+          "Hearing loss"
+        ],
+        "prevalence": "1 in 700-800 live births",
+        "onsetAge": "Congenital",
+        "alternateNames": [
+          "Trisomy 21",
+          "DS"
+        ]
+      }
+    },
+    {
+      "id": "omim_fragile_x",
+      "title": "Fragile X Syndrome",
+      "content": "Disease: Fragile X Syndrome\nAlso known as: FXS, Martin-Bell Syndrome\n\nGenes: FMR1\nInheritance: X-linked dominant\nPrevalence: 1 in 4,000 males; 1 in 8,000 females\nAge of Onset: Early childhood\n\nDescription:\nFragile X syndrome is the most common inherited cause of intellectual disability and the most common single-gene cause of autism spectrum disorder. It is caused by CGG repeat expansion in the FMR1 gene, leading to gene silencing and loss of FMRP protein. The condition shows X-linked dominant inheritance with reduced penetrance in females.\n\nClinical Features:\n• Intellectual disability\n• Autism spectrum features\n• Attention deficit\n• Anxiety\n• Long face\n• Large ears\n• Macroorchidism (post-pubertal)\n• Joint hypermobility\n• Mitral valve prolapse\n• Seizures\n\nOMIM ID: 300624",
+      "source": "omim",
+      "sourceId": "300624",
+      "sourceUrl": "https://omim.org/entry/300624",
+      "metadata": {
+        "mimNumber": "300624",
+        "geneSymbol": "FMR1",
+        "inheritance": [
+          "X-linked dominant"
+        ],
+        "clinicalFeatures": [
+          "Intellectual disability",
+          "Autism spectrum features",
+          "Attention deficit",
+          "Anxiety",
+          "Long face",
+          "Large ears",
+          "Macroorchidism (post-pubertal)",
+          "Joint hypermobility",
+          "Mitral valve prolapse",
+          "Seizures"
+        ],
+        "prevalence": "1 in 4,000 males; 1 in 8,000 females",
+        "onsetAge": "Early childhood",
+        "alternateNames": [
+          "FXS",
+          "Martin-Bell Syndrome"
+        ]
+      }
+    },
+    {
+      "id": "omim_nf1",
+      "title": "Neurofibromatosis Type 1",
+      "content": "Disease: Neurofibromatosis Type 1\nAlso known as: NF1, Von Recklinghausen Disease\n\nGenes: NF1\nInheritance: Autosomal dominant\nPrevalence: 1 in 3,000\nAge of Onset: Early childhood (progressive)\n\nDescription:\nNeurofibromatosis type 1 is an autosomal dominant neurocutaneous disorder caused by mutations in the NF1 gene encoding neurofibromin, a tumor suppressor. The condition is characterized by café-au-lait spots, neurofibromas, and increased risk of various tumors. It is one of the most common single-gene disorders.\n\nClinical Features:\n• Café-au-lait macules\n• Neurofibromas\n• Axillary/inguinal freckling\n• Lisch nodules (iris hamartomas)\n• Optic glioma\n• Skeletal abnormalities\n• Learning disabilities\n• Increased malignancy risk\n• Hypertension\n\nOMIM ID: 162200",
+      "source": "omim",
+      "sourceId": "162200",
+      "sourceUrl": "https://omim.org/entry/162200",
+      "metadata": {
+        "mimNumber": "162200",
+        "geneSymbol": "NF1",
+        "inheritance": [
+          "Autosomal dominant"
+        ],
+        "clinicalFeatures": [
+          "Café-au-lait macules",
+          "Neurofibromas",
+          "Axillary/inguinal freckling",
+          "Lisch nodules (iris hamartomas)",
+          "Optic glioma",
+          "Skeletal abnormalities",
+          "Learning disabilities",
+          "Increased malignancy risk",
+          "Hypertension"
+        ],
+        "prevalence": "1 in 3,000",
+        "onsetAge": "Early childhood (progressive)",
+        "alternateNames": [
+          "NF1",
+          "Von Recklinghausen Disease"
+        ]
+      }
+    },
+    {
+      "id": "omim_tay_sachs",
+      "title": "Tay-Sachs Disease",
+      "content": "Disease: Tay-Sachs Disease\nAlso known as: GM2 Gangliosidosis Type 1, Hexosaminidase A Deficiency\n\nGenes: HEXA\nInheritance: Autosomal recessive\nPrevalence: 1 in 320,000 (general); 1 in 3,600 (Ashkenazi Jewish)\nAge of Onset: Infantile (3-6 months)\n\nDescription:\nTay-Sachs disease is an autosomal recessive lysosomal storage disorder caused by deficiency of hexosaminidase A, leading to accumulation of GM2 ganglioside in neurons. The infantile form is characterized by progressive neurodegeneration and death in early childhood. Later-onset forms exist with variable severity.\n\nClinical Features:\n• Developmental regression\n• Cherry-red spot (macula)\n• Hypotonia progressing to spasticity\n• Seizures\n• Blindness\n• Deafness\n• Exaggerated startle response\n• Macrocephaly\n• Dementia\n\nOMIM ID: 272800",
+      "source": "omim",
+      "sourceId": "272800",
+      "sourceUrl": "https://omim.org/entry/272800",
+      "metadata": {
+        "mimNumber": "272800",
+        "geneSymbol": "HEXA",
+        "inheritance": [
+          "Autosomal recessive"
+        ],
+        "clinicalFeatures": [
+          "Developmental regression",
+          "Cherry-red spot (macula)",
+          "Hypotonia progressing to spasticity",
+          "Seizures",
+          "Blindness",
+          "Deafness",
+          "Exaggerated startle response",
+          "Macrocephaly",
+          "Dementia"
+        ],
+        "prevalence": "1 in 320,000 (general); 1 in 3,600 (Ashkenazi Jewish)",
+        "onsetAge": "Infantile (3-6 months)",
+        "alternateNames": [
+          "GM2 Gangliosidosis Type 1",
+          "Hexosaminidase A Deficiency"
+        ]
+      }
+    },
+    {
+      "id": "omim_alpha1",
+      "title": "Alpha-1 Antitrypsin Deficiency",
+      "content": "Disease: Alpha-1 Antitrypsin Deficiency\nAlso known as: A1AD, AAT Deficiency, SERPINA1 Deficiency\n\nGenes: SERPINA1\nInheritance: Autosomal codominant\nPrevalence: 1 in 2,000-5,000 (European descent)\nAge of Onset: Adult (lung disease); Variable (liver disease)\n\nDescription:\nAlpha-1 antitrypsin deficiency is an autosomal codominant disorder caused by mutations in SERPINA1, encoding the protease inhibitor alpha-1 antitrypsin. Deficiency leads to unopposed neutrophil elastase activity in the lungs (causing emphysema) and accumulation of misfolded protein in the liver (causing cirrhosis).\n\nClinical Features:\n• Early-onset emphysema\n• COPD\n• Liver cirrhosis\n• Hepatocellular carcinoma\n• Panniculitis\n• Bronchiectasis\n• Neonatal jaundice\n\nOMIM ID: 613490",
+      "source": "omim",
+      "sourceId": "613490",
+      "sourceUrl": "https://omim.org/entry/613490",
+      "metadata": {
+        "mimNumber": "613490",
+        "geneSymbol": "SERPINA1",
+        "inheritance": [
+          "Autosomal codominant"
+        ],
+        "clinicalFeatures": [
+          "Early-onset emphysema",
+          "COPD",
+          "Liver cirrhosis",
+          "Hepatocellular carcinoma",
+          "Panniculitis",
+          "Bronchiectasis",
+          "Neonatal jaundice"
+        ],
+        "prevalence": "1 in 2,000-5,000 (European descent)",
+        "onsetAge": "Adult (lung disease); Variable (liver disease)",
+        "alternateNames": [
+          "A1AD",
+          "AAT Deficiency",
+          "SERPINA1 Deficiency"
+        ]
+      }
+    },
+    {
+      "id": "omim_wilson",
+      "title": "Wilson's Disease",
+      "content": "Disease: Wilson's Disease\nAlso known as: Hepatolenticular Degeneration, WD\n\nGenes: ATP7B\nInheritance: Autosomal recessive\nPrevalence: 1 in 30,000\nAge of Onset: Childhood to young adult\n\nDescription:\nWilson's disease is an autosomal recessive disorder of copper metabolism caused by mutations in ATP7B, encoding a copper-transporting ATPase. Impaired copper excretion leads to accumulation in the liver, brain, and other tissues. Early treatment with copper chelation or zinc can prevent irreversible damage.\n\nClinical Features:\n• Hepatic disease (hepatitis, cirrhosis)\n• Kayser-Fleischer rings\n• Neuropsychiatric symptoms\n• Tremor\n• Dysarthria\n• Dystonia\n• Depression\n• Hemolytic anemia\n• Renal tubular dysfunction\n\nOMIM ID: 277900",
+      "source": "omim",
+      "sourceId": "277900",
+      "sourceUrl": "https://omim.org/entry/277900",
+      "metadata": {
+        "mimNumber": "277900",
+        "geneSymbol": "ATP7B",
+        "inheritance": [
+          "Autosomal recessive"
+        ],
+        "clinicalFeatures": [
+          "Hepatic disease (hepatitis, cirrhosis)",
+          "Kayser-Fleischer rings",
+          "Neuropsychiatric symptoms",
+          "Tremor",
+          "Dysarthria",
+          "Dystonia",
+          "Depression",
+          "Hemolytic anemia",
+          "Renal tubular dysfunction"
+        ],
+        "prevalence": "1 in 30,000",
+        "onsetAge": "Childhood to young adult",
+        "alternateNames": [
+          "Hepatolenticular Degeneration",
+          "WD"
+        ]
+      }
+    },
+    {
+      "id": "omim_lynch",
+      "title": "Lynch Syndrome",
+      "content": "Disease: Lynch Syndrome\nAlso known as: HNPCC, Hereditary Non-Polyposis Colorectal Cancer\n\nGenes: MLH1, MSH2, MSH6, PMS2, EPCAM\nInheritance: Autosomal dominant\nPrevalence: 1 in 300-500\nAge of Onset: Adult (cancer risk increases with age)\n\nDescription:\nLynch syndrome is an autosomal dominant cancer predisposition syndrome caused by germline mutations in DNA mismatch repair genes (MLH1, MSH2, MSH6, PMS2) or EPCAM deletions. It significantly increases risk of colorectal, endometrial, and other cancers. Tumors characteristically show microsatellite instability.\n\nClinical Features:\n• Colorectal cancer (high risk)\n• Endometrial cancer\n• Ovarian cancer\n• Gastric cancer\n• Urinary tract cancer\n• Sebaceous neoplasms\n• Brain tumors (Turcot syndrome)\n• Early age of cancer onset\n\nOMIM ID: 120435",
+      "source": "omim",
+      "sourceId": "120435",
+      "sourceUrl": "https://omim.org/entry/120435",
+      "metadata": {
+        "mimNumber": "120435",
+        "geneSymbol": "MLH1, MSH2, MSH6, PMS2, EPCAM",
+        "inheritance": [
+          "Autosomal dominant"
+        ],
+        "clinicalFeatures": [
+          "Colorectal cancer (high risk)",
+          "Endometrial cancer",
+          "Ovarian cancer",
+          "Gastric cancer",
+          "Urinary tract cancer",
+          "Sebaceous neoplasms",
+          "Brain tumors (Turcot syndrome)",
+          "Early age of cancer onset"
+        ],
+        "prevalence": "1 in 300-500",
+        "onsetAge": "Adult (cancer risk increases with age)",
+        "alternateNames": [
+          "HNPCC",
+          "Hereditary Non-Polyposis Colorectal Cancer"
+        ]
+      }
+    }
+  ],
+  "chunks": [
+    {
+      "id": "omim_cf_chunk_0",
+      "documentId": "omim_cf",
+      "content": "Disease: Cystic Fibrosis\nAlso known as: CF, Mucoviscidosis\n\nGenes: CFTR\nInheritance: Autosomal recessive\nPrevalence: 1 in 2,500-3,500 Caucasians\nAge of Onset: Neonatal/Infancy\n\nDescription:\nCystic fibrosis is an autosomal recessive disorder caused by mutations in the CFTR gene, which encodes a chloride channel. The disease primarily affects the lungs, pancreas, liver, intestines, and reproductive system. Defective chloride transport leads to thick, viscous secretions that obstruct airways and ducts. Progressive lung disease is the primary cause of morbidity and mortality.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_cf_chunk_1",
+      "documentId": "omim_cf",
+      "content": "obstruct airways and ducts. Progressive lung disease is the primary cause of morbidity and mortality.  Clinical Features:\n• Chronic pulmonary infections\n• Pancreatic insufficiency\n• Elevated sweat chloride\n• Male infertility (absent vas deferens)\n• Meconium ileus in newborns\n• Bronchiectasis\n• Nasal polyps\n• Hepatobiliary disease\n\nOMIM ID: 219700",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_hd_chunk_0",
+      "documentId": "omim_hd",
+      "content": "Disease: Huntington's Disease\nAlso known as: HD, Huntington's Chorea\n\nGenes: HTT\nInheritance: Autosomal dominant\nPrevalence: 3-7 per 100,000 in Western populations\nAge of Onset: Adult onset (30-50 years typically)\n\nDescription:\nHuntington's disease is an autosomal dominant neurodegenerative disorder caused by CAG trinucleotide repeat expansion in the HTT gene. The mutation results in an abnormally long polyglutamine tract in the huntingtin protein, leading to neuronal dysfunction and death, particularly in the striatum and cortex.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_hd_chunk_1",
+      "documentId": "omim_hd",
+      "content": "the huntingtin protein, leading to neuronal dysfunction and death, particularly in the striatum and cortex.  The disease is characterized by a triad of motor, cognitive, and psychiatric symptoms. Clinical Features:\n• Chorea (involuntary movements)\n• Progressive dementia\n• Psychiatric disturbances\n• Depression\n• Personality changes\n• Impaired judgment\n• Dysarthria\n• Dysphagia\n• Gait abnormalities\n\nOMIM ID: 143100",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_sca_chunk_0",
+      "documentId": "omim_sca",
+      "content": "Disease: Sickle Cell Disease\nAlso known as: SCD, Sickle Cell Anemia, HbSS Disease\n\nGenes: HBB\nInheritance: Autosomal recessive\nPrevalence: 1 in 365 African Americans\nAge of Onset: Infancy (after fetal hemoglobin decline)\n\nDescription:\nSickle cell disease is an autosomal recessive hemoglobinopathy caused by a point mutation in the HBB gene, resulting in production of abnormal hemoglobin S (HbS). Under low oxygen conditions, HbS polymerizes causing red blood cells to assume a rigid sickle shape. These deformed cells cause vaso-occlusion, hemolysis, and progressive organ damage.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_sca_chunk_1",
+      "documentId": "omim_sca",
+      "content": "assume a rigid sickle shape. These deformed cells cause vaso-occlusion, hemolysis, and progressive organ damage.  Clinical Features:\n• Vaso-occlusive pain crises\n• Chronic hemolytic anemia\n• Splenic sequestration\n• Acute chest syndrome\n• Stroke\n• Avascular necrosis\n• Leg ulcers\n• Priapism\n• Increased infection susceptibility\n\nOMIM ID: 603903",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_dmd_chunk_0",
+      "documentId": "omim_dmd",
+      "content": "Disease: Duchenne Muscular Dystrophy\nAlso known as: DMD, Pseudohypertrophic Muscular Dystrophy\n\nGenes: DMD\nInheritance: X-linked recessive\nPrevalence: 1 in 3,500-5,000 male births\nAge of Onset: Early childhood (2-5 years)\n\nDescription:\nDuchenne muscular dystrophy is an X-linked recessive disorder caused by mutations in the DMD gene encoding dystrophin. Absence of functional dystrophin leads to progressive muscle fiber degeneration and replacement by fibrotic and adipose tissue. It is the most common and severe form of muscular dystrophy.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_dmd_chunk_1",
+      "documentId": "omim_dmd",
+      "content": "fibrotic and adipose tissue. It is the most common and severe form of muscular dystrophy.  Clinical Features:\n• Progressive proximal muscle weakness\n• Pseudohypertrophy of calves\n• Gowers sign\n• Cardiomyopathy\n• Respiratory insufficiency\n• Elevated creatine kinase\n• Loss of ambulation (by age 12)\n• Scoliosis\n• Cognitive impairment\n\nOMIM ID: 310200",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_pku_chunk_0",
+      "documentId": "omim_pku",
+      "content": "Disease: Phenylketonuria\nAlso known as: PKU, Phenylalanine Hydroxylase Deficiency\n\nGenes: PAH\nInheritance: Autosomal recessive\nPrevalence: 1 in 10,000-15,000 births\nAge of Onset: Neonatal (detectable at birth)\n\nDescription:\nPhenylketonuria is an autosomal recessive inborn error of metabolism caused by deficiency of phenylalanine hydroxylase (PAH), the enzyme that converts phenylalanine to tyrosine. Accumulation of phenylalanine and its metabolites causes irreversible intellectual disability if untreated.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_pku_chunk_1",
+      "documentId": "omim_pku",
+      "content": "phenylalanine to tyrosine. Accumulation of phenylalanine and its metabolites causes irreversible intellectual disability if untreated.  Newborn screening and dietary restriction of phenylalanine can prevent neurological damage. Clinical Features:\n• Intellectual disability (if untreated)\n• Seizures\n• Musty body odor\n• Fair skin and hair (hypopigmentation)\n• Eczema\n• Behavioral problems\n• Microcephaly\n• Hyperactivity\n\nOMIM ID: 261600",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_marfan_chunk_0",
+      "documentId": "omim_marfan",
+      "content": "Disease: Marfan Syndrome\nAlso known as: MFS\n\nGenes: FBN1\nInheritance: Autosomal dominant\nPrevalence: 1 in 5,000-10,000\nAge of Onset: Variable (childhood to adult)\n\nDescription:\nMarfan syndrome is an autosomal dominant connective tissue disorder caused by mutations in the FBN1 gene encoding fibrillin-1. The condition affects multiple organ systems including the cardiovascular, skeletal, and ocular systems. Aortic root dilation and dissection are the primary causes of morbidity and mortality.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_marfan_chunk_1",
+      "documentId": "omim_marfan",
+      "content": "ocular systems. Aortic root dilation and dissection are the primary causes of morbidity and mortality.  Clinical Features:\n• Aortic root dilation\n• Mitral valve prolapse\n• Ectopia lentis (lens dislocation)\n• Tall stature with long limbs\n• Arachnodactyly\n• Pectus excavatum/carinatum\n• Scoliosis\n• Joint hypermobility\n• Dural ectasia\n• Spontaneous pneumothorax\n\nOMIM ID: 154700",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_brca_chunk_0",
+      "documentId": "omim_brca",
+      "content": "Disease: Hereditary Breast and Ovarian Cancer Syndrome\nAlso known as: HBOC, BRCA-related Cancer\n\nGenes: BRCA1, BRCA2\nInheritance: Autosomal dominant\nPrevalence: 1 in 300-500 (general); 1 in 40 (Ashkenazi Jewish)\nAge of Onset: Adult (cancer risk increases with age)\n\nDescription:\nHereditary breast and ovarian cancer syndrome is caused by germline mutations in BRCA1 or BRCA2 genes, which encode proteins involved in DNA repair. Mutations significantly increase lifetime risk of breast cancer (50-85%) and ovarian cancer (15-45%).",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_brca_chunk_1",
+      "documentId": "omim_brca",
+      "content": "DNA repair. Mutations significantly increase lifetime risk of breast cancer (50-85%) and ovarian cancer (15-45%).  The condition is inherited in an autosomal dominant pattern with incomplete penetrance. Clinical Features:\n• Early-onset breast cancer\n• Bilateral breast cancer\n• Ovarian cancer\n• Male breast cancer\n• Pancreatic cancer\n• Prostate cancer (BRCA2)\n• Triple-negative breast cancer (BRCA1)\n\nOMIM ID: 604370",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_hemophilia_a_chunk_0",
+      "documentId": "omim_hemophilia_a",
+      "content": "Disease: Hemophilia A\nAlso known as: Classic Hemophilia, Factor VIII Deficiency\n\nGenes: F8\nInheritance: X-linked recessive\nPrevalence: 1 in 5,000 male births\nAge of Onset: Infancy/early childhood\n\nDescription:\nHemophilia A is an X-linked recessive bleeding disorder caused by deficiency of coagulation factor VIII. The severity of bleeding correlates with factor VIII activity levels. Patients experience spontaneous and trauma-induced bleeding, particularly into joints and muscles, leading to chronic arthropathy without proper treatment.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_hemophilia_a_chunk_1",
+      "documentId": "omim_hemophilia_a",
+      "content": "and trauma-induced bleeding, particularly into joints and muscles, leading to chronic arthropathy without proper treatment.  Clinical Features:\n• Hemarthrosis (joint bleeding)\n• Muscle hematomas\n• Prolonged bleeding after injury\n• Easy bruising\n• Intracranial hemorrhage\n• Chronic arthropathy\n• Excessive post-surgical bleeding\n\nOMIM ID: 306700",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_down_chunk_0",
+      "documentId": "omim_down",
+      "content": "Disease: Down Syndrome\nAlso known as: Trisomy 21, DS\n\nGenes: Chromosome 21 trisomy\nInheritance: Chromosomal (usually de novo)\nPrevalence: 1 in 700-800 live births\nAge of Onset: Congenital\n\nDescription:\nDown syndrome is the most common chromosomal abnormality, caused by the presence of an extra copy of chromosome 21 (trisomy 21). The condition results from nondisjunction during meiosis. It is characterized by intellectual disability, distinctive facial features, and an increased risk of various medical conditions including congenital heart defects.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_down_chunk_1",
+      "documentId": "omim_down",
+      "content": "distinctive facial features, and an increased risk of various medical conditions including congenital heart defects.  Clinical Features:\n• Intellectual disability\n• Characteristic facial features\n• Congenital heart defects (40-50%)\n• Hypotonia\n• Short stature\n• Atlantoaxial instability\n• Hypothyroidism\n• Increased leukemia risk\n• Early-onset Alzheimer disease\n• Hearing loss\n\nOMIM ID: 190685",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_fragile_x_chunk_0",
+      "documentId": "omim_fragile_x",
+      "content": "Disease: Fragile X Syndrome\nAlso known as: FXS, Martin-Bell Syndrome\n\nGenes: FMR1\nInheritance: X-linked dominant\nPrevalence: 1 in 4,000 males; 1 in 8,000 females\nAge of Onset: Early childhood\n\nDescription:\nFragile X syndrome is the most common inherited cause of intellectual disability and the most common single-gene cause of autism spectrum disorder. It is caused by CGG repeat expansion in the FMR1 gene, leading to gene silencing and loss of FMRP protein. The condition shows X-linked dominant inheritance with reduced penetrance in females.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_fragile_x_chunk_1",
+      "documentId": "omim_fragile_x",
+      "content": "loss of FMRP protein. The condition shows X-linked dominant inheritance with reduced penetrance in females.  Clinical Features:\n• Intellectual disability\n• Autism spectrum features\n• Attention deficit\n• Anxiety\n• Long face\n• Large ears\n• Macroorchidism (post-pubertal)\n• Joint hypermobility\n• Mitral valve prolapse\n• Seizures\n\nOMIM ID: 300624",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_nf1_chunk_0",
+      "documentId": "omim_nf1",
+      "content": "Disease: Neurofibromatosis Type 1\nAlso known as: NF1, Von Recklinghausen Disease\n\nGenes: NF1\nInheritance: Autosomal dominant\nPrevalence: 1 in 3,000\nAge of Onset: Early childhood (progressive)\n\nDescription:\nNeurofibromatosis type 1 is an autosomal dominant neurocutaneous disorder caused by mutations in the NF1 gene encoding neurofibromin, a tumor suppressor. The condition is characterized by café-au-lait spots, neurofibromas, and increased risk of various tumors. It is one of the most common single-gene disorders.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_nf1_chunk_1",
+      "documentId": "omim_nf1",
+      "content": "and increased risk of various tumors. It is one of the most common single-gene disorders.  Clinical Features:\n• Café-au-lait macules\n• Neurofibromas\n• Axillary/inguinal freckling\n• Lisch nodules (iris hamartomas)\n• Optic glioma\n• Skeletal abnormalities\n• Learning disabilities\n• Increased malignancy risk\n• Hypertension\n\nOMIM ID: 162200",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_tay_sachs_chunk_0",
+      "documentId": "omim_tay_sachs",
+      "content": "Disease: Tay-Sachs Disease\nAlso known as: GM2 Gangliosidosis Type 1, Hexosaminidase A Deficiency\n\nGenes: HEXA\nInheritance: Autosomal recessive\nPrevalence: 1 in 320,000 (general); 1 in 3,600 (Ashkenazi Jewish)\nAge of Onset: Infantile (3-6 months)\n\nDescription:\nTay-Sachs disease is an autosomal recessive lysosomal storage disorder caused by deficiency of hexosaminidase A, leading to accumulation of GM2 ganglioside in neurons. The infantile form is characterized by progressive neurodegeneration and death in early childhood. Later-onset forms exist with variable severity.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_tay_sachs_chunk_1",
+      "documentId": "omim_tay_sachs",
+      "content": "characterized by progressive neurodegeneration and death in early childhood. Later-onset forms exist with variable severity.  Clinical Features:\n• Developmental regression\n• Cherry-red spot (macula)\n• Hypotonia progressing to spasticity\n• Seizures\n• Blindness\n• Deafness\n• Exaggerated startle response\n• Macrocephaly\n• Dementia\n\nOMIM ID: 272800",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_alpha1_chunk_0",
+      "documentId": "omim_alpha1",
+      "content": "Disease: Alpha-1 Antitrypsin Deficiency\nAlso known as: A1AD, AAT Deficiency, SERPINA1 Deficiency\n\nGenes: SERPINA1\nInheritance: Autosomal codominant\nPrevalence: 1 in 2,000-5,000 (European descent)\nAge of Onset: Adult (lung disease); Variable (liver disease)\n\nDescription:\nAlpha-1 antitrypsin deficiency is an autosomal codominant disorder caused by mutations in SERPINA1, encoding the protease inhibitor alpha-1 antitrypsin. Deficiency leads to unopposed neutrophil elastase activity in the lungs (causing emphysema) and accumulation of misfolded protein in the liver (causing cirrhosis).",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_alpha1_chunk_1",
+      "documentId": "omim_alpha1",
+      "content": "in the lungs (causing emphysema) and accumulation of misfolded protein in the liver (causing cirrhosis).  Clinical Features:\n• Early-onset emphysema\n• COPD\n• Liver cirrhosis\n• Hepatocellular carcinoma\n• Panniculitis\n• Bronchiectasis\n• Neonatal jaundice\n\nOMIM ID: 613490",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_wilson_chunk_0",
+      "documentId": "omim_wilson",
+      "content": "Disease: Wilson's Disease\nAlso known as: Hepatolenticular Degeneration, WD\n\nGenes: ATP7B\nInheritance: Autosomal recessive\nPrevalence: 1 in 30,000\nAge of Onset: Childhood to young adult\n\nDescription:\nWilson's disease is an autosomal recessive disorder of copper metabolism caused by mutations in ATP7B, encoding a copper-transporting ATPase. Impaired copper excretion leads to accumulation in the liver, brain, and other tissues. Early treatment with copper chelation or zinc can prevent irreversible damage.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_wilson_chunk_1",
+      "documentId": "omim_wilson",
+      "content": "brain, and other tissues. Early treatment with copper chelation or zinc can prevent irreversible damage.  Clinical Features:\n• Hepatic disease (hepatitis, cirrhosis)\n• Kayser-Fleischer rings\n• Neuropsychiatric symptoms\n• Tremor\n• Dysarthria\n• Dystonia\n• Depression\n• Hemolytic anemia\n• Renal tubular dysfunction\n\nOMIM ID: 277900",
+      "chunkIndex": 1
+    },
+    {
+      "id": "omim_lynch_chunk_0",
+      "documentId": "omim_lynch",
+      "content": "Disease: Lynch Syndrome\nAlso known as: HNPCC, Hereditary Non-Polyposis Colorectal Cancer\n\nGenes: MLH1, MSH2, MSH6, PMS2, EPCAM\nInheritance: Autosomal dominant\nPrevalence: 1 in 300-500\nAge of Onset: Adult (cancer risk increases with age)\n\nDescription:\nLynch syndrome is an autosomal dominant cancer predisposition syndrome caused by germline mutations in DNA mismatch repair genes (MLH1, MSH2, MSH6, PMS2) or EPCAM deletions. It significantly increases risk of colorectal, endometrial, and other cancers. Tumors characteristically show microsatellite instability.",
+      "chunkIndex": 0
+    },
+    {
+      "id": "omim_lynch_chunk_1",
+      "documentId": "omim_lynch",
+      "content": "It significantly increases risk of colorectal, endometrial, and other cancers. Tumors characteristically show microsatellite instability.  Clinical Features:\n• Colorectal cancer (high risk)\n• Endometrial cancer\n• Ovarian cancer\n• Gastric cancer\n• Urinary tract cancer\n• Sebaceous neoplasms\n• Brain tumors (Turcot syndrome)\n• Early age of cancer onset\n\nOMIM ID: 120435",
+      "chunkIndex": 1
+    }
+  ]
+}

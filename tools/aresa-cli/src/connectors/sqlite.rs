@@ -15,10 +15,23 @@ pub struct SqliteConnector {
 impl SqliteConnector {
     /// Create a new SQLite connector
     pub async fn new(path: &str) -> Result<Self> {
+        // Build SQLite URI with create mode enabled
         let uri = if path.starts_with("sqlite:") {
-            path.to_string()
+            // Already a URI, add create mode if not present
+            if path.contains("?") {
+                if !path.contains("mode=") {
+                    format!("{}&mode=rwc", path)
+                } else {
+                    path.to_string()
+                }
+            } else {
+                format!("{}?mode=rwc", path)
+            }
+        } else if path == ":memory:" {
+            "sqlite::memory:".to_string()
         } else {
-            format!("sqlite:{}", path)
+            // Regular path - add sqlite: prefix and create mode
+            format!("sqlite:{}?mode=rwc", path)
         };
 
         let pool = SqlitePool::connect(&uri)

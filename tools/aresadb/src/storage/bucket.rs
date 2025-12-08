@@ -349,7 +349,3 @@ impl BucketStorage {
     }
 }
 
-// Add walkdir for directory traversal
-use walkdir;
-
-

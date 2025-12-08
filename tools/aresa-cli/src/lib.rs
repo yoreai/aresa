@@ -1,39 +1,44 @@
-//! ARESA CLI - Natural Language Data Search
+//! ARESA CLI - Universal Database Interface
 //!
-//! A high-performance CLI tool for searching filesystems, databases,
-//! and cloud storage using natural language queries.
+//! Fast, beautiful interface to query any database.
 //!
-//! # Features
+//! # Supported Databases
 //!
-//! - **Natural Language Interface**: Ask questions in plain English
-//! - **Universal Search**: Files, PostgreSQL, BigQuery, S3, GCS, SQLite
-//! - **Beautiful Output**: Rich terminal formatting with tables and colors
-//! - **Secure**: Credentials stored in OS keychain
-//! - **Fast**: Built in Rust with async I/O
+//! - **BigQuery**: Google BigQuery via REST API
+//! - **PostgreSQL**: Full SQL support with connection pooling
+//! - **MySQL**: Full SQL support
+//! - **SQLite**: Local database queries
 //!
 //! # Example
 //!
 //! ```bash
+//! # Query BigQuery
+//! aresa bq "SELECT * FROM dataset.table LIMIT 10"
+//! aresa bq --datasets
+//! aresa bq --tables my_dataset
+//! aresa bq --schema my_dataset.my_table
+//!
+//! # Query PostgreSQL
+//! aresa pg mydb "SELECT * FROM users"
+//! aresa pg mydb --tables
+//!
 //! # Search files
-//! aresa "find python files with TODO comments in ~/dev"
-//!
-//! # Query database
-//! aresa "show me users who signed up last week"
-//!
-//! # Configure sources
-//! aresa config add postgres prod --uri postgresql://...
+//! aresa files "*.rs" --path ~/dev
+//! aresa files "TODO" --path ~/dev --content
 //! ```
 
 pub mod config;
 pub mod connectors;
-pub mod error;
-pub mod nlp;
 pub mod output;
-pub mod query;
+
+#[cfg(feature = "ui")]
+pub mod server;
+
+#[cfg(feature = "ui")]
+pub mod terminal;
+
+#[cfg(feature = "ui")]
+pub mod history;
 
 pub use config::ConfigManager;
-pub use nlp::QueryParser;
 pub use output::OutputRenderer;
-pub use query::QueryExecutor;
-
-

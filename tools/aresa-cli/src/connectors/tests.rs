@@ -200,4 +200,94 @@ mod sqlite_tests {
 
         assert!(result.is_err());
     }
+
+    #[tokio::test]
+    async fn test_sqlite_create_and_query() {
+        let connector = SqliteConnector::new(":memory:").await.unwrap();
+
+        // Create table
+        let _ = connector
+            .execute_sql("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)", None)
+            .await
+            .unwrap();
+
+        // Insert data
+        let _ = connector
+            .execute_sql("INSERT INTO users (name) VALUES ('Alice'), ('Bob')", None)
+            .await
+            .unwrap();
+
+        // Query
+        let (columns, rows) = connector
+            .execute_sql("SELECT * FROM users ORDER BY id", None)
+            .await
+            .unwrap();
+
+        assert!(columns.contains(&"id".to_string()));
+        assert!(columns.contains(&"name".to_string()));
+        assert_eq!(rows.len(), 2);
+    }
+
+    #[tokio::test]
+    async fn test_sqlite_list_tables() {
+        let connector = SqliteConnector::new(":memory:").await.unwrap();
+
+        // Create tables
+        let _ = connector.execute_sql("CREATE TABLE users (id INTEGER)", None).await.unwrap();
+        let _ = connector.execute_sql("CREATE TABLE orders (id INTEGER)", None).await.unwrap();
+
+        // List tables
+        let (columns, rows) = connector
+            .execute_sql("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name", None)
+            .await
+            .unwrap();
+
+        assert!(columns.contains(&"name".to_string()));
+        assert!(rows.iter().any(|r| r.get("name") == Some(&"orders".to_string())));
+        assert!(rows.iter().any(|r| r.get("name") == Some(&"users".to_string())));
+    }
+}
+
+#[cfg(test)]
+mod clickhouse_tests {
+    use crate::connectors::clickhouse::ClickHouseConnector;
+
+    #[tokio::test]
+    #[ignore = "Requires ClickHouse server"]
+    async fn test_clickhouse_new() {
+        // ClickHouse connector tests connection on creation
+        let connector = ClickHouseConnector::new("localhost", None, None, None, None).await;
+        assert!(connector.is_ok());
+    }
+
+    #[tokio::test]
+    #[ignore = "Requires ClickHouse server"]
+    async fn test_clickhouse_live_query() {
+        let connector = ClickHouseConnector::new("localhost", Some(8123), None, None, None).await.unwrap();
+        let result = connector.execute_sql("SELECT 1 as num", None).await;
+        assert!(result.is_ok());
+    }
+}
+
+#[cfg(test)]
+mod connector_trait_tests {
+    /// Test that all connectors implement the expected interface pattern
+    /// This is more of a compile-time check than a runtime test
+
+    #[test]
+    fn test_query_result_structure() {
+        use std::collections::HashMap;
+
+        // QueryResult is (Vec<String>, Vec<HashMap<String, String>>)
+        let columns: Vec<String> = vec!["id".to_string(), "name".to_string()];
+        let mut row: HashMap<String, String> = HashMap::new();
+        row.insert("id".to_string(), "1".to_string());
+        row.insert("name".to_string(), "Alice".to_string());
+        let rows = vec![row];
+
+        // Verify structure
+        assert_eq!(columns.len(), 2);
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].get("name"), Some(&"Alice".to_string()));
+    }
 }

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["QueryIntent","TargetType"],"struct":["ParsedQuery","QueryContext","QueryParser","TimeRange"]};

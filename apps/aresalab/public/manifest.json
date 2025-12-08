@@ -1,18 +1,19 @@
 {
-  "name": "BlazeBuilder",
-  "short_name": "BlazeBuilder",
-  "description": "AI-powered construction intelligence platform for lead generation and risk assessment",
+  "name": "ARESA Lab",
+  "short_name": "ARESA Lab",
+  "description": "Autonomous Research Engineering & Synthesis Architecture - Building self-improving AI systems that advance STEM research",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ea580c",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en-US",
   "categories": [
-    "business",
-    "productivity",
-    "utilities"
+    "education",
+    "science",
+    "research",
+    "productivity"
   ],
   "icons": [
     {
@@ -64,50 +65,31 @@
       "purpose": "maskable any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop-home.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "BlazeBuilder Homepage"
-    },
-    {
-      "src": "/screenshots/mobile-home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "BlazeBuilder Mobile"
-    }
-  ],
   "shortcuts": [
     {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "Access your construction leads dashboard",
-      "url": "/dashboard",
-      "icons": [
-        {
-          "src": "/icons/dashboard-icon.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Research",
-      "short_name": "Research",
-      "description": "View AI research papers and technical documentation",
-      "url": "/research",
+      "name": "Publications",
+      "short_name": "Papers",
+      "description": "View research publications and papers",
+      "url": "/publications",
       "icons": [
         {
           "src": "/icons/research-icon.png",
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Books",
+      "short_name": "Books",
+      "description": "Browse textbooks and learning materials",
+      "url": "/books",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  }
+  "prefer_related_applications": false
 }

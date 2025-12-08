@@ -7,10 +7,13 @@ mod planner;
 mod executor;
 
 pub use parser::QueryParser;
-pub use planner::{QueryPlan, QueryPlanner};
-pub use executor::QueryExecutor;
+pub use planner::{QueryPlan, QueryPlanner, PlanStep};
+pub use executor::QueryEngine;
 
 use crate::storage::{Node, Edge, Value};
+
+// Re-export vector search types from storage
+pub use crate::storage::{DistanceMetric, SimilarityResult};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -187,6 +190,8 @@ pub struct ParsedQuery {
     pub offset: Option<usize>,
     /// Data for INSERT/UPDATE
     pub data: Option<BTreeMap<String, Value>>,
+    /// Vector search parameters
+    pub vector_search: Option<VectorSearchParams>,
 }
 
 /// Query operation type
@@ -199,6 +204,20 @@ pub enum QueryOperation {
     Traverse,
     CreateSchema,
     DropSchema,
+    VectorSearch,
+}
+
+/// Parameters for vector similarity search
+#[derive(Debug, Clone)]
+pub struct VectorSearchParams {
+    /// The query vector
+    pub query_vector: Vec<f32>,
+    /// Field containing embeddings
+    pub embedding_field: String,
+    /// Number of results to return
+    pub k: usize,
+    /// Distance metric
+    pub metric: DistanceMetric,
 }
 
 /// Filter condition

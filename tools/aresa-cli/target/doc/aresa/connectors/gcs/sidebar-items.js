@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["GcsConnector","GcsObject","ListObjectsResponse","ObjectMetadata"]};

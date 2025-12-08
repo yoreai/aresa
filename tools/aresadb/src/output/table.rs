@@ -4,7 +4,6 @@
 
 use anyhow::Result;
 use colored::Colorize;
-use tabled::{Table, Tabled, settings::{Style, Modify, object::Rows, Alignment, Width, Panel}};
 
 use crate::query::QueryResult;
 use crate::storage::Value;
@@ -113,6 +112,9 @@ impl TableRenderer {
                 let suffix = if obj.len() > 3 { "..." } else { "" };
                 format!("{{{}{}}}", preview.join(", "), suffix)
             }
+            Value::Vector(v) => {
+                format!("<vector dim={}>", v.len())
+            }
         }
     }
 
@@ -175,11 +177,4 @@ impl Default for TableRenderer {
         Self::new()
     }
 }
-
-/// A row for tabled rendering
-#[derive(Tabled)]
-struct DynamicRow {
-    values: Vec<String>,
-}
-
 

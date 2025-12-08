@@ -1,0 +1,59 @@
+{
+  "name": "AresaDB Studio",
+  "short_name": "AresaDB",
+  "description": "High-performance multi-model database - Query, visualize, and explore your data with vectors and RAG",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#8b5cf6",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": [
+    "developer",
+    "database",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Query Editor",
+      "short_name": "Query",
+      "description": "Execute SQL queries",
+      "url": "/query"
+    },
+    {
+      "name": "Vector Search",
+      "short_name": "Vectors",
+      "description": "Explore vector embeddings",
+      "url": "/vectors"
+    },
+    {
+      "name": "RAG Playground",
+      "short_name": "RAG",
+      "description": "Test retrieval-augmented generation",
+      "url": "/rag"
+    }
+  ],
+  "prefer_related_applications": false
+}
+
