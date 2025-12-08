@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { 
-  sampleDrugReviews, 
-  sampleMedicalTranscriptions, 
-  sampleHeartDisease, 
+import {
+  sampleDrugReviews,
+  sampleMedicalTranscriptions,
+  sampleHeartDisease,
   samplePubMedAbstracts,
-  datasetStats 
+  datasetStats
 } from '@/lib/demo-data'
 
 // Demo mode for Vercel deployment
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     // Demo mode: Return sample data based on query
     if (DEMO_MODE) {
       await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 150))
-      
+
       let results: any[] = []
       let tableName = 'unknown'
 
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const { exec } = await import('child_process')
     const { promisify } = await import('util')
     const execAsync = promisify(exec)
-    
+
     const ARESADB_PATH = process.env.ARESADB_PATH || '../../../tools/aresadb/target/release/aresadb'
     const DB_PATH = process.env.ARESADB_DB_PATH || '/tmp/aresadb-studio-demo'
 
@@ -140,10 +140,10 @@ export async function GET() {
     const { exec } = await import('child_process')
     const { promisify } = await import('util')
     const execAsync = promisify(exec)
-    
+
     const ARESADB_PATH = process.env.ARESADB_PATH || '../../../tools/aresadb/target/release/aresadb'
     const DB_PATH = process.env.ARESADB_DB_PATH || '/tmp/aresadb-studio-demo'
-    
+
     const cmd = `${ARESADB_PATH} --db ${DB_PATH} status`
     const { stdout } = await execAsync(cmd, { timeout: 5000 })
 

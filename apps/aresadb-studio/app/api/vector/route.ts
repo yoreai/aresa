@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { 
-  sampleDrugReviews, 
-  sampleMedicalTranscriptions, 
-  samplePubMedAbstracts 
+import {
+  sampleDrugReviews,
+  sampleMedicalTranscriptions,
+  samplePubMedAbstracts
 } from '@/lib/demo-data'
 
 // Demo mode for Vercel deployment
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     // Demo mode: Return sample vector search results
     if (DEMO_MODE) {
       await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200))
-      
+
       let sourceData: any[] = []
       let textField = 'text'
 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     const { exec } = await import('child_process')
     const { promisify } = await import('util')
     const execAsync = promisify(exec)
-    
+
     const ARESADB_PATH = process.env.ARESADB_PATH || '../../../tools/aresadb/target/release/aresadb'
     const DB_PATH = process.env.ARESADB_DB_PATH || '/tmp/aresadb-studio-demo'
 
