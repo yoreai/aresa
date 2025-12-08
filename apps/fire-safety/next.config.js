@@ -1,45 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["images.clerk.dev"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.clerk.dev',
+      },
+    ],
   },
-  experimental: {
-    typedRoutes: true,
-  },
-  // Performance optimizations
-  swcMinify: true, // Use SWC for minification (faster than Terser)
+  // Moved from experimental in Next.js 16
+  typedRoutes: true,
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production", // Remove console.logs in production
-  },
-  webpack: (config, { isServer, dev }) => {
-    // Ensure consistent module resolution
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@": require("path").resolve(__dirname, "./app"),
-    };
-
-    // Production optimizations
-    if (!dev) {
-      // Split chunks for better caching
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all",
-          },
-        },
-      };
-    }
-
-    return config;
+    removeConsole: process.env.NODE_ENV === "production",
   },
   // Compress responses
   compress: true,
-  // Enable build time optimizations
-  optimizeFonts: true,
   // Reduce bundle size by tree-shaking unused exports
   modularizeImports: {
     "lucide-react": {
@@ -47,6 +22,8 @@ const nextConfig = {
       preventFullImport: true,
     },
   },
+  // Enable Turbopack (Next.js 16 default)
+  turbopack: {},
 };
 
 module.exports = nextConfig;
