@@ -4,13 +4,16 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Database, Play, History, Settings, Terminal, Activity, Zap } from 'lucide-react';
 import { api, Connection, HistoryEntry } from '@/lib/api';
 import { StatCard } from '@/components/StatCard';
 import { ConnectionCard } from '@/components/ConnectionCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { setSelectedConnection } from '@/lib/connection-state';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [connections, setConnections] = useState<Connection[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -116,7 +119,14 @@ export default function Dashboard() {
               </div>
             ) : (
               connections.map((conn) => (
-                <ConnectionCard key={conn.name} connection={conn} />
+                <ConnectionCard 
+                  key={conn.name} 
+                  connection={conn} 
+                  onClick={() => {
+                    setSelectedConnection(conn.name);
+                    router.push('/query');
+                  }}
+                />
               ))
             )}
           </div>
