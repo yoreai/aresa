@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!mounted) return
-    
+
     const root = document.documentElement
     if (theme === 'light') {
       root.classList.add('light')

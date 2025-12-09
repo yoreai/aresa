@@ -37,7 +37,7 @@ export function Sidebar() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <aside 
+    <aside
       className={cn(
         "h-screen bg-card border-r border-border flex flex-col relative sidebar-transition",
         isCollapsed ? "w-[72px]" : "w-64"

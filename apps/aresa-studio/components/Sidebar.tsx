@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Database,
@@ -86,20 +87,32 @@ export default function Sidebar() {
       `}
     >
       {/* Logo */}
-      <div className={`
-        p-4 border-b border-slate-800 flex items-center
-        ${isCollapsed ? 'justify-center' : 'justify-between'}
-      `}>
+      <Link 
+        href="/"
+        className={`
+          p-4 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/50 transition-colors
+          ${isCollapsed ? 'justify-center' : ''}
+        `}
+      >
+        {/* App Icon */}
+        <div className="w-10 h-10 flex-shrink-0 relative">
+          <Image 
+            src="/favicon.svg" 
+            alt="ARESA Studio" 
+            width={40} 
+            height={40}
+            className="drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]"
+          />
+        </div>
+        
+        {/* App Name */}
         <div className={`overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
-          <h1 className="text-xl font-bold gradient-text-cyan-blue whitespace-nowrap">
+          <h1 className="text-lg font-bold gradient-text-cyan-blue whitespace-nowrap">
             ARESA Studio
           </h1>
-          <p className="text-xs text-slate-500 mt-1">v0.2.0</p>
+          <p className="text-xs text-slate-500">v0.2.0</p>
         </div>
-        {isCollapsed && (
-          <div className="gradient-text-cyan-blue font-bold text-xl">A</div>
-        )}
-      </div>
+      </Link>
 
       {/* Toggle Button */}
       <button
@@ -161,4 +174,3 @@ export default function Sidebar() {
     </div>
   );
 }
-
