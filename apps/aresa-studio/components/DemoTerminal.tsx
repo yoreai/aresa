@@ -218,7 +218,7 @@ export default function DemoTerminal() {
   // Process command
   const processCommand = useCallback(async (cmd: string) => {
     const trimmedCmd = cmd.trim().toLowerCase();
-    
+
     // Add command to history
     if (trimmedCmd) {
       setCommandHistory(prev => [...prev, cmd]);
@@ -241,7 +241,7 @@ export default function DemoTerminal() {
 
     // Find matching response
     let response: string[] | undefined;
-    
+
     // Check for exact match first
     if (DEMO_RESPONSES[normalizedCmd]) {
       response = DEMO_RESPONSES[normalizedCmd];
@@ -257,7 +257,7 @@ export default function DemoTerminal() {
 
     // Unknown command
     if (!response) {
-      setLines(prev => [...prev, 
+      setLines(prev => [...prev,
         { type: 'error', content: `\x1b[31m✗\x1b[0m Unknown command: ${cmd}` },
         { type: 'info', content: '\x1b[90mType "aresa help" for available commands\x1b[0m' },
         { type: 'info', content: '' },
@@ -267,7 +267,7 @@ export default function DemoTerminal() {
 
     // Show typing animation for certain commands
     const shouldAnimate = TYPING_COMMANDS.some(c => normalizedCmd.startsWith(c));
-    
+
     if (shouldAnimate) {
       setIsProcessing(true);
       // Simulate processing delay
@@ -276,7 +276,7 @@ export default function DemoTerminal() {
 
     // Add response lines
     setLines(prev => [
-      ...prev, 
+      ...prev,
       ...response!.map(content => ({ type: 'output' as const, content })),
       { type: 'info', content: '' },
     ]);
@@ -363,7 +363,7 @@ export default function DemoTerminal() {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-full h-full bg-slate-900 font-mono text-sm overflow-auto cursor-text p-4"
       onClick={handleContainerClick}

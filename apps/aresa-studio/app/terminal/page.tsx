@@ -46,7 +46,7 @@ export default function TerminalPage() {
             </div>
             <span className="text-slate-400 text-sm ml-2">aresa — bash — 80×24</span>
           </div>
-          
+
           {/* Terminal body */}
           <div className="flex-1 overflow-hidden">
             <DemoTerminal />
