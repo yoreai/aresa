@@ -27,6 +27,7 @@ As AI capabilities advance with world models and cutting-edge research, humans a
 aresa/
 ├── apps/                          # Deployable Web Applications
 │   ├── aresalab/                  # Main hub - research & publications
+│   │   ├── public/publications/   # ← Published outputs from quarto/
 │   │   └── → aresalab.vercel.app
 │   ├── fire-safety/               # Fire dispatch analytics (930K+ records)
 │   │   └── → fire-safety.vercel.app
@@ -44,17 +45,14 @@ aresa/
 │   └── aresadb/                   # High-performance multi-model database
 │       └── Key-Value • Graph • Relational • Vector
 │
-├── publications/                  # Research papers (.qmd → PDF)
-│   ├── spotify_popularity/        # ML: Genre×audio interactions
-│   ├── manufacturing_analytics/   # Industrial: Cyclical failure discovery
-│   ├── fire_safety_dashboard/     # Policy: $225M impact quantified
-│   ├── network_analysis/          # Network: Centrality analysis
-│   ├── aresadb_technical_report/  # DB: Architecture & benchmarks
-│   └── ... more papers
-│
-├── notebooks/                     # Source analytical work
 ├── courses/                       # Educational content
 └── scripts/                       # Build utilities
+
+# Publications managed separately:
+../quarto/
+├── publications/                  # Source files (.qmd) - PRIVATE
+├── output/                        # Generated outputs - staging
+└── Makefile                       # make pdf, make publish
 ```
 
 ---
@@ -160,19 +158,27 @@ aresadb search document --vector '[0.9, 0.1, ...]' --k 10
 
 ## Publications
 
+Publications are managed in the **separate `quarto/` repository** for privacy and independence.
+
 | Domain | Paper | Key Contribution |
 |--------|-------|------------------|
-| **Machine Learning** | Spotify Popularity Prediction | Genre×audio interactions, ROC AUC 0.675 |
-| **Industrial Engineering** | Manufacturing Analytics | Cyclical failure discovery, 5-source integration |
-| **Public Policy** | Fire Safety Analytics | 930K records, $225M impact quantified |
-| **Network Science** | College Football Networks | Degree vs. betweenness centrality |
-| **Database Systems** | AresaDB Technical Report | Multi-model architecture, benchmarks |
+| **GeoAI** | GeoAI Agentic Flow | Spatial intelligence, 89.7% accuracy |
+| **Theory** | Coordinate Embedding Framework | Bi-Lipschitz proofs, distance preservation |
+| **Systems** | Multi-Agent Coordination | Consensus protocols, fault tolerance |
+| **Database** | AresaDB Technical Report | Multi-model architecture, benchmarks |
+| **Public Policy** | Fire Safety Analytics | 930K records, $225M impact |
 
-**Build Publications:**
+**Publication Workflow:**
 ```bash
-make pdf                    # Build all
-make pdf spotify_popularity # Build specific
+# Publications are built in quarto/, not here
+cd ../quarto
+make pdf                    # Generate PDFs → quarto/output/pdf/
+make previews               # Generate MDX → quarto/output/previews/
+make publish                # Copy to aresalab when ready
 ```
+
+> **Note:** Source files (.qmd) live in `quarto/publications/`.
+> Only generated outputs (PDFs, previews) are published to `aresalab/public/publications/`.
 
 ---
 

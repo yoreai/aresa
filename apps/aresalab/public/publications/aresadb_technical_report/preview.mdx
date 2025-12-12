@@ -1,0 +1,39 @@
+## Abstract
+
+AresaDB is a high-performance, multi-model database engine written in Rust that unifies key-value, graph, and relational data paradigms under a single property graph foundation. This technical report presents the architecture, design decisions, and empirical performance analysis of AresaDB, demonstrating competitive or superior performance compared to established databases including SQLite, DuckDB, and Pandas for common workloads.
+
+The system achieves sub-millisecond point lookups (0.002ms average) while supporting complex graph traversals and relational queries through a unified query interface. AresaDB integrates native vector search capabilities using an HNSW-like index structure, enabling Retrieval-Augmented Generation (RAG) workflows with hybrid keyword-vector search. Our benchmarks demonstrate insert throughput of 22,000+ nodes/second and query latencies competitive with specialized databases.
+
+Key contributions include: (1) a unified property graph data model that naturally supports multiple query paradigms, (2) zero-copy serialization using `rkyv` for minimal deserialization overhead, (3) integrated vector indexing for semantic search, (4) a hybrid search combining BM25 keyword scoring with vector similarity using Reciprocal Rank Fusion, and (5) comprehensive RAG pipeline support including document chunking, embedding generation, and context retrieval with token budgeting.
+
+---
+
+## Introduction
+
+## Background and Motivation
+
+Modern applications increasingly require diverse data access patterns within a single system: key-value lookups for caching and session management, graph traversals for relationship discovery, relational queries for structured analytics, and vector similarity search for AI/ML applications. Traditional approaches force developers to deploy multiple specialized databases, leading to data synchronization challenges, operational complexity, and increased latency from cross-system queries.
+
+AresaDB addresses this fragmentation by providing a unified multi-model database built on a property graph foundation. The property graph model naturally accommodates all three classical paradigms: nodes with properties serve key-value use cases, typed edges enable graph traversals, and schema definitions create relational table views over the underlying graph structure.
+
+The emergence of Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) has created new requirements for database systems. RAG applications need efficient vector similarity search to retrieve relevant context from large document collections. Rather than requiring a separate vector database, AresaDB integrates vector indexing directly into its storage engine, enabling unified storage and querying of both structured data and vector embeddings.
+
+## Design Goals
+
+AresaDB was designed with the following primary objectives:
+
+1. **Performance**: Sub-millisecond latencies for point queries and efficient bulk operations.
+2. **Unified Model**: Single data representation supporting multiple query paradigms.
+3. **Rust-Native**: Memory safety without garbage collection overhead.
+4. **Embeddable**: Zero external dependencies; operates as a library or CLI tool.
+5. **RAG-Ready**: Native vector search and document processing for AI applications.
+6. **Developer Experience**: Intuitive SQL interface with graph extensions.
+
+## Contributions
+
+This technical report makes the following contributions:
+
+- A detailed description of AresaDB's architecture and implementation
+- Empirical performance benchmarks comparing AresaDB to SQLite, DuckDB, and Pandas
+- Novel hybrid search algorithm combining BM25 and vector similarity
+- Open-source implementation available for community use

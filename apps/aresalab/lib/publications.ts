@@ -100,6 +100,7 @@ export const publications: Publication[] = [
     abstract: "An interactive dashboard analyzing 550,000+ fire department dispatch records from 2014-2025. Explore temporal patterns, geographic hotspots, false alarm trends, and priority distributions through dynamic visualizations with real-time filtering.",
     keywords: ["Fire Safety", "Emergency Response", "Dashboard", "Data Visualization", "Public Safety"],
     category: "dashboard",
+    pdfUrl: "/publications/pdf/Data-Driven-Fire-Safety-Analytics.pdf",
     demoUrl: "https://usfiresafety.vercel.app",
     metrics: [
       { label: "Records", value: "550K+" },
@@ -150,6 +151,31 @@ export const publications: Publication[] = [
     ],
     featured: true,
     badge: "TOOL",
+  },
+
+  // =========================================
+  // TECHNICAL REPORTS
+  // =========================================
+  {
+    slug: "aresadb-technical-report",
+    title: "AresaDB: A High-Performance Multi-Model Database in Rust",
+    shortTitle: "AresaDB Technical Report",
+    authors: ["Yevheniy Chuba", "ARESA"],
+    date: "2024-11",
+    institution: "YoreAI / University of Pittsburgh",
+    abstract: "AresaDB is a high-performance, multi-model database engine written in Rust that unifies key-value, graph, and relational data paradigms under a single property graph foundation. Achieves sub-millisecond point lookups while supporting complex graph traversals, relational queries, and vector search for RAG applications. Benchmarks demonstrate 22,000+ inserts/second and competitive query latencies against SQLite, DuckDB, and Pandas.",
+    keywords: ["Multi-Model Database", "Property Graph", "Vector Search", "RAG", "Rust", "HNSW", "BM25"],
+    category: "research",
+    pdfUrl: "/publications/pdf/AresaDB--A-High-Performance-Multi-Model-Database-in-Rust.pdf",
+    metrics: [
+      { label: "Point Lookup", value: "0.002ms" },
+      { label: "Insert Rate", value: "22K/sec" },
+      { label: "Vector Search", value: "8.5ms @100K" },
+      { label: "Language", value: "Rust" },
+    ],
+    featured: true,
+    badge: "DATABASE",
+    hasMathContent: true,
   },
 
   // =========================================
