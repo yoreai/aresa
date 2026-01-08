@@ -1,0 +1,48 @@
+# Testing Enforcement
+
+**CRITICAL**: Frontend changes MUST be tested with Playwright before pushing.
+
+## Before EVERY Push
+
+```bash
+npm run build              # TypeScript/compile check
+npm run test:ui            # Run affected tests
+# Fix failures before pushing
+```
+
+## Requirements by Change Type
+
+| Change | Required Tests |
+|--------|----------------|
+| New feature | New test file |
+| Bug fix | Regression test |
+| UI change | Interaction tests |
+| Navigation | URL/routing tests |
+
+## Common Patterns
+
+### Testing Navigation/URL
+```typescript
+test('uses correct URL params', async ({ page }) => {
+  await page.click('[data-testid="item"]');
+  await expect(page).toHaveURL(/\?c=/);  // correct param
+});
+```
+
+### Testing Forms
+```typescript
+test('submits form', async ({ page }) => {
+  await page.fill('[data-testid="email"]', 'test@example.com');
+  await page.click('[data-testid="submit"]');
+  await expect(page).toHaveURL('/success');
+});
+```
+
+## What NOT To Do
+
+- ❌ Push without tests
+- ❌ Use `waitForTimeout()` (use smart waits)
+- ❌ Test implementation details
+- ❌ Rely on text that changes
+
+_Playwright offers same functionality as Cypress with better speed and multi-browser support._
